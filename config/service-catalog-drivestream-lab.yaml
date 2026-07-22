@@ -1,0 +1,30 @@
+apiVersion: launchpad/v1
+kind: ServiceCatalog
+
+# Required — at least one service must be listed.
+# Day 1: only the meta repo is live.
+# Promote app repos from 'planned' to 'live' once they are scaffolded.
+org: drivestream-lab
+
+services:
+  prayog-meta:
+    stack: meta-pm
+    description: Control-plane for drivestream-lab
+    status: live
+    teams: [prayog-pm-team, prayog-pe-team]
+    links:
+      repo: https://github.com/drivestream-lab/prayog-meta
+
+  # ─── Day-N examples (uncomment when the repo is live) ───────────────────
+  #
+  # <slug>-api:
+  #   stack: python-backend
+  #   description: Core platform microservice
+  #   status: planned
+  #   teams: [prayog-pe-team]
+  #
+  # <slug>-web:
+  #   stack: nextjs-frontend
+  #   description: Web UI
+  #   status: planned
+  #   teams: [prayog-pe-team]

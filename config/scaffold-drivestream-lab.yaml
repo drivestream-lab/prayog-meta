@@ -1,0 +1,41 @@
+apiVersion: launchpad/v1
+kind: ScaffoldConfig
+
+# Scaffold is optional and entirely YAML-driven.
+# Enable a block and fill in template + ref + context, then run:
+#   launchpad apply-scaffold --meta --apply
+org: drivestream-lab
+
+meta:
+  enabled: false
+  engine: cookiecutter
+  # template: gh:drivestream-lab/tenant-meta-foundation
+  # ref: v0.1.0
+  # context:
+  #   project_name: drivestream-lab
+  #   programme_slug: <slug>
+  #   github_org: drivestream-lab
+
+# App repos — add a block for each repo when you are ready to scaffold.
+repos: {}
+
+  # ── Python / FastAPI microservice ───────────────────────────────────────
+  # <repo-name>:
+  #   enabled: true
+  #   engine: cookiecutter
+  #   template: gh:drivestream-lab/python-fastapi-foundation
+  #   ref: v0.3.0
+  #   context:
+  #     project_name: <repo-name>
+  #     has_kafka: false
+  #     has_postgres: true
+
+  # ── Next.js BFF / frontend ───────────────────────────────────────────────
+  # <repo-name>:
+  #   enabled: true
+  #   engine: cookiecutter
+  #   template: gh:drivestream-lab/nextjs-bff-foundation
+  #   ref: v0.1.0
+  #   context:
+  #     project_name: <repo-name>
+  #     has_graphql: false

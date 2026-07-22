@@ -1,0 +1,39 @@
+apiVersion: launchpad/v1
+kind: GovernanceConfig
+
+# Day 1: meta repo only.
+# Add app repos incrementally (Day N) by uncommenting / adding repo blocks.
+org: drivestream-lab
+
+stack_profiles:
+  meta-pm: Programme management & ADR meta repo
+  # Add a stack for each technology profile you use; each needs a harness profile.
+  # python-backend: Python / FastAPI microservice
+  # nextjs-frontend: Next.js frontend or BFF
+  # terraform-iac: Terraform infrastructure-as-code
+  # go-backend: Go microservice
+
+teams:
+  - name: prayog-pm-team
+    description: Product — PRD and meta develop merges
+    privacy: closed
+  - name: prayog-pe-team
+    description: Platform engineering — delivery gates and technical review
+    privacy: closed
+
+repos:
+  prayog-meta:
+    stack: meta-pm
+    teams: [prayog-pm-team, prayog-pe-team]
+    visibility: public
+    description: Control-plane for drivestream-lab
+
+policy:
+  default_branch: main
+  integration_branch: develop
+  require_pr_reviews: 0
+  dismiss_stale_reviews: true
+
+project_board:
+  enabled: true
+  name: "drivestream-lab Board"

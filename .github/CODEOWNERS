@@ -1,0 +1,31 @@
+# Platform / meta profile — copy to <client>-meta root as CODEOWNERS
+# Replace @drivestream-lab/... with actual GitHub org/team names.
+
+# ── PRD and initiatives ────────────────────────────────────────────────────────
+
+# PRD files are PM + PE — product intent + architecture sign-off
+/prd/                                                @drivestream-lab/pm-team @drivestream-lab/pe-team
+
+# Work manifests — PM merges only (branch protection enforces this)
+/work/                                               @drivestream-lab/pm-team
+
+# ── Platform configuration ────────────────────────────────────────────────────
+
+# Harness, gitflow, org config — platform ops team
+/config/                                             @drivestream-lab/platform-devs
+
+# Process playbook — platform devs + PM co-own
+/playbook/                                           @drivestream-lab/platform-devs @drivestream-lab/pm-team
+
+# Wiki content
+/wiki/                                               @drivestream-lab/platform-devs
+
+# ── Constitution ──────────────────────────────────────────────────────────────
+
+# Rules and skills — PE guild owns the engineering constitution
+.cursor/rules/                                       @drivestream-lab/pe-team
+.agents/skills/                                      @drivestream-lab/pe-team
+
+# ── Default ───────────────────────────────────────────────────────────────────
+
+*                                                    @drivestream-lab/pm-team

@@ -1,0 +1,59 @@
+apiVersion: launchpad/v1
+kind: HarnessConfig
+org: drivestream-lab
+
+# Day 1: meta is PRD-ready. App profiles below are Day N (uncomment when needed).
+# skills[].ref: latest  → apply-harness resolves GitHub releases/latest on each apply.
+# Or pin an explicit tag (e.g. v0.4.3) to freeze.
+delivery_contract: sdd-delivery/v2
+delivery_roles:
+  engineering-gate: prayog-pe-team
+
+profiles:
+  meta-pm:
+    # constitution: omitted — meta repos hold config/planning docs, not code.
+    skills:
+      - repo: prayog-skills
+        ref: latest
+    community_skills:
+      - source: github/awesome-copilot
+        ref: main
+        skill: prd
+    skill_runtimes:
+      - .agents/skills
+      - .claude/skills
+    codeowners_template: CODEOWNERS.meta-pm
+    harness_pin_template: harness-pin.meta.yaml
+
+  # ─── Day N — uncomment when you add this stack to governance ─────────────
+  # python-backend:
+  #   constitution:
+  #     repo: python-services-rules
+  #     ref: v2.1.0
+  #   skills:
+  #     - repo: prayog-skills
+  #       ref: latest
+  #   codeowners_template: CODEOWNERS.python-backend
+  #   harness_pin_template: harness-pin.python-backend.yaml
+
+  # nextjs-frontend:
+  #   constitution:
+  #     repo: nextjs-bff-rules
+  #     ref: v0.1.4
+  #   skills:
+  #     - repo: prayog-skills
+  #       ref: latest
+  #   codeowners_template: CODEOWNERS.nextjs-frontend
+  #   harness_pin_template: harness-pin.nextjs-frontend.yaml
+
+  # terraform-iac:
+  #   constitution:
+  #     repo: terraform-infra-rules
+  #     ref: v0.1.2
+  #   skills:
+  #     - repo: prayog-skills
+  #       ref: latest
+  #   codeowners_template: CODEOWNERS.terraform-iac
+  #   harness_pin_template: harness-pin.terraform-iac.yaml
+
+repos: {}
