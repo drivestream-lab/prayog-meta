@@ -1,17 +1,16 @@
 apiVersion: launchpad/v1
 kind: GovernanceConfig
 
-# Day 1: meta repo only.
-# Add app repos incrementally (Day N) by uncommenting / adding repo blocks.
+# Prayog programme — drivestream-lab org.
+# Day 1: meta + brownfield platform repos (prayog-skills, launchpad).
+# Day N: gateflow (API) and gateflow-ops (BFF) via init-client --repo.
 org: drivestream-lab
 
 stack_profiles:
-  meta-pm: Programme management & ADR meta repo
-  # Add a stack for each technology profile you use; each needs a harness profile.
-  # python-backend: Python / FastAPI microservice
-  # nextjs-frontend: Next.js frontend or BFF
-  # terraform-iac: Terraform infrastructure-as-code
-  # go-backend: Go microservice
+  meta-pm: Programme management & PRD meta repo
+  platform-tooling: Platform SSOT repos (skills, factory CLI) — brownfield, no cookiecutter
+  python-backend: Python / FastAPI microservice
+  nextjs-frontend: Next.js BFF / ops portal
 
 teams:
   - name: prayog-pm-team
@@ -22,11 +21,38 @@ teams:
     privacy: closed
 
 repos:
+  # ─── Day 1: meta (required) ─────────────────────────────────────────────
   prayog-meta:
     stack: meta-pm
     teams: [prayog-pm-team, prayog-pe-team]
     visibility: public
-    description: Control-plane for drivestream-lab
+    description: Prayog programme control-plane — PRDs, factory config, impact maps
+
+  # ─── Platform SSOT (existing on GitHub — brownfield) ─────────────────────
+  prayog-skills:
+    stack: platform-tooling
+    teams: [prayog-pe-team]
+    visibility: public
+    description: Agent skills, workflow.yaml, and delivery contract SSOT
+
+  launchpad:
+    stack: platform-tooling
+    teams: [prayog-pe-team]
+    visibility: public
+    description: Launchpad factory CLI, playbook, and harness automation
+
+  # ─── Gateflow programme (greenfield — run init-client --repo when ready) ─
+  gateflow:
+    stack: python-backend
+    teams: [prayog-pe-team]
+    visibility: public
+    description: Gateflow orchestrator API — webhooks, runs, GitHub App, agent dispatch
+
+  gateflow-ops:
+    stack: nextjs-frontend
+    teams: [prayog-pe-team]
+    visibility: public
+    description: Gateflow operations console — runs visibility BFF upstream to gateflow
 
 policy:
   default_branch: main
