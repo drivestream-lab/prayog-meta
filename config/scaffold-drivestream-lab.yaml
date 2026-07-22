@@ -1,9 +1,9 @@
 apiVersion: launchpad/v1
 kind: ScaffoldConfig
 
-# Scaffold is optional and entirely YAML-driven.
-# Enable a block and fill in template + ref + context, then run:
-#   launchpad apply-scaffold --meta --apply
+# Prayog programme scaffolds.
+# Platform repos (prayog-skills, launchpad) are brownfield — no scaffold blocks.
+# Gateflow repos: init-client --repo first, then apply-scaffold --repo --apply.
 org: drivestream-lab
 
 meta:
@@ -11,31 +11,32 @@ meta:
   engine: cookiecutter
   # template: gh:drivestream-lab/tenant-meta-foundation
   # ref: v0.1.0
-  # context:
-  #   project_name: drivestream-lab
-  #   programme_slug: <slug>
-  #   github_org: drivestream-lab
 
-# App repos — add a block for each repo when you are ready to scaffold.
-repos: {}
+repos:
+  # foundation: python-fastapi-foundation@v0.3.2
+  # constitution: python-services-rules@v0.5.10
+  # skills: prayog-skills@v0.4.3
+  gateflow:
+    enabled: true
+    engine: cookiecutter
+    template: gh:drivestream-lab/python-fastapi-foundation
+    ref: v0.3.2
+    context:
+      service_name: gateflow
+      service_description: Gateflow orchestrator API — delivery flow runtime for sdd-delivery/v2
+      default_port: "8080"
 
-  # ── Python / FastAPI microservice ───────────────────────────────────────
-  # <repo-name>:
-  #   enabled: true
-  #   engine: cookiecutter
-  #   template: gh:drivestream-lab/python-fastapi-foundation
-  #   ref: v0.3.0
-  #   context:
-  #     project_name: <repo-name>
-  #     has_kafka: false
-  #     has_postgres: true
-
-  # ── Next.js BFF / frontend ───────────────────────────────────────────────
-  # <repo-name>:
-  #   enabled: true
-  #   engine: cookiecutter
-  #   template: gh:drivestream-lab/nextjs-bff-foundation
-  #   ref: v0.1.0
-  #   context:
-  #     project_name: <repo-name>
-  #     has_graphql: false
+  # foundation: nextjs-bff-foundation@v0.1.0
+  # constitution: nextjs-bff-rules@v0.1.6
+  # skills: prayog-skills@v0.4.3
+  gateflow-ops:
+    enabled: true
+    engine: cookiecutter
+    template: gh:drivestream-lab/nextjs-bff-foundation
+    ref: v0.1.0
+    context:
+      portal_name: gateflow-ops
+      portal_description: Gateflow operations console — runs, waves, and delivery status
+      default_port: "3000"
+      upstream_service_name: gateflow
+      auth_mode: dev-stub

@@ -6,3 +6,8 @@ org: drivestream-lab
 meta_repo: prayog-meta
 forge:
   provider: github
+
+# Programme repos (logical):
+#   prayog-meta, prayog-skills, launchpad  — platform / control plane
+#   gateflow (API), gateflow-ops (BFF)      — Gateflow delivery runtime (planned)
+# Workspace (local): ~/Workspace/handson/drivestream-lab
