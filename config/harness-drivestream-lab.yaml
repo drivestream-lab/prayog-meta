@@ -17,7 +17,7 @@ profiles:
         ref: latest
     community_skills:
       - source: github/awesome-copilot
-        ref: v1.0.0
+        ref: main
         skill: prd
     skill_runtimes:
       - .agents/skills

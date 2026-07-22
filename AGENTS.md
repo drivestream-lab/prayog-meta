@@ -8,7 +8,7 @@ PM workspace for **drivestream-lab** (`prayog-meta`).
 Installed under **`.harness/skills/<skill>/`** (hub) mirrored to **`.agents/skills/`** and **`.claude/skills/`**:
 
 - Community: `/prd` @ awesome-copilot
-- Prayog PM bundle @ **v0.4.3**: `/validate-requirements`, `/review-findings`, `/update-documents`, `/prd-impact-map`
+- Prayog PM bundle @ **v0.4.3**: `/validate-requirements`, `/review-findings`, `/update-documents`, `/prd-impact-map`, `/prd`
 
 Pin record: [`.harness-pin.yaml`](.harness-pin.yaml) (`profile: meta-pm`).
 
