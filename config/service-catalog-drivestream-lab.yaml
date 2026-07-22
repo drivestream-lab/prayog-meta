@@ -33,7 +33,7 @@ services:
   gateflow:
     stack: python-backend
     description: Gateflow orchestrator API — webhooks, run store, agent dispatch
-    status: planned
+    status: live
     teams: [prayog-pe-team]
     links:
       repo: https://github.com/drivestream-lab/gateflow
@@ -45,7 +45,7 @@ services:
   gateflow-ops:
     stack: nextjs-frontend
     description: Gateflow operations console — BFF to gateflow internal API
-    status: planned
+    status: live
     teams: [prayog-pe-team]
     links:
       repo: https://github.com/drivestream-lab/gateflow-ops
