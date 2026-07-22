@@ -1,0 +1,8 @@
+apiVersion: launchpad/v1
+kind: Programme
+programme: prayog
+programme_slug: prayog
+org: drivestream-lab
+meta_repo: prayog-meta
+forge:
+  provider: github
