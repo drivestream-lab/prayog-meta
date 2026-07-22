@@ -1,0 +1,6 @@
+[submodule "prayog-skills"]
+	path = prayog-skills
+	url = https://github.com/drivestream-lab/prayog-skills
+[submodule ".harness/community/awesome-copilot"]
+	path = .harness/community/awesome-copilot
+	url = https://github.com/github/awesome-copilot
