@@ -39,7 +39,7 @@
 
 | # | Type | Location | Original Recommendation | User's Alternative |
 |---|------|----------|------------------------|-------------------|
-| VF-007 | Semantic | §5 Technical dependencies; Document control; rollout refs | Confirm rc-2 branch exists or will be created before implementation | **Implementation targets `rc-1` branch** — user confirmed: "we will be doing everything on rc-1 itself." Update Document control target branch, phased rollout, dependencies, Appendix C step 5, and all `rc-2` branch references that mean development target to **`rc-1`**. Retain release/tag/pin semantics as Joint Gate 1 agenda items where tag naming still applies. |
+| VF-007 | Semantic | §5 Technical dependencies; Document control; rollout refs | Confirm rc-2 branch exists or will be created before implementation | **Implementation targets `features/rc-2` branch** — user confirmed delivery branch is rc-2 only. Update Document control target branch, phased rollout, dependencies, Appendix C step 5, and all development-target references to **`rc-2`** (`features/rc-2` on prayog-skills). Retain release/tag/pin semantics as Joint Gate 1 agenda items. |
 
 ---
 

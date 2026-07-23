@@ -7,7 +7,7 @@
 **Component:** PRAYOG-SKILLS · **Type:** platform / delivery contract
 
 > **Draft PRD** for Gate 1 review. Engineering implementation routes to
-> `drivestream-lab/prayog-skills` **rc-1** branch and spec PR after Joint Gate 1.
+> `drivestream-lab/prayog-skills` **rc-2** branch and spec PR after Joint Gate 1.
 > This INIT defines **automation eligibility SSOT** — orchestrators read the pin;
 > they must not hardcode skill node lists.
 
@@ -20,10 +20,10 @@
 | Initiative ID | INIT-PRAYOG-SKILLS-002 |
 | Programme | prayog |
 | Primary repo | drivestream-lab/prayog-skills |
-| Target branch | **rc-1** (feature); release tag TBD after Joint Gate 1 |
+| Target branch | **rc-2** (`features/rc-2` on prayog-skills); release tag TBD after Joint Gate 1 |
 | Target users | PE, orchestrator consumers (Gateflow), skills maintainers |
-| Gate 1 coupling | **Joint Gate 1** with INIT-GATEFLOW-001 — required before rc-1 merge, meta harness pin, or integration test |
-| Contract id | `sdd-delivery/v2` (rc-1 additive semantics) |
+| Gate 1 coupling | **Joint Gate 1** with INIT-GATEFLOW-001 — required before rc-2 merge, meta harness pin, or integration test |
+| Contract id | `sdd-delivery/v2` (rc-2 additive semantics) |
 
 ---
 
@@ -49,16 +49,16 @@ Add a required **`dispatch`** field on every **`type: skill`** node in
 |-------|---------|
 | `manual` | PE or agent runs the skill; orchestrator **must not** dispatch |
 | `orchestrated` | Orchestrator **may** dispatch when programme trigger + handoff authorize |
-| `observed` | Orchestrator **must not** dispatch; **must** record timing from handoffs (metrics-only) — **reserved/future; excluded from rc-1 v1 contract tests** per Decision #1 (see Open Questions) |
+| `observed` | Orchestrator **must not** dispatch; **must** record timing from handoffs (metrics-only) — **reserved/future; excluded from rc-2 v1 contract tests** per Decision #1 (see Open Questions) |
 
 Non-`skill` nodes (`human-checkpoint`, `external-action`, `decision`, `terminal`)
 do **not** carry `dispatch` — behavior remains **`type`-only**.
 
 Document semantics in `delivery-contract.yaml`, validate in
-`tests/test_workflow_contract.py`, and ship on **prayog-skills rc-1**. Programme
+`tests/test_workflow_contract.py`, and ship on **prayog-skills rc-2**. Programme
 repos pin the release tag after **Joint Gate 1** for Gateflow dogfood.
 
-### Success Criteria (rc-1 delivery)
+### Success Criteria (rc-2 delivery)
 
 | KPI | Target | Measurement |
 |-----|--------|-------------|
@@ -93,7 +93,7 @@ repos pin the release tag after **Joint Gate 1** for Gateflow dogfood.
 - [ ] Every `type: skill` node in `workflow.yaml` includes `dispatch: manual | orchestrated`
 - [ ] Wave lane skills (`pre-implement`, `loop-spec`, `verify`, `ground-spec`) are `orchestrated`
 - [ ] All other skill nodes are `manual`
-- [ ] No partial graph — rc-1 ships with full annotation in one change set
+- [ ] No partial graph — rc-2 ships with full annotation in one change set
 
 #### US-2 — Orchestrator consumer reads dispatch without node allowlists
 
@@ -121,7 +121,7 @@ repos pin the release tag after **Joint Gate 1** for Gateflow dogfood.
 
 **Acceptance criteria:**
 
-- [ ] rc-1 CHANGELOG describes `dispatch` field, schema default, and wave-lane policy
+- [ ] rc-2 CHANGELOG describes `dispatch` field, schema default, and wave-lane policy
 - [ ] Migration note covers v0.4.3 → release pin for consumers
 - [ ] Meta harness pin updated **only after** Joint Gate 1 approval
 
@@ -129,10 +129,10 @@ repos pin the release tag after **Joint Gate 1** for Gateflow dogfood.
 
 | ID | Requirement | Acceptance criteria |
 |----|-------------|---------------------|
-| **FR-1** | Required `dispatch` on every `type: skill` node | All **13** skill nodes in current graph annotated; non-skill nodes omit field; YAML schema/doc states field is required for skill nodes on rc-1+ |
-| **FR-2** | Full `workflow.yaml` graph annotated per rc-1 default policy | Single PR annotates entire graph; no follow-up “fill remaining nodes” allowed for rc-1 exit |
+| **FR-1** | Required `dispatch` on every `type: skill` node | All **13** skill nodes in current graph annotated; non-skill nodes omit field; YAML schema/doc states field is required for skill nodes on rc-2+ |
+| **FR-2** | Full `workflow.yaml` graph annotated per rc-2 default policy | Single PR annotates entire graph; no follow-up “fill remaining nodes” allowed for rc-2 exit |
 | **FR-3** | Document `dispatch` in delivery contract + navigation refs | `delivery-contract.yaml` adds enum definition, schema-default rule, consumer algorithm; `references/handoff-envelope.md` cross-ref paragraph documents **optional future `executed_by` only** — not producer instructions for manual vs orchestrated runs `(Source: User-confirmed)`; no new required handoff fields in v1 |
-| **FR-4** | Extend `test_workflow_contract.py` | New tests: every skill node has `dispatch`; value ∈ `{manual, orchestrated}` for rc-1 v1; wave lane values match policy table; **exactly four** nodes are `orchestrated` with set `{pre-implement, loop-spec, verify, ground-spec}` |
+| **FR-4** | Extend `test_workflow_contract.py` | New tests: every skill node has `dispatch`; value ∈ `{manual, orchestrated}` for rc-2 v1; wave lane values match policy table; **exactly four** nodes are `orchestrated` with set `{pre-implement, loop-spec, verify, ground-spec}` |
 | **FR-5** | CHANGELOG + release notes | Pin guidance for meta/gateflow; breaking-change callout: consumers must not use node allowlists |
 | **FR-6** | Orchestrator-neutral naming | Enum value `orchestrated` (not `gateflow` or product-specific strings); documentation refers to “orchestrator consumers” |
 | **FR-7** | Backward compatibility for v0.4.3 pins | Documented schema default: absent `dispatch` → treat as `manual`; consumers must not infer orchestration from node id lists |
@@ -158,7 +158,7 @@ These are **consumer obligations** documented in FR-3; Gateflow implements in IN
 | Orchestrated count ≠ 4 or wrong skill set | Contract test **fail** (FR-4) |
 | Pin upgrade v0.4.3 → release tag mid-programme | Consumers apply schema default `manual` until pin upgrade — see [Migration §4](#migration-v043--release-pin) |
 
-### Non-Goals (rc-1 delivery)
+### Non-Goals (rc-2 delivery)
 
 | Non-goal | Rationale |
 |----------|-----------|
@@ -168,7 +168,7 @@ These are **consumer obligations** documented in FR-3; Gateflow implements in IN
 | Graphify / ToolProvider | Gateflow + separate skills initiative |
 | Rename or restructure workflow graph | Additive field only |
 | Orchestrator node allowlists in consumer repos | Explicit anti-pattern; forbidden by paired INIT |
-| `observed` enum in rc-1 v1 | Deferred — manual + handoff metrics sufficient for H1 (Open Questions) |
+| `observed` enum in rc-2 v1 | Deferred — manual + handoff metrics sufficient for H1 (Open Questions) |
 
 ### Product Principles
 
@@ -177,7 +177,7 @@ These are **consumer obligations** documented in FR-3; Gateflow implements in IN
 3. **Explicit automation boundary** — only declared `orchestrated` skills may be machine-dispatched
 4. **Orchestrator-neutral contract** — any future consumer uses the same enum and algorithm
 5. **Fail closed** — missing or manual → no orchestrator dispatch
-6. **Joint Gate 1 pairing** — rc-1 merge and Gateflow `dispatch` consumption advance together
+6. **Joint Gate 1 pairing** — rc-2 merge and Gateflow `dispatch` consumption advance together
 
 ---
 
@@ -188,7 +188,7 @@ on contract correctness and consumer compliance.
 
 ### Evaluation Strategy
 
-| Dimension | Method | Pass threshold (rc-1) |
+| Dimension | Method | Pass threshold (rc-2) |
 |-----------|--------|------------------------|
 | **Graph annotation** | Workflow diff review + FR-4 tests | **13/13** skill nodes annotated; **9 manual**, 4 orchestrated |
 | **Wave lane cardinality** | FR-4 contract test | Exactly 4 orchestrated nodes; set equals wave lane table |
@@ -217,13 +217,13 @@ Pinned by meta / gateflow ──► PolicyEngine reads dispatch at runtime
 ```
 
 **Additive change only:** node ids, `type`, `outcomes`, and `profile` are
-unchanged. rc-1 adds one field per skill node.
+unchanged. rc-2 adds one field per skill node.
 
-### Workflow node annotation (rc-1 default policy)
+### Workflow node annotation (rc-2 default policy)
 
-Full graph — **normative for rc-1**:
+Full graph — **normative for rc-2**:
 
-| Node id | `type` | `dispatch` (rc-1) | Rationale |
+| Node id | `type` | `dispatch` (rc-2) | Rationale |
 |---------|--------|-------------------|-----------|
 | `validate-requirements` | skill | `manual` | Meta upstream — PE/agent invoked |
 | `review-findings` | skill | `manual` | Meta upstream |
@@ -242,7 +242,7 @@ Full graph — **normative for rc-1**:
 Non-skill nodes (`requirements-human-decision`, `gate-1`, `prd-pr-action`, …)
 **omit** `dispatch`.
 
-**Example (rc-1 YAML fragment):**
+**Example (rc-2 YAML fragment):**
 
 ```yaml
 pre-implement:
@@ -281,10 +281,10 @@ pre-release pin block, concurrent run reject, handoff blockers, contract match,
 
 ### Contract and version strategy
 
-| Item | rc-1 lean |
+| Item | rc-2 lean |
 |------|-----------|
-| Contract id | Remain `sdd-delivery/v2` with **rc-1 additive** field semantics |
-| Doc bump | rc-1 CHANGELOG required; explicit `sdd-delivery/v2.1` label **TBD at Joint Gate 1** |
+| Contract id | Remain `sdd-delivery/v2` with **rc-2 additive** field semantics |
+| Doc bump | rc-2 CHANGELOG required; explicit `sdd-delivery/v2.1` label **TBD at Joint Gate 1** |
 | Backward compat | v0.4.3 pins lack `dispatch` → consumers apply schema default `manual` only |
 | Handoff envelope | No required new fields in v1; optional future `executed_by: manual \| orchestrated` noted in handoff spec cross-ref |
 
@@ -292,7 +292,7 @@ pre-release pin block, concurrent run reject, handoff blockers, contract match,
 
 | Actor | Action |
 |-------|--------|
-| **prayog-skills** | Merge **rc-1**; tag release after Joint Gate 1 |
+| **prayog-skills** | Merge **rc-2**; tag release after Joint Gate 1 |
 | **meta harness** | Update `.harness-pin.yaml` to release tag **after** Joint Gate 1 |
 | **Gateflow** | PolicyEngine reads `dispatch`; pre-release-pin loud block (INIT-GATEFLOW-001 Decision #9) |
 | **Consumers on v0.4.3** | Continue safely — all skills implicit `manual`; no orchestration until pin upgrade |
@@ -322,7 +322,7 @@ pre-release pin block, concurrent run reject, handoff blockers, contract match,
 
 | Phase | Scope | Entry criteria |
 |-------|-------|----------------|
-| **Phase A — Contract (rc-1)** | Annotate workflow; extend tests; document algorithm | This PRD + Joint Gate 1 |
+| **Phase A — Contract (rc-2)** | Annotate workflow; extend tests; document algorithm | This PRD + Joint Gate 1 |
 | **Phase B — Pin + integrate** | Meta harness pin; Gateflow PolicyEngine consumes `dispatch` | Joint Gate 1 passed; release tagged |
 | **Phase C — Dogfood** | Label-triggered wave runs | INIT-GATEFLOW-001 W1 exit + release pin active |
 
@@ -331,7 +331,7 @@ pre-release pin block, concurrent run reject, handoff blockers, contract match,
 ```text
 Draft PRDs (both INITs) + validate-requirements (parallel ok)
   → Joint Gate 1 (single session — blocking)
-  → prayog-skills rc-1 merge + release tag
+  → prayog-skills rc-2 merge + release tag
   → meta harness pin
   → Gateflow W1 PolicyEngine + dogfood Phase B
 ```
@@ -343,9 +343,9 @@ impact-map scoping on each INIT.
 
 | Blocked action | Rationale |
 |----------------|-----------|
-| Merge `dispatch` to prayog-skills **rc-1** / release tag | Consumer semantics must match Gateflow FR-5 |
+| Merge `dispatch` to prayog-skills **rc-2** / release tag | Consumer semantics must match Gateflow FR-5 |
 | Meta harness pin to release tag | Pin without aligned Gateflow policy is untestable |
-| Gateflow W1 PolicyEngine reading `dispatch` | Must match rc-1 annotation |
+| Gateflow W1 PolicyEngine reading `dispatch` | Must match rc-2 annotation |
 | Dogfood Phase B (label-triggered wave runs) | End-to-end contract must be Gate 1–approved |
 
 ### Dependencies
@@ -357,8 +357,8 @@ Single session confirms:
 - `dispatch` enum (`manual` + `orchestrated`; `observed` defer decision)
 - Full wave-lane annotation table (§4)
 - Normative consumer algorithm (§4)
-- Align INIT-GATEFLOW-001 metrics `observed` / `dispatch_mode: observed` handling with rc-1 v1 enum deferral
-- rc-1 pin timing relative to Gateflow W0 merge
+- Align INIT-GATEFLOW-001 metrics `observed` / `dispatch_mode: observed` handling with rc-2 v1 enum deferral
+- rc-2 pin timing relative to Gateflow W0 merge
 - v0.4.3 schema-default bounds (missing → `manual` only — no orchestrator node allowlists)
 
 #### Technical dependencies
@@ -366,16 +366,16 @@ Single session confirms:
 | Dependency | Assumption |
 |------------|------------|
 | INIT-GATEFLOW-001 Draft PRD | Gateflow FR-5 consumes `dispatch`; no hardcoded skill lists |
-| **rc-1 branch** | Active development on prayog-skills `(Source: User-confirmed)` |
+| **rc-2 branch** | Active development on prayog-skills `features/rc-2` `(Source: User-confirmed)` |
 | `test_workflow_contract.py` | Existing navigation tests remain green |
 | Meta harness | Pin moves to release tag after Joint Gate 1 |
-| **INIT-GATEFLOW-001 metrics** | `dispatch_mode: observed` in FR-10 must align with rc-1 v1 enum deferral at Joint Gate 1 |
+| **INIT-GATEFLOW-001 metrics** | `dispatch_mode: observed` in FR-10 must align with rc-2 v1 enum deferral at Joint Gate 1 |
 
 #### Assumptions
 
 | ID | Assumption | Status | Dependent FRs |
 |----|------------|--------|---------------|
-| A1 | Joint Gate 1 passes with INIT-GATEFLOW-001 before release tag | Pending | All rc-1 delivery |
+| A1 | Joint Gate 1 passes with INIT-GATEFLOW-001 before release tag | Pending | All rc-2 delivery |
 | A2 | Wave lane remains four skills (`pre-implement` … `ground-spec`) for H1 | Confirmed | FR-2, FR-8 |
 | A3 | Gateflow is first orchestrator consumer | Confirmed | FR-3, FR-6 |
 | A4 | `observed` enum not required for H1 dogfood | Proposed | Open Questions #1 |
@@ -384,7 +384,7 @@ Single session confirms:
 
 | Risk | Likelihood | Impact | Mitigation | Owner |
 |------|------------|--------|------------|-------|
-| rc-1 merge delays Gateflow W1 dispatch | Medium | Medium | Schema default `manual`; Gateflow loud pre-release-pin block; no consumer allowlists | PM + PE |
+| rc-2 merge delays Gateflow W1 dispatch | Medium | Medium | Schema default `manual`; Gateflow loud pre-release-pin block; no consumer allowlists | PM + PE |
 | Wrong `dispatch` on node | Low | High | PE workflow diff review; FR-4 contract tests; Joint Gate 1 sign-off | PE |
 | Enum proliferation | Medium | Low | Start with `manual` + `orchestrated`; defer `observed` | PM |
 | Consumer allowlist drift | Medium | High | Paired INIT non-goals; Gateflow FR-5 AC; code review | PE |
@@ -394,11 +394,11 @@ Single session confirms:
 
 | # | Decision | Resolution |
 |---|----------|------------|
-| 1 | rc-1 v1 enum scope | **`manual` + `orchestrated` only** — defer `observed` to post-dogfood unless Joint Gate 1 overrides |
+| 1 | rc-2 v1 enum scope | **`manual` + `orchestrated` only** — defer `observed` to post-dogfood unless Joint Gate 1 overrides |
 | 2 | Wave lane annotation | **`pre-implement`, `loop-spec`, `verify`, `ground-spec` = `orchestrated`**; all other skills = `manual` |
 | 3 | Schema default (v0.4.3) | **Missing `dispatch` → `manual`** — no consumer node allowlist fallback |
 | 4 | Naming | **`orchestrated`** — orchestrator-neutral (FR-6) |
-| 5 | Graph change scope | **Full annotation in one rc-1 PR** — no partial graph (FR-2) |
+| 5 | Graph change scope | **Full annotation in one rc-2 PR** — no partial graph (FR-2) |
 | 6 | Handoff envelope v1 | **No new required fields** — optional future `executed_by` noted in cross-ref only `(Source: User-confirmed)` |
 
 ### Open Questions (Joint Gate 1 agenda)
@@ -407,11 +407,11 @@ Single session confirms:
 
 | # | Question | Owner |
 |---|----------|-------|
-| 1 | **`observed` enum:** defer rc-1 v1 (recommended) vs include now for metrics-only skills? | PM + PE |
-| 2 | **Contract doc bump:** rc-1 CHANGELOG only vs explicit `sdd-delivery/v2.1` identifier? | PE |
+| 1 | **`observed` enum:** defer rc-2 v1 (recommended) vs include now for metrics-only skills? | PM + PE |
+| 2 | **Contract doc bump:** rc-2 CHANGELOG only vs explicit `sdd-delivery/v2.1` identifier? | PE |
 | 3 | **Release tag name:** `v0.5.0-rc.2` vs `v0.4.4-rc.2` vs other? | PE |
 | 4 | **Release pin timing:** same sprint as Gateflow W0 merge vs pin-first before Gateflow integration? | PM + PE |
-| 5 | **INIT-GATEFLOW-001 metrics alignment:** reconcile FR-10 `dispatch_mode: observed` with rc-1 v1 enum deferral? | PM + PE |
+| 5 | **INIT-GATEFLOW-001 metrics alignment:** reconcile FR-10 `dispatch_mode: observed` with rc-2 v1 enum deferral? | PM + PE |
 
 ---
 
@@ -437,7 +437,7 @@ Single session confirms:
 |------------------------|-------------------|
 | Defines `dispatch` on workflow nodes | Reads `dispatch`; FR-5 |
 | Process / automation SSOT | Execution control plane |
-| rc-1 release on prayog-skills | Pins release tag for dogfood |
+| rc-2 release on prayog-skills | Pins release tag for dogfood |
 | Contract tests | PolicyEngine implementation |
 | **Joint Gate 1 (blocking)** | **Joint Gate 1 (blocking)** |
 
@@ -449,6 +449,6 @@ Single session confirms:
 | 2 | PE | `/validate-requirements` on Draft |
 | 3 | PE / sponsor | **Joint Gate 1** — both Draft PRDs + enum + wave lane |
 | 4 | PE | `/prd-impact-map` on each INIT |
-| 5 | PE | Implement on prayog-skills **rc-1** **(after step 3)** |
-| 6 | PE | Merge rc-1 → release tag; update meta harness pin |
+| 5 | PE | Implement on prayog-skills **`features/rc-2`** **(after step 3)** |
+| 6 | PE | Merge rc-2 → release tag; update meta harness pin |
 | 7 | PE | Gateflow spec PR consumes `dispatch` (paired with steps 5–6) |
