@@ -516,9 +516,9 @@ automation** — not competing with Spec Kit or agent IDEs on process definition
 |-------|----------|---------|
 | 1 | This vision doc | Programme north star (planning/) |
 | 2 | Outlines → Draft PRDs (parallel) | [INIT-GATEFLOW-001](../prd/INIT-GATEFLOW-001-outline.md) + [INIT-PRAYOG-SKILLS-002](../prd/INIT-PRAYOG-SKILLS-002-outline.md) |
-| **3** | **Joint Gate 1** | **Single PE session — both INITs; blocks rc-2, pin, and `dispatch` dogfood** |
-| 4 | Impact maps | **gateflow** (W1); gateflow-ops W2+; prayog-skills rc-2 |
-| 5 | Implementation | rc-2 tag + Gateflow spec / W0 (paired) |
+| **3** | **Skills pin delivered** | **INIT-PRAYOG-SKILLS-002 as `v0.5.0-rc.2` — Gateflow `dispatch` unblocked** |
+| 4 | Impact maps | **gateflow** (W1); gateflow-ops W2+; prayog-skills pin **`v0.5.0-rc.2`** |
+| 5 | Implementation | Gateflow spec / W0–W1 on pin `v0.5.0-rc.2` |
 | 6 | Follow-on INITs | Agent gateway, tools, ops UI (as horizons land) |
 
 ---
@@ -530,10 +530,10 @@ automation** — not competing with Spec Kit or agent IDEs on process definition
 | 1 | Metrics SSOT | PostgreSQL events in Gateflow RunStore (all envs); export later |
 | 2 | LiteLLM placement | Separate gateway service when Horizon 3 starts |
 | 3 | First automated dogfood wave | After W0 engine merge, W1 via label |
-| 4 | prayog-skills pin | rc-2 with `dispatch` **after Joint Gate 1**; v0.4.3 until then |
+| 4 | prayog-skills pin | **`v0.5.0-rc.2`** with `dispatch` (**INIT-PRAYOG-SKILLS-002 delivered**) |
 | 5 | ForgeClient auth in dev | App installation token only vs PAT for local pilot |
-| 6 | `dispatch: observed` enum | **Joint Gate 1** agenda — include in rc-2 v1 or defer |
-| 7 | Joint Gate 1 timing | Schedule single session when both Draft PRDs ready |
+| 6 | `dispatch: observed` enum | Deferred from rc-2 v1 — intentional; not a Gateflow delivery blocker |
+| 7 | Joint Gate 1 / pin timing | **Resolved** — pin **`v0.5.0-rc.2`** delivered; Gateflow unblocked |
 
 ---
 
@@ -544,7 +544,7 @@ automation** — not competing with Spec Kit or agent IDEs on process definition
 - Workflow SSOT: prayog-skills [`workflow.yaml`](../prayog-skills/workflow.yaml)
 - Delivery contract: prayog-skills [`delivery-contract.yaml`](../prayog-skills/delivery-contract.yaml) (`sdd-delivery/v2`)
 - Handoff navigation: prayog-skills `references/handoff-envelope.md`
-- Workflow dispatch policy: [INIT-PRAYOG-SKILLS-002-outline](../prd/INIT-PRAYOG-SKILLS-002-outline.md)
+- Workflow dispatch policy: [INIT-PRAYOG-SKILLS-002](../prd/INIT-PRAYOG-SKILLS-002.md) (pin **`v0.5.0-rc.2`**)
 - Service catalog: `config/service-catalog-drivestream-lab.yaml`
 - Engg-reviews / codegraph plan: prayog-skills `docs/engg-reviews-implementation-plan.md`
 
