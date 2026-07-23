@@ -3,7 +3,7 @@
 **Status:** draft PRD · **Author:** programme PM · **Date:** 2026-07-22  
 **Outline:** [INIT-GATEFLOW-001-outline](./INIT-GATEFLOW-001-outline.md)  
 **Vision:** [planning/gateflow-programme-vision.md](../planning/gateflow-programme-vision.md)  
-**Paired initiative:** [INIT-PRAYOG-SKILLS-002-outline](./INIT-PRAYOG-SKILLS-002-outline.md) (`dispatch` on rc-2)  
+**Paired initiative:** [INIT-PRAYOG-SKILLS-002](./INIT-PRAYOG-SKILLS-002.md) (`dispatch` on rc-2)  
 **Component:** GATEFLOW · **Type:** platform / delivery control plane
 
 > **Draft PRD** for Gate 1 review. Competitive landscape and full differentiation:

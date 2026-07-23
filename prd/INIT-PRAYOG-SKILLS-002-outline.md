@@ -16,7 +16,7 @@
 | Field | Value |
 |-------|-------|
 | Initiative ID | INIT-PRAYOG-SKILLS-002 |
-| Artifact | `prd/INIT-PRAYOG-SKILLS-002-outline.md` (outline); Draft PRD `[TBD]` |
+| Artifact | `prd/INIT-PRAYOG-SKILLS-002-outline.md` (outline); Draft PRD [INIT-PRAYOG-SKILLS-002.md](./INIT-PRAYOG-SKILLS-002.md) |
 | Programme | prayog |
 | Primary repo | drivestream-lab/prayog-skills |
 | Target branch | **rc-2** (feature); release tag TBD after Gate 1 |
