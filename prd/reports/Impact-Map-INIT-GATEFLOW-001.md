@@ -1,17 +1,17 @@
 ---
 schema_version: 1
 initiative: INIT-GATEFLOW-001
-map_revision: 1
+map_revision: 2
 source_prd: prd/INIT-GATEFLOW-001.md
-source_prd_digest: sha256:2349b8819a7bd44de460eaf00b017f68056fa97942663895765d4fdbfb78493c
-previous_revision: null
-previous_artifact_commit: null
-change_reason: Initial impact map — W1 scoped to gateflow repo only per PRD §4/§5
+source_prd_digest: sha256:253fe3ea30134659b50d5fd38693a11e444c8f4642c4fef0c863b27eccf811c2
+previous_revision: 1
+previous_artifact_commit: 41914b298949693413ff22458d7996ff19e143d5
+change_reason: PRD polish — PE product decisions (Decisions 1–12), validation r5 clean pass; scope widened for API+worker, auth, handoff ref fallback
 material_change: true
-generated_at: 2026-07-22T17:42:00Z
+generated_at: 2026-07-23T05:17:00Z
 ---
 
-# Impact map — INIT-GATEFLOW-001 — revision 1
+# Impact map — INIT-GATEFLOW-001 — revision 2
 
 > This file is generated locally before PR creation and becomes the scope source
 > of truth when committed. Effective approval is derived from a tech-lead
@@ -23,92 +23,99 @@ generated_at: 2026-07-22T17:42:00Z
 | Field | Value |
 |-------|-------|
 | PRD | `prd/INIT-GATEFLOW-001.md` |
-| PRD digest | `sha256:2349b8819a7bd44de460eaf00b017f68056fa97942663895765d4fdbfb78493c` |
-| Map revision | `1` |
-| Previous revision | none |
-| Previous artifact commit | none |
-| Change reason | Initial impact map — Gateflow delivery orchestrator W1 |
-| Material change | yes — first canonical scope artifact for this initiative |
+| PRD digest | `sha256:253fe3ea30134659b50d5fd38693a11e444c8f4642c4fef0c863b27eccf811c2` |
+| Map revision | `2` |
+| Previous revision | `1` |
+| Previous artifact commit | `41914b298949693413ff22458d7996ff19e143d5` |
+| Change reason | PE product-review decisions + validation r5 pass; normative detail for deployment, auth, handoff paths |
+| Material change | yes — gateflow scope_digest widened (same repo; acceptance-meaning changes) |
 
 ## 2. Affected repositories
 
 | Service | Repo | Team | Scope summary | Scope digest | Spec to create | Confidence |
 |---------|------|------|---------------|--------------|----------------|------------|
-| gateflow | drivestream-lab/gateflow | @drivestream-lab/prayog-pe-team | W1 control plane in **gateflow repo only**: GitHub App webhooks (FR-1); label trigger + wave-run preconditions (FR-2); PostgreSQL RunStore (FR-3); HandoffReader (FR-4); WorkflowEngine + PolicyEngine resolver with `dispatch: orchestrated` after rc-2 pin (FR-5); Cursor AgentRunner adapter (FR-6); findings retry budget with exhaustion → stop + comment (FR-7); contract stop nodes including terminal (FR-8); Notifier/ForgeClient run events (FR-9); metrics v0 + export surface (FR-10); ToolProvider slots wired `none` (FR-11); native status JSON API (FR-12); per-node runner/model profiles from gateflow programme config (FR-13); ForgeClient GitHub outbound (FR-14). Pluggable slots: AgentRunner, ToolProvider, ForgeClient, Notifier. Programme config lives in gateflow repo (W1). Dogfood target: gateflow repo. | `sha256:a0d4b8c85574c3ed25d9c1f27ce269cc8745e1b4344820c42e04e9361f107b78` | `INIT-GATEFLOW-001-gateflow.md` | High |
+| gateflow | drivestream-lab/gateflow | @drivestream-lab/prayog-pe-team | W1 control plane (**gateflow repo only**): **API + async worker** with Postgres job queue (Decision #6); GitHub App webhooks (FR-1); programme-wide trigger `gateflow:run-wave` (Decision #3); wave-run preconditions incl. concurrent reject (Decision #2); PostgreSQL RunStore (FR-3); **HandoffReader** — PR head ref + `default_branch` fallback for issue triggers (Decision #5, FR-4); WorkflowEngine + PolicyEngine with `dispatch: orchestrated` after rc-2; pre-rc-2 block + comment (Decision #9); Cursor AgentRunner (FR-6); retry budget exhaustion → stop + comment (FR-7); contract stops incl. terminal (FR-8); **ForgeClient PR/issue comments only** H1 (Decision #1, FR-9); metrics v0 — **90-day retention**, `GET /metrics/runs` JSON (Decision #7, FR-10); ToolProvider `none` (FR-11); **status JSON API** with programme service token auth (Decision #4, FR-12); **single default model profile** H1 (Decision #8, FR-13); ForgeClient outbound (FR-14). Programme config in gateflow repo. Dogfood: gateflow repo. | `sha256:0c434aacb71615d7db8114029509919e3a0b72cf27c559c1716187fd9c194433` | `INIT-GATEFLOW-001-gateflow.md` | High |
 
 ## 3. Deferred repositories
 
 | Service | Repo | Reason | Revisit condition |
 |---------|------|--------|-------------------|
-| gateflow-ops | drivestream-lab/gateflow-ops | PRD §4 Repositories and §5 W1 exit: BFF/UI **out of W1 scope**; W1 uses gateflow native status API (FR-12) | W2 / H2 after gateflow control plane proven operational |
+| gateflow-ops | drivestream-lab/gateflow-ops | PRD §4/§5: BFF/UI **out of W1 scope**; W1 uses gateflow native status API (FR-12) | W2 / H2 after control plane proven |
 
 ## 4. Transitively affected repositories
 
 | Service | Repo | Depends on | Potential impact | Disposition |
 |---------|------|------------|------------------|-------------|
-| gateflow-ops | drivestream-lab/gateflow-ops | gateflow (upstream) | Future BFF consumes gateflow status JSON API; no W1 deliverable | monitor — deferred W2+ |
-| prayog-skills | drivestream-lab/prayog-skills | — (SSOT provider) | gateflow reads pinned `workflow.yaml`, `delivery-contract.yaml`, handoff spec; **W1 PolicyEngine `dispatch` requires rc-2 pin** via paired INIT-PRAYOG-SKILLS-002 | monitor — Joint Gate 1 + rc-2; not in this map's W1 delivery scope |
-| launchpad | drivestream-lab/launchpad | — | Pre-dispatch `sync-harness` on worker workspace (FR integration); harness verify on gateflow repo | monitor — integration consumer only; no launchpad code delivery in W1 |
+| gateflow-ops | drivestream-lab/gateflow-ops | gateflow (upstream) | Future BFF consumes status JSON API | monitor — deferred W2+ |
+| prayog-skills | drivestream-lab/prayog-skills | — (SSOT) | rc-2 `dispatch` pin required for W1 PolicyEngine dispatch | monitor — Joint Gate 1 via INIT-PRAYOG-SKILLS-002 |
+| launchpad | drivestream-lab/launchpad | — | Worker harness sync before AgentRunner | monitor — no launchpad delivery in W1 |
 
 ## 5. Not affected
 
 | Service | Repo | Reason |
 |---------|------|--------|
-| prayog-meta | drivestream-lab/prayog-meta | Hosts PRD, impact map, and validation reports; no runtime delivery code. W1 programme config explicitly **not** in harness/meta YAML (PRD §4 Programme Config). |
-| prayog-skills | drivestream-lab/prayog-skills | Contract SSOT changes route through **INIT-PRAYOG-SKILLS-002** (paired Joint Gate 1); gateflow is read-only consumer in W1. |
-| launchpad | drivestream-lab/launchpad | Invoked by gateflow worker; no new launchpad features required for W1 exit criteria. |
+| prayog-meta | drivestream-lab/prayog-meta | Hosts PRD, impact map, validation reports; W1 programme config not in harness/meta YAML |
+| prayog-skills | drivestream-lab/prayog-skills | Contract changes via paired INIT-PRAYOG-SKILLS-002; gateflow read-only consumer |
+| launchpad | drivestream-lab/launchpad | Integration consumer only; no new launchpad features for W1 exit |
 
 ## 6. Cross-repository contracts
 
 | Contract ID | Provider repo | Consumer repo | Capability | Owner | Status |
 |-------------|---------------|---------------|------------|-------|--------|
-| CTR-01 | prayog-skills | gateflow | Pinned `workflow.yaml`, `delivery-contract.yaml`, handoff-envelope spec; navigation + `dispatch` eligibility (rc-2) | prayog-pe-team | new — rc-2 pin pending Joint Gate 1 |
-| CTR-02 | GitHub (forge) | gateflow | Inbound App webhooks: PR, issue, label events (FR-1) | prayog-pe-team | new |
-| CTR-03 | gateflow | GitHub (forge) | ForgeClient outbound: comments, PR updates, run-status labels; forbids gate approval labels (FR-9, FR-14) | prayog-pe-team | new |
-| CTR-04 | launchpad | gateflow | Worker workspace harness sync before AgentRunner dispatch | prayog-pe-team | unchanged integration |
-| CTR-05 | gateflow | gateflow-ops | Status JSON API (`GET /runs/{id}` or equivalent) for BFF | prayog-pe-team | deferred W2+ |
+| CTR-01 | prayog-skills | gateflow | Pinned workflow + delivery contract + handoff spec; `dispatch` eligibility (rc-2) | prayog-pe-team | new — pending Joint Gate 1 |
+| CTR-02 | GitHub (forge) | gateflow | Inbound webhooks: PR, issue, label (FR-1) | prayog-pe-team | new |
+| CTR-03 | gateflow | GitHub (forge) | ForgeClient: PR/issue comments, run-status labels; no gate-label writes (FR-9, FR-14) | prayog-pe-team | new |
+| CTR-04 | launchpad | gateflow | Worker harness sync pre-dispatch | prayog-pe-team | unchanged |
+| CTR-05 | gateflow | gateflow-ops | Status JSON API for BFF | prayog-pe-team | deferred W2+ |
 
 ## 7. Dependency and build order
 
 ```text
-Joint Gate 1 (INIT-GATEFLOW-001 + INIT-PRAYOG-SKILLS-002 meta PRDs)
-  → gateflow W0 skeleton (pre–rc-2: webhooks, RunStore, HandoffReader, resolver without dispatch)
+Joint Gate 1 (INIT-GATEFLOW-001 + INIT-PRAYOG-SKILLS-002)
+  → gateflow W0 skeleton (pre–rc-2: API, worker stub, webhooks, RunStore, HandoffReader, resolver without dispatch)
   → prayog-skills rc-2 pin (`dispatch` field)
-  → gateflow W1 (PolicyEngine + AgentRunner + TriggerRouter + metrics + status API)
+  → gateflow W1 (PolicyEngine + AgentRunner + async job processing + metrics + status API)
   → W1 exit on gateflow repo
-  → Phase B dogfood (gateflow repo)
+  → Phase B dogfood
   → gateflow-ops (W2+, deferred)
 ```
 
 | Repo | Depends on | Reason |
 |------|------------|--------|
-| gateflow | prayog-skills (pin) | WorkflowEngine/PolicyEngine loads pinned contract (FR-5); dispatch requires rc-2 |
-| gateflow | GitHub App | Webhook ingress and ForgeClient egress (FR-1, FR-14) |
-| gateflow | PostgreSQL | RunStore SSOT all environments (FR-3, A4) |
-| gateflow | launchpad | Harness sync on worker before agent dispatch |
-| gateflow-ops | gateflow | Upstream status API — deferred W2+ |
+| gateflow | prayog-skills (pin) | Contract navigation + dispatch (FR-5); rc-2 required |
+| gateflow | GitHub App | Webhook ingress + ForgeClient (FR-1, FR-14) |
+| gateflow | PostgreSQL | RunStore + job queue (FR-3, Decision #6) |
+| gateflow | launchpad | Harness sync on worker |
+| gateflow-ops | gateflow | Upstream API — deferred W2+ |
 
 ## 8. Revision diff
 
-*Initial map — no prior revision.*
+| Repo | Prior status | Current status | Scope digest changed? | Change |
+|------|--------------|----------------|-----------------------|--------|
+| gateflow | affected | affected | yes | **widened** — API+async worker, programme token auth, handoff ref fallback, 90d metrics, comments-only H1, `gateflow:run-wave` |
+| gateflow-ops | deferred | deferred | no | unchanged |
+| prayog-skills | monitor | monitor | no | unchanged |
+| launchpad | monitor | monitor | no | unchanged |
+| prayog-meta | not affected | not affected | no | unchanged |
+
+**Prior PRD digest (rev 1):** `sha256:2349b8819a7bd44de460eaf00b017f68056fa97942663895765d4fdbfb78493c`  
+**Current PRD digest:** `sha256:253fe3ea30134659b50d5fd38693a11e444c8f4642c4fef0c863b27eccf811c2`
 
 ## 9. Downstream ripple ledger
 
-*Initial map — no in-flight app artifacts for this initiative.*
-
 | Repo | In-flight artifact | Required action | Reason | Owner | Blocking |
 |------|--------------------|-----------------|--------|-------|----------|
-| gateflow | none | open | Initial scope — spec PR after impact-map approval | prayog-pe-team | no |
-| gateflow-ops | none | hold | Deferred W2+ per PRD | prayog-pe-team | no |
+| gateflow | none (spec not yet opened) | **re-draft** | Scope digest widened rev 1→2; PE codebase map exists against prior PRD | prayog-pe-team | no — no merged spec yet |
+| gateflow-ops | none | hold | Still deferred W2+ | prayog-pe-team | no |
 
 ## 10. Open questions
 
 | ID | Lane | Question | Owner | Blocking | Required by | Default if deferred | Status |
 |----|------|----------|-------|----------|-------------|---------------------|--------|
-| IM-01 | PM / PE | **Joint Gate 1** — single gate with INIT-PRAYOG-SKILLS-002 before rc-2 pin and W1 PolicyEngine reading `dispatch` | PM + PE | yes | W1 criteria 3–11 / Phase B | W0 skeleton only without dispatch | open |
-| IM-02 | PE | Pilot trigger label: `gateflow:run-w0` vs programme-specific prefix? (PRD OQ #1) | PE | no | gateflow programme config | `gateflow:run-w0` per PRD example | open |
-| IM-03 | PE | rc-2 pin timing vs Gateflow W0 merge (PRD OQ #6) | PE | no | W1 dispatch loop | W0 proceeds without dispatch; W1 blocked until rc-2 | open |
-| IM-04 | PE | Concurrent label on active run: reject vs queue vs supersede (PRD OQ #7) | PE | no | FR-1 implementation | **Reject** (FR-1 default) | open |
+| IM-01 | PM / PE | **Joint Gate 1** with INIT-PRAYOG-SKILLS-002 before rc-2 pin and W1 dispatch | PM + PE | yes | W1 #3–11 / Phase B | W0 skeleton without dispatch | open |
+| IM-03 | PE | rc-2 pin timing vs Gateflow W0 merge (PRD OQ #2) | PE | no | W1 dispatch loop | W0 without dispatch; W1 blocked until rc-2 | open |
+| IM-02 | PE | Pilot trigger label naming | PE | no | — | — | **resolved** — `gateflow:run-wave` (Decision #3) |
+| IM-04 | PE | Concurrent trigger policy | PE | no | — | — | **resolved** — reject W1 (Decision #2) |
 
 ## 11. PR readiness handoff
 
@@ -116,70 +123,60 @@ Joint Gate 1 (INIT-GATEFLOW-001 + INIT-PRAYOG-SKILLS-002 meta PRDs)
 |------|-------|
 | Verdict | **PR READY** |
 | Collision detection | no-collision |
-| Collision evidence | Local: no `Impact-Map-INIT-GATEFLOW-001.md` prior revision; no local branch matching `INIT-GATEFLOW-001`; `prd/INIT-GATEFLOW-001.md` present untracked on `develop`. Remote: `gh pr list` on prayog-meta returned no open Gateflow/INIT-GATEFLOW PRs (merged housekeeping PRs #2–#3 unrelated). |
+| Collision evidence | Existing PR #4 (`chore/INIT-GATEFLOW-001-prd`) is this initiative; rev 2 updates same PR artifact set |
 | Human resolution | none |
 | Resolution completed | n/a |
-| Existing PR | none |
-| Proposed branch | `chore/INIT-GATEFLOW-001-prd` |
+| Existing PR | https://github.com/drivestream-lab/prayog-meta/pull/4 |
+| Proposed branch | `chore/INIT-GATEFLOW-001-prd` (existing) |
 | Proposed base | `develop` |
 | Proposed title | `[INIT-GATEFLOW-001] PRD — Gateflow delivery orchestrator (W1 gateflow only)` |
-| Files to commit | `prd/INIT-GATEFLOW-001.md`, `prd/INIT-GATEFLOW-001-outline.md`, `planning/gateflow-programme-vision.md`, `prd/reports/Impact-Map-INIT-GATEFLOW-001.md`, validation/resolution reports under `prd/reports/` |
+| Files to commit | `prd/INIT-GATEFLOW-001.md`, `prd/reports/Impact-Map-INIT-GATEFLOW-001.md` (rev 2), validation r4–r5, resolution r4, reports |
 | Reviewer | @drivestream-lab/prayog-pe-team |
-| Initial Gate 1 label | `impact-map-pending` |
-| Additional invalidation label | none |
-| Blocking items | IM-01 (Joint Gate 1) blocks rc-2-dependent W1 exit and Phase B — **does not block** this meta PR or W0 skeleton spec work |
+| Initial Gate 1 label | `impact-map-pending` (retain) |
+| Additional invalidation label | **`impact-map-revised`** — map revision 2 on open PR; gate closed until re-approval |
+| Blocking items | IM-01 (Joint Gate 1) — blocks rc-2 W1 dispatch / Phase B only |
 
-**No GitHub side effects have occurred.** Ask the user whether to create or update the Draft PR. Continue only after explicit authorization.
+**No GitHub side effects have occurred.** Ask the user whether to commit and push to update PR #4.
 
-### Proposed Draft PR body
+### Proposed Draft PR body (update)
 
 ```markdown
 ## Product change
 
-Gateflow is the programme delivery control plane: it listens to GitHub, reads handoff envelopes and the pinned prayog-skills contract, and dispatches coding agents only when the resolved workflow node is `type: skill` with `dispatch: orchestrated` and PE has authorized a run via programme-configured label. W1 delivers the operational control plane in **gateflow repo only** — webhooks, PostgreSQL RunStore, PolicyEngine, Cursor AgentRunner, ForgeClient/Notifier, metrics v0, and native status JSON API. gateflow-ops is deferred to W2+.
+Gateflow delivery control plane — W1 scoped to **gateflow repo only**. Orchestrates wave skills when `dispatch: orchestrated`, PE authorizes via `gateflow:run-wave`, stops on contract nodes, records runs in PostgreSQL. Rev 2 PRD incorporates PE product decisions: API+async worker, programme service token auth, handoff PR-head + default-branch fallback, 90-day metrics, comments-only H1 progress.
 
 ## Impact-map summary
 
-- Revision: 1
-- PRD digest: `sha256:2349b8819a7bd44de460eaf00b017f68056fa97942663895765d4fdbfb78493c`
+- Revision: **2** (was 1)
+- PRD digest: `sha256:253fe3ea30134659b50d5fd38693a11e444c8f4642c4fef0c863b27eccf811c2`
+- Scope digest (gateflow): `sha256:0c434aacb71615d7db8114029509919e3a0b72cf27c559c1716187fd9c194433`
 - Affected repos: drivestream-lab/gateflow
-- Deferred repos: drivestream-lab/gateflow-ops (W2+)
-- Monitor: prayog-skills (rc-2 / Joint Gate 1), launchpad (harness sync)
-- Blocking questions: IM-01 (Joint Gate 1 with INIT-PRAYOG-SKILLS-002) for W1 dispatch exit / Phase B
+- Deferred: drivestream-lab/gateflow-ops (W2+)
+- Validation: r5 clean pass (0 findings)
 - Artifact: `prd/reports/Impact-Map-INIT-GATEFLOW-001.md`
 
 ## Gate 1 — engineering handoff readiness
 
-- [ ] Product/domain blocking questions are resolved in committed artifacts
-- [ ] Impact-map scope and dependency order are complete
-- [ ] PRD digest and map revision match this PR head
-- [ ] PE/tech lead has reviewed the exact current head
+- [x] Product/domain decisions committed (Decisions 1–12)
+- [x] Validation r5 clean pass
+- [ ] Impact-map rev 2 approved on current PR head
+- [ ] PE/tech lead review on exact head SHA
 
 Requested reviewer: @drivestream-lab/prayog-pe-team
-Initial label: `impact-map-pending`
+Label: `impact-map-revised` → `impact-map-pending` until re-approved
 ```
 
-## 12. Approval request (after Draft PR creation)
+## 12. Approval request (after PR update)
 
-Tech lead must review this artifact on the meta PR and submit GitHub
-**Approve** on the exact PR head SHA using:
+Tech lead must **re-approve** on the exact PR head SHA after rev 2 commit:
 
 ```text
 Impact map approved
 initiative: INIT-GATEFLOW-001
-map_revision: 1
-meta_pr_head_sha: {SHA after this artifact is committed}
-prd_digest: sha256:2349b8819a7bd44de460eaf00b017f68056fa97942663895765d4fdbfb78493c
+map_revision: 2
+meta_pr_head_sha: {SHA after rev 2 commit}
+prd_digest: sha256:253fe3ea30134659b50d5fd38693a11e444c8f4642c4fef0c863b27eccf811c2
 artifact: prd/reports/Impact-Map-INIT-GATEFLOW-001.md
-```
-
-The gate remains closed until the review, current PR head SHA, PRD digest, map
-revision, and artifact path all match.
-
-All Gate 1 labels must be provisioned before PR creation/update:
-
-```bash
-launchpad apply-gates --meta --apply
 ```
 
 ---
@@ -191,20 +188,22 @@ handoff:
   outcome: pass
   artifact:
     path: prd/reports/Impact-Map-INIT-GATEFLOW-001.md
-    digest: sha256:795babe697aee43dc1f3cd3d4c7f6cb153a53221fa7e170cee8581a03f3c16b1
+    digest: sha256:a74aaeadafe06f1e59990d1796f10747b445367f4973bda398571e87863aa3e8
   blockers: []
   signals:
     pr_ready: true
-    map_revision: 1
-    prd_digest: sha256:2349b8819a7bd44de460eaf00b017f68056fa97942663895765d4fdbfb78493c
+    map_revision: 2
+    material_change: true
+    prd_digest: sha256:253fe3ea30134659b50d5fd38693a11e444c8f4642c4fef0c863b27eccf811c2
+    scope_digest_gateflow: sha256:0c434aacb71615d7db8114029509919e3a0b72cf27c559c1716187fd9c194433
+    prior_map_revision: 1
     affected_repos:
       - drivestream-lab/gateflow
     deferred_repos:
       - drivestream-lab/gateflow-ops
-    collision_detection: no-collision
-    validation_gate1_ready: true
-    open_questions_blocking:
-      - IM-01
+    existing_pr: https://github.com/drivestream-lab/prayog-meta/pull/4
+    validation: Validation-Report-INIT-GATEFLOW-001-r5.md (pass)
+    invalidation_label: impact-map-revised
   next_candidates:
     - prd-pr-action
   human_checkpoint: true

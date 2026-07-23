@@ -94,7 +94,7 @@ Authoritative checklist before PolicyEngine may dispatch after label trigger:
 | # | Precondition | Source |
 |---|--------------|--------|
 | 1 | Programme trigger label matches gateflow config `trigger.label` | Programme config |
-| 2 | Latest handoff envelope readable from repo artifacts | FR-4 |
+| 2 | Latest handoff envelope readable from **triggering PR head ref**, or **default branch** when issue trigger has no linked PR (per FR-4) | FR-4 |
 | 3 | `handoff.contract` matches Gateflow installed contract | handoff-envelope.md rule 2 |
 | 4 | Resolved next node is `type: skill` with `dispatch: orchestrated` (rc-2 pin) | FR-5 |
 | 5 | `handoff.human_checkpoint` is not blocking dispatch | handoff-envelope.md rules 5, 8 |
@@ -113,14 +113,15 @@ Failure of any precondition: ForgeClient comment with reason; no dispatch.
 - [ ] Each orchestrated stage posts a Notifier comment on run start and run end using the **run event schema** (see FR-9): `run_id`, `workflow_node`, `event` (`stage_started` \| `stage_completed` \| `run_stopped`), `outcome`, `duration_ms`, `timestamp`
 - [ ] Stop at `human-checkpoint` posts explicit stop reason with workflow node id
 - [ ] Comments are rendered via ForgeClient (GitHub API); production path does not invoke `gh` CLI
+- [ ] **H1 uses PR/issue comments only** — no GitHub commit status checks for run progress (deferred W2+)
 
 #### US-3 — Any programme engineer verifies contract gates were honored
 
-**As a** programme engineer (PE, tech lead, or sponsor), **I want** an audit trail showing Gateflow never auto-set gate labels or auto-merged **so that** constitution invariants hold. Audit data is **not role-restricted** — any programme engineer with repo/API access may inspect runs `(Source: User-confirmed)`.
+**As a** programme engineer (PE, tech lead, or sponsor), **I want** an audit trail showing Gateflow never auto-set gate labels or auto-merged **so that** constitution invariants hold. Audit data is **not role-restricted among programme engineers** — any programme engineer with the programme service token may inspect runs `(Source: User-confirmed)`.
 
 **Acceptance criteria:**
 
-- [ ] RunStore and status API readable by programme engineers (no role-based restriction on audit views)
+- [ ] RunStore and status API readable by any programme engineer holding the **programme service token** (no per-user RBAC on audit views in W1)
 
 - [ ] RunStore records every stop event with `workflow_node`, `node_type`, and timestamp
 - [ ] ForgeClient audit log shows zero writes to gate approval labels defined in pinned `delivery-contract.yaml`
@@ -134,7 +135,7 @@ Failure of any precondition: ForgeClient comment with reason; no dispatch.
 
 - [ ] PostgreSQL events queryable by `workflow_node`, `dispatch_mode`, `runner`, `model_id`
 - [ ] At least one gate-interval metric uses label names loaded from pinned `delivery-contract.yaml`, not hardcoded strings
-- [ ] Export query (SQL or API) returns aggregated p50/p95 duration per orchestrated skill node for dogfood initiative
+- [ ] Export via **`GET /metrics/runs` JSON aggregate** (and documented SQL view) returns p50/p95 duration per orchestrated skill node; retention per programme config (`metrics.retention_days`, default 90)
 
 #### US-5 — PE recovers from findings loops within budget
 
@@ -153,16 +154,16 @@ Failure of any precondition: ForgeClient comment with reason; no dispatch.
 | **FR-1** | GitHub App receives webhooks (PR, issue, label) | Webhook endpoint validates App signature; rejects invalid payloads with 401; persists event id for idempotency; duplicate delivery does not create duplicate runs; **if active run exists on same PR/issue, reject new run** (no queue/supersede in W1) |
 | **FR-2** | Explicit wave trigger via programme-configured label | Label name from **gateflow programme config** only; label event routes to TriggerRouter after [wave-run preconditions](#wave-run-preconditions); no board-only inference |
 | **FR-3** | Durable run store (H1: PostgreSQL) | Runs, stages, and events persisted in PostgreSQL; no SQLite fallback; schema supports `run_id`, `workflow_node`, `outcome`, timestamps |
-| **FR-4** | Handoff envelope read from repo artifacts | Latest handoff parsed from repo path per handoff spec; parse failure blocks run and notifies PE; no chat/session fallback |
-| **FR-5** | Workflow resolver per `sdd-delivery/v2` | Loads pinned `workflow.yaml` + `delivery-contract.yaml`; resolves next node from `handoff.stage` + `handoff.outcome`; dispatches only when `type: skill` AND `dispatch: orchestrated`; missing `dispatch` on v0.4.3 pin → treat as `manual`; **no hardcoded node allowlists in source** |
+| **FR-4** | Handoff envelope read from repo artifacts | Resolve git ref from **triggering PR head SHA** when label is on a PR; when label is on an **issue without linked PR**, fall back to repo **default branch** per `handoff.ref_fallback` (default: `default_branch`); scan configured artifact globs for latest durable `handoff:` YAML block (see Programme Config); parse failure blocks run and notifies PE; no chat/session fallback |
+| **FR-5** | Workflow resolver per `sdd-delivery/v2` | Loads pinned `workflow.yaml` + `delivery-contract.yaml`; resolves next node from `handoff.stage` + `handoff.outcome`; dispatches only when `type: skill` AND `dispatch: orchestrated`; missing `dispatch` on v0.4.3 pin → treat as `manual`; **before rc-2 pin: block dispatch with ForgeClient comment** (never silent no-op); **no hardcoded node allowlists in source** |
 | **FR-6** | Coding agent adapter (H1: Cursor AgentRunner) | Adapter implements `AgentRunner` interface; receives workspace, skill prompt, `model_profile`; returns `RunResult` with `runner`, `model_id`, `outcome`; **on failure/timeout: stop run, record `outcome: failed`, notify PE, do not advance workflow**; interface documented for H2 runners |
 | **FR-7** | Retry budget on `findings` loops | Programme config key; default 3; PolicyEngine enforces before re-dispatch; counter persisted on run; **on exhaustion: stop run + GitHub comment only** (no issue creation) |
 | **FR-8** | Stop on human/external/decision/terminal nodes | Never auto-transition `human-checkpoint`; never execute `external-action`; **stop at `decision` and `terminal` nodes without dispatch**; honor `handoff.human_checkpoint: true` |
-| **FR-9** | Notifier → GitHub comments via ForgeClient | Structured run events fan out to Notifier; H1 impl posts PR/issue comments using run event schema (`run_id`, `workflow_node`, `event`, `outcome`, `duration_ms`, `timestamp`); event schema stable for H2 Slack/Teams backends |
-| **FR-10** | Metrics v0 + skill stage profiling | Emit events per [§4 Metrics Schema](#metrics-schema-runstore-events): orchestrated skills, observed skills (where parseable), gate intervals, findings loops; **`GET /metrics/runs` or SQL view** returns p50/p95 duration aggregates by `workflow_node` |
+| **FR-9** | Notifier → GitHub comments via ForgeClient | Structured run events fan out to Notifier; H1 impl posts PR/issue comments only (no commit status checks) using run event schema (`run_id`, `workflow_node`, `event`, `outcome`, `duration_ms`, `timestamp`); event schema stable for H2 Slack/Teams backends |
+| **FR-10** | Metrics v0 + skill stage profiling | Emit events per [§4 Metrics Schema](#metrics-schema-runstore-events): orchestrated skills, observed skills (where parseable), gate intervals, findings loops; **`GET /metrics/runs` JSON aggregate** returns p50/p95 duration by `workflow_node`; SQL view documented for PE; **90-day retention** (configurable); no scheduled export in W1 |
 | **FR-11** | ToolProvider slots (all `none` in MVP) | `StageToolResolver` resolves slot from programme config or workflow metadata — not hardcoded node→slot map; H1 returns empty context |
-| **FR-12** | gateflow read-only status API | JSON endpoint on **gateflow** returns run id, current stage, outcome, timestamps; sufficient for W1 without gateflow-ops BFF |
-| **FR-13** | Runner + model profile per dispatch | Resolved from gateflow programme config per `workflow_node`; all four fields (`runner`, `model_profile`, `model_id`, `model_provider`) persisted on orchestrated stages where available |
+| **FR-12** | gateflow read-only status API | JSON endpoint on **gateflow** returns run id, current stage, outcome, timestamps; **authenticated via programme service token** (shared among programme engineers; network boundary in W1); sufficient for W1 without gateflow-ops BFF |
+| **FR-13** | Runner + model profile per dispatch | **H1: single `default` profile** for all orchestrated wave skills; per-`workflow_node` overrides deferred until Phase C baseline; resolved from gateflow programme config; all four fields (`runner`, `model_profile`, `model_id`, `model_provider`) persisted on orchestrated stages where available |
 | **FR-14** | ForgeClient for outbound GitHub | App installation token (preferred); scoped PAT allowed in dev only; supports comments, PR create/update, programme run-status labels; forbids gate approval labels and auto-merge; **on comment API failure: retry with backoff and/or mark run `notify_pending` in RunStore** |
 
 ### Error Handling
@@ -175,11 +176,12 @@ Failure of any precondition: ForgeClient comment with reason; no dispatch.
 | Handoff parse failure | Block run; no dispatch | ForgeClient comment with parse error |
 | Contract mismatch (`handoff.contract`) | Block run | ForgeClient comment |
 | Precondition failure | Block run | ForgeClient comment with failed precondition |
+| rc-2 / dispatch unavailable (W0 pre-pin) | Block run; no dispatch | ForgeClient comment (rc-2 pin required for orchestration) |
 | AgentRunner timeout/crash | Stop run; `outcome: failed`; no workflow advance | Notifier comment + RunStore |
 | Retry budget exhausted | Stop run | ForgeClient comment (reason, count, node) |
 | ForgeClient API failure (5xx/rate limit) | Retry/queue comment; set `notify_pending` if exhausted | RunStore flag; comment when recovered |
 | PostgreSQL unavailable | Fail webhook processing; return 503 | GitHub retry; alert via ops `[TBD]` |
-| PE cancellation (future) | Stop run at stage boundary | Notifier comment `[TBD — W2]` |
+| PE cancellation (future) | Stop run at stage boundary | Notifier comment — **formal cancel API deferred W2**; W1 relies on retry-budget exhaustion and AgentRunner failure stops |
 
 ### Non-Goals (MVP)
 
@@ -195,6 +197,8 @@ Failure of any precondition: ForgeClient comment with reason; no dispatch.
 | OpenCode / Claude Code / LiteLLM in MVP | H2+; interface in H1 spec |
 | `gh` CLI in production | ForgeClient + GitHub API only |
 | Slack / Teams notifications | Notifier slot reserved; H1 GitHub only |
+| GitHub commit status checks for run progress | H1 uses structured PR/issue comments only (US-2); status checks deferred W2+ |
+| Run queue / supersede on concurrent trigger | W1 rejects concurrent runs (FR-1); queue/supersede deferred W2+ if dogfood requires |
 | Auto-set gate approval labels | Observe for metrics; humans set gates |
 | Full ops dashboard / gateflow-ops BFF | H2; W1 uses gateflow native status API only |
 
@@ -225,10 +229,16 @@ section defines agent dispatch, model configuration, and evaluation.
 
 ### Dispatch Preconditions (normative)
 
+Full authoritative checklist: [wave-run preconditions](#wave-run-preconditions).
+
 ```text
 next = resolve(handoff.stage, handoff.outcome)
 
-if next.type != skill:                          STOP
+if pre_rc2_or_dispatch_unavailable:           STOP + notify (never silent no-op)
+if active_run_on_same_pr_issue:              STOP + notify (reject; W1)
+if handoff.blockers unresolved:               STOP + notify
+if handoff.stage not in wave_lane:            STOP + notify
+if next.type != skill:                        STOP
 if next.dispatch != orchestrated:              STOP or observe-only
 if not programme_trigger_authorized:           STOP
 if handoff.human_checkpoint == true:            STOP
@@ -259,17 +269,26 @@ Source: [INIT-PRAYOG-SKILLS-002 §3.3](./INIT-PRAYOG-SKILLS-002-outline.md) plus
 ### Architecture Overview
 
 ```text
-GitHub webhooks ──► TriggerRouter ──► PolicyEngine ◄── workflow.yaml (pin)
-                         │                ▲
-                         │                └── HandoffReader ◄── repo artifacts
-                         ▼
-                    RunStore (PostgreSQL) ◄── MetricsEmitter
-                         │
-         ┌───────────────┼───────────────┬───────────────┐
-         ▼               ▼               ▼               ▼
-   AgentRunner    ToolProvider     ForgeClient      Notifier
-   (Cursor H1)    (none H1)        (GitHub API)     (→ ForgeClient H1)
+GitHub webhooks ──► API / TriggerRouter ──► enqueue run job ──► Postgres job table
+        │                    │ ack fast (202)
+        │                    │
+        │              Async worker ◄── claim jobs
+        │                    │
+        │                    ▼
+        │              PolicyEngine ◄── workflow.yaml (pin)
+        │                    │         HandoffReader ◄── repo artifacts
+        │                    ▼
+        │              RunStore (PostgreSQL) ◄── MetricsEmitter
+        │                    │
+        │    ┌───────────────┼───────────────┬───────────────┐
+        │    ▼               ▼               ▼               ▼
+        │  AgentRunner  ToolProvider    ForgeClient      Notifier
+        │  (Cursor H1)  (none H1)       (GitHub API)     (→ ForgeClient H1)
 ```
+
+**Deployment note (W1):** the API process validates webhooks and enqueues work
+then returns quickly; the **async worker** owns PolicyEngine dispatch,
+AgentRunner lifecycle, and ForgeClient/Notifier side effects (Decision #6).
 
 **Pluggability rule:** no slot implementation embeds workflow node ids, gate
 label strings, or dispatch allowlists — those come from pinned contract +
@@ -297,7 +316,7 @@ implementations via pluggable slots without changing PolicyEngine contract:
 | Run store | PostgreSQL (all envs) | FR-3 |
 | Coding agent | Cursor SDK via AgentRunner adapter | FR-6 |
 | GitHub platform API | GitHub App + ForgeClient (no `gh` CLI) | FR-14 |
-| Deployment | Docker container (API + worker) | W1 exit #1 |
+| Deployment | Docker: **API + async worker** (webhook ack fast; worker owns AgentRunner + job queue via Postgres job table) | W1 exit #1 |
 | Programme config location | **gateflow repo config** (W1) | FR-2, FR-7, FR-13 |
 
 Capabilities (durable run history, agent dispatch, GitHub integration) are
@@ -335,13 +354,17 @@ wave lane skills `pre-implement`, `loop-spec`, `verify`, `ground-spec` →
 W1 programme config lives in the **gateflow repository** (not prayog-meta harness).
 Harness/meta schema for shared keys is deferred to W2+ `(Source: User-confirmed)`.
 
-| Key | Purpose | Example |
-|-----|---------|---------|
-| `trigger.label` | Wave run authorization label | `gateflow:run-w0` `[Joint Gate 1]` |
+| Key | Purpose | Example / W1 default |
+|-----|---------|----------------------|
+| `trigger.label` | Wave run authorization label (programme-wide for W1 dogfood) | `gateflow:run-wave` |
+| `handoff.ref` | Git ref for HandoffReader (PR triggers) | `pr_head` |
+| `handoff.ref_fallback` | Ref when issue trigger has no linked PR | `default_branch` |
+| `handoff.artifact_globs` | Paths to scan for latest `handoff:` block | `["docs/specification/reports/**", "prd/reports/**"]` |
 | `retry.findings_budget` | Max `findings` loop passes | `3` |
+| `metrics.retention_days` | RunStore event retention | `90` |
 | `runner.default` | Default AgentRunner adapter | `cursor` |
 | `model.profiles` | Named profile → runner model mapping | `default: cursor/auto` |
-| `model.overrides` | Optional per-`workflow_node` profile | `{ "verify": "fast" }` |
+| `model.overrides` | Optional per-`workflow_node` profile | `{}` (H1 — defer tuning until Phase C) |
 | `tools.slots` | Optional node → tool slot mapping | `{}` (H1 empty) |
 
 ### Metrics Schema (RunStore events) {#metrics-schema-runstore-events}
@@ -364,6 +387,7 @@ Gate interval labels resolved from pinned `delivery-contract.yaml`
 | **Secrets** | App private key, Postgres URL, deploy keys in secret store — not in repo |
 | **Agent workspace** | Ephemeral worktree per run; no cross-run artifact leakage |
 | **Audit** | ForgeClient write log retained with run record |
+| **Status API auth (W1)** | Programme service token (shared among programme engineers); API behind programme network boundary; no per-user RBAC |
 | **Human gates** | Zero automated writes to gate approval labels |
 
 ### Repositories
@@ -420,7 +444,7 @@ without rewriting the orchestration core.
 
 | # | Criterion | Verification |
 |---|-----------|--------------|
-| 1 | **Deployed runtime** | Gateflow API + worker run in Docker (or programme dev environment); health endpoint returns 200 |
+| 1 | **Deployed runtime** | Gateflow **API + async worker** run in Docker (or programme dev environment); health endpoint returns 200; webhook returns quickly while worker processes jobs |
 | 2 | **Webhook path live** | GitHub App delivers label events to Gateflow; signature validation passes |
 | 3 | **End-to-end dispatch loop** | Label trigger → handoff read → resolver → AgentRunner dispatch → stop at next contract node — proven on gateflow repo (requires rc-2 pin for `dispatch`) |
 | 4 | **RunStore durable** | All stages and events persisted in PostgreSQL; run reconstructable from DB alone |
@@ -432,7 +456,7 @@ without rewriting the orchestration core.
 | 10 | **Harness green** | `launchpad status --repo gateflow` passes after W1 merge |
 | 11 | **Future-wave ready** | Runbook in gateflow docs: **"Orchestrate a new initiative repo"** (App install + gateflow programme config + skills pin); PE can authorize runs without WorkflowEngine code changes |
 
-**W1 documentation deliverable:** runbook above satisfies criterion 11 (VF-024).
+**W1 documentation deliverable:** runbook above satisfies criterion 11.
 
 **Explicitly not required for W1 exit:** gateflow-ops UI/BFF, multi-runner adapters, ToolProvider beyond `none`, Slack/Teams Notifier.
 
@@ -479,7 +503,9 @@ reading `dispatch`**, or dogfood Phase B.
 | A3 | Cursor SDK runs in container worker (not PE laptop-only) | Pending | FR-6, W1 #1 |
 | A4 | PostgreSQL available in all Gateflow environments | Confirmed | FR-3 |
 | A5 | Gateflow programme config file in gateflow repo for W1 | Approved | FR-2, FR-7, FR-13 |
-| A6 | Any programme engineer may read RunStore/status API (open audit) | Confirmed | US-3 |
+| A6 | Any programme engineer may read RunStore/status API with programme service token (open audit; no RBAC) | Confirmed | US-3, FR-12 |
+| A7 | RunStore metrics events retained 90 days in W1 | Approved | FR-10 |
+| A8 | Single `default` model profile for all orchestrated wave skills in H1 | Approved | FR-13 |
 
 ### Risk Register
 
@@ -496,20 +522,25 @@ reading `dispatch`**, or dogfood Phase B.
 
 | # | Decision | Resolution |
 |---|----------|------------|
-| 3 | Retry budget exhaustion | **Stop run + ForgeClient GitHub comment only** — no issue creation, no auto-route |
-| 4 | W1 dogfood / impact map scope | **gateflow repo only** through W1; gateflow-ops deferred to W2+ |
+| 1 | Run progress surface (H1) | **PR/issue comments only** via ForgeClient — no commit status checks until W2+ |
+| 2 | Concurrent wave trigger (W1) | **Reject** new run while one is active on same PR/issue; queue/supersede deferred W2+ |
+| 3 | Pilot trigger label (W1) | **Programme-wide** `gateflow:run-wave`; per-initiative labels later |
+| 4 | Status API access (W1) | **Shared programme service token** + network boundary; no RBAC among programme engineers |
+| 5 | Handoff source path | **PR head ref** + configured artifact globs; latest durable `handoff:` block wins |
+| 6 | W1 deployment shape | **API + async worker**; Postgres job table; webhook ack fast |
+| 7 | Metrics retention / export (H1) | **90-day retention**; `GET /metrics/runs` JSON aggregate; SQL view for PE |
+| 8 | Model profiles (H1 dogfood) | **Single `default` profile** for all orchestrated nodes; per-node overrides after Phase C |
+| 9 | Pre–rc-2 label trigger | **Block + ForgeClient comment** when orchestration unavailable — never silent no-op |
+| 10 | PE mid-run cancellation | **Formal cancel API deferred W2**; W1 uses failure/retry-budget stops |
+| 11 | Retry budget exhaustion | **Stop run + ForgeClient GitHub comment only** — no issue creation, no auto-route |
+| 12 | W1 dogfood / impact map scope | **gateflow repo only** through W1; gateflow-ops deferred to W2+ |
 
 ### Open Questions (Joint Gate 1 agenda)
 
-*Items 3–4 resolved — see [Decisions](#decisions-resolved) table.*
+*Decisions 1–12 resolved — see [Decisions](#decisions-resolved) table.*
 
-1. Pilot trigger label: `gateflow:run-w0` vs programme-specific prefix?
-2. GitHub comments only vs commit status checks for Phase 0 evidence?
-3. Metrics retention period and export format?
-4. Per-skill model profile defaults for pilot?
-5. ForgeClient auth: App token only vs PAT in dev?
-6. rc-2 pin timing vs Gateflow W0 merge?
-7. Concurrent label on active run: reject vs queue vs supersede? *(Default lean: reject — see FR-1)*
+1. ForgeClient auth: App token only vs PAT in dev?
+2. rc-2 pin timing vs Gateflow W0 merge?
 
 ---
 
