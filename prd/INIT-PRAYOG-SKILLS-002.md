@@ -3,7 +3,7 @@
 **Status:** draft PRD · **Author:** programme PM · **Date:** 2026-07-23  
 **Outline:** [INIT-PRAYOG-SKILLS-002-outline](./INIT-PRAYOG-SKILLS-002-outline.md)  
 **Vision:** [planning/gateflow-programme-vision.md](../planning/gateflow-programme-vision.md)  
-**Paired initiative:** [INIT-GATEFLOW-001](./INIT-GATEFLOW-001.md) (PolicyEngine consumes `dispatch`)  
+**Paired initiative:** [INIT-GATEFLOW-001](./INIT-GATEFLOW-001-outline.md) (PolicyEngine consumes `dispatch`)  
 **Component:** PRAYOG-SKILLS · **Type:** platform / delivery contract
 
 > **Draft PRD** for Gate 1 review. Engineering implementation routes to
@@ -36,7 +36,7 @@
 to **stop**, but not which `skill` nodes an **orchestrator may dispatch** vs
 which remain **PE/agent manual**.
 
-[INIT-GATEFLOW-001](./INIT-GATEFLOW-001.md) must not hardcode node id lists
+[INIT-GATEFLOW-001](./INIT-GATEFLOW-001-outline.md) must not hardcode node id lists
 (e.g. “wave lane = pre-implement … ground-spec”). Automation eligibility belongs
 in **prayog-skills SSOT**, not Gateflow source or duplicate programme config.
 
@@ -101,7 +101,7 @@ repos pin the release tag after **Joint Gate 1** for Gateflow dogfood.
 
 **Acceptance criteria:**
 
-- [ ] `delivery-contract.yaml` documents `dispatch` enum semantics and consumer algorithm (aligned with [INIT-GATEFLOW-001 FR-5](./INIT-GATEFLOW-001.md))
+- [ ] `delivery-contract.yaml` documents `dispatch` enum semantics and consumer algorithm (aligned with [INIT-GATEFLOW-001 FR-5](./INIT-GATEFLOW-001-outline.md))
 - [ ] **No skill id allowlists** in consumer source; eligibility read from pinned `workflow.yaml` `dispatch` field only
 - [ ] Missing `dispatch` on pre-release pins (v0.4.3) → schema default `manual` (documented; no orchestrator fallback allowlist)
 
@@ -277,7 +277,7 @@ dispatch skill(next)
 
 **Extensions from INIT-GATEFLOW-001** (orchestrator-specific; not duplicated here):
 pre-release pin block, concurrent run reject, handoff blockers, contract match,
-`human_checkpoint` honor — see [INIT-GATEFLOW-001 §3 Dispatch Preconditions](./INIT-GATEFLOW-001.md).
+`human_checkpoint` honor — see [INIT-GATEFLOW-001 §3 Dispatch Preconditions](./INIT-GATEFLOW-001-outline.md).
 
 ### Contract and version strategy
 
