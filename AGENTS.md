@@ -28,6 +28,7 @@ perform file or GitHub mutations unless the user explicitly authorizes them.
 
 ## Repository truth
 
+- Programme vision and planning: `planning/`
 - PRDs: `prd/`
 - Reports and impact maps: `prd/reports/`
 - Service ownership: `config/service-catalog*.yaml`
