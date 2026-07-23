@@ -3,10 +3,11 @@
 **Status:** draft PRD · **Author:** programme PM · **Date:** 2026-07-22  
 **Outline:** [INIT-GATEFLOW-001-outline](./INIT-GATEFLOW-001-outline.md)  
 **Vision:** [planning/gateflow-programme-vision.md](../planning/gateflow-programme-vision.md)  
-**Paired initiative:** [INIT-PRAYOG-SKILLS-002](./INIT-PRAYOG-SKILLS-002.md) (`dispatch` on rc-2)  
+**Paired initiative:** [INIT-PRAYOG-SKILLS-002](./INIT-PRAYOG-SKILLS-002.md) (`dispatch` on pin **`v0.5.0-rc.2`** — delivered)  
 **Component:** GATEFLOW · **Type:** platform / delivery control plane
 
-> **Draft PRD** for Gate 1 review. Competitive landscape and full differentiation:
+> **Draft PRD** — INIT-PRAYOG-SKILLS-002 delivered (`v0.5.0-rc.2`); Gateflow W1
+> PolicyEngine work **unblocked**. Competitive landscape and full differentiation:
 > [vision §12](../planning/gateflow-programme-vision.md#12-market-landscape-and-differentiation).
 > Engineering implementation detail routes to impact map and gateflow spec PR.
 
@@ -20,7 +21,7 @@
 | Programme | prayog |
 | Primary repos | drivestream-lab/gateflow (W1 delivery); drivestream-lab/gateflow-ops (W2+) |
 | Supporting repos | prayog-meta, prayog-skills, launchpad |
-| Gate 1 coupling | **Joint Gate 1** with INIT-PRAYOG-SKILLS-002 — required before rc-2 pin, **W1 PolicyEngine reading `dispatch`**, or dogfood Phase B |
+| Skills pin / Gate coupling | **INIT-PRAYOG-SKILLS-002 delivered** (pin **`v0.5.0-rc.2`**) — **unblocks** Gateflow W1 PolicyEngine reading `dispatch`; dogfood Phase B still requires W1 exit |
 | Primary delivery repo (W1) | **gateflow only** — impact map and dogfood scoped to gateflow through W1 |
 | Target users | PE (wave execution), tech lead (gates), programme sponsor (metrics) |
 
@@ -96,7 +97,7 @@ Authoritative checklist before PolicyEngine may dispatch after label trigger:
 | 1 | Programme trigger label matches gateflow config `trigger.label` | Programme config |
 | 2 | Latest handoff envelope readable from **triggering PR head ref**, or **default branch** when issue trigger has no linked PR (per FR-4) | FR-4 |
 | 3 | `handoff.contract` matches Gateflow installed contract | handoff-envelope.md rule 2 |
-| 4 | Resolved next node is `type: skill` with `dispatch: orchestrated` (rc-2 pin) | FR-5 |
+| 4 | Resolved next node is `type: skill` with `dispatch: orchestrated` (pin **`v0.5.0-rc.2`**) | FR-5 |
 | 5 | `handoff.human_checkpoint` is not blocking dispatch | handoff-envelope.md rules 5, 8 |
 | 6 | No active run exists for the same PR/issue (concurrent trigger → **reject**) | FR-1 |
 | 7 | Handoff has no unresolved `blockers` preventing progress | handoff envelope |
@@ -155,7 +156,7 @@ Failure of any precondition: ForgeClient comment with reason; no dispatch.
 | **FR-2** | Explicit wave trigger via programme-configured label | Label name from **gateflow programme config** only; label event routes to TriggerRouter after [wave-run preconditions](#wave-run-preconditions); no board-only inference |
 | **FR-3** | Durable run store (H1: PostgreSQL) | Runs, stages, and events persisted in PostgreSQL; no SQLite fallback; schema supports `run_id`, `workflow_node`, `outcome`, timestamps |
 | **FR-4** | Handoff envelope read from repo artifacts | Resolve git ref from **triggering PR head SHA** when label is on a PR; when label is on an **issue without linked PR**, fall back to repo **default branch** per `handoff.ref_fallback` (default: `default_branch`); scan configured artifact globs for latest durable `handoff:` YAML block (see Programme Config); parse failure blocks run and notifies PE; no chat/session fallback |
-| **FR-5** | Workflow resolver per `sdd-delivery/v2` | Loads pinned `workflow.yaml` + `delivery-contract.yaml`; resolves next node from `handoff.stage` + `handoff.outcome`; dispatches only when `type: skill` AND `dispatch: orchestrated`; missing `dispatch` on v0.4.3 pin → treat as `manual`; **before rc-2 pin: block dispatch with ForgeClient comment** (never silent no-op); **no hardcoded node allowlists in source** |
+| **FR-5** | Workflow resolver per `sdd-delivery/v2` | Loads pinned `workflow.yaml` + `delivery-contract.yaml` from programme pin **`v0.5.0-rc.2`** (INIT-PRAYOG-SKILLS-002 delivered); resolves next node from `handoff.stage` + `handoff.outcome`; dispatches only when `type: skill` AND `dispatch: orchestrated`; **legacy pins without `dispatch` (e.g. v0.4.3)** → treat as `manual`; **if pin/orchestration unavailable: block dispatch with ForgeClient comment** (never silent no-op); **no hardcoded node allowlists in source** |
 | **FR-6** | Coding agent adapter (H1: Cursor AgentRunner) | Adapter implements `AgentRunner` interface; receives workspace, skill prompt, `model_profile`; returns `RunResult` with `runner`, `model_id`, `outcome`; **on failure/timeout: stop run, record `outcome: failed`, notify PE, do not advance workflow**; interface documented for H2 runners |
 | **FR-7** | Retry budget on `findings` loops | Programme config key; default 3; PolicyEngine enforces before re-dispatch; counter persisted on run; **on exhaustion: stop run + GitHub comment only** (no issue creation) |
 | **FR-8** | Stop on human/external/decision/terminal nodes | Never auto-transition `human-checkpoint`; never execute `external-action`; **stop at `decision` and `terminal` nodes without dispatch**; honor `handoff.human_checkpoint: true` |
@@ -176,7 +177,7 @@ Failure of any precondition: ForgeClient comment with reason; no dispatch.
 | Handoff parse failure | Block run; no dispatch | ForgeClient comment with parse error |
 | Contract mismatch (`handoff.contract`) | Block run | ForgeClient comment |
 | Precondition failure | Block run | ForgeClient comment with failed precondition |
-| rc-2 / dispatch unavailable (W0 pre-pin) | Block run; no dispatch | ForgeClient comment (rc-2 pin required for orchestration) |
+| Legacy pin / dispatch unavailable | Block run; no dispatch | ForgeClient comment (programme pin must expose `dispatch`; target **`v0.5.0-rc.2`**) |
 | AgentRunner timeout/crash | Stop run; `outcome: failed`; no workflow advance | Notifier comment + RunStore |
 | Retry budget exhausted | Stop run | ForgeClient comment (reason, count, node) |
 | ForgeClient API failure (5xx/rate limit) | Retry/queue comment; set `notify_pending` if exhausted | RunStore flag; comment when recovered |
@@ -234,7 +235,7 @@ Full authoritative checklist: [wave-run preconditions](#wave-run-preconditions).
 ```text
 next = resolve(handoff.stage, handoff.outcome)
 
-if pre_rc2_or_dispatch_unavailable:           STOP + notify (never silent no-op)
+if pin_or_dispatch_unavailable:               STOP + notify (never silent no-op)
 if active_run_on_same_pr_issue:              STOP + notify (reject; W1)
 if handoff.blockers unresolved:               STOP + notify
 if handoff.stage not in wave_lane:            STOP + notify
@@ -247,16 +248,17 @@ if handoff.contract != installed_contract:      STOP + notify
 dispatch via AgentRunner(next)
 ```
 
-Source: [INIT-PRAYOG-SKILLS-002 §3.3](./INIT-PRAYOG-SKILLS-002-outline.md) plus normative extensions from
+Source: [INIT-PRAYOG-SKILLS-002 §4 Consumer dispatch algorithm](./INIT-PRAYOG-SKILLS-002.md) plus normative extensions from
 [handoff-envelope.md](../prayog-skills/references/handoff-envelope.md) rules 2, 5, and 8
 (contract match, never auto-transition human checkpoint, `next_candidates` never bypasses
-`human_checkpoint`). Requires rc-2 pin for `dispatch` field. Paired INIT alignment tracked in Joint Gate 1.
+`human_checkpoint`). Requires pin **`v0.5.0-rc.2`** (`dispatch`). INIT-PRAYOG-SKILLS-002
+**delivered** — Gateflow development unblocked.
 
 ### Evaluation Strategy
 
 | Dimension | Method | Pass threshold (MVP) |
 |-----------|--------|----------------------|
-| **Resolver correctness** | Contract tests against pinned `workflow.yaml`; fixtures imported from pinned prayog-skills ref `(Source: User-confirmed)` | 100% match with handoff spec navigation for all scenarios in prayog-skills `workflow_scenarios.json` (navigation only); **plus Gateflow-specific fixtures for rc-2 `dispatch` policy** |
+| **Resolver correctness** | Contract tests against pinned `workflow.yaml`; fixtures imported from pinned prayog-skills ref `(Source: User-confirmed)` | 100% match with handoff spec navigation for all scenarios in prayog-skills `workflow_scenarios.json` (navigation only); **plus Gateflow-specific fixtures for `dispatch` policy on pin `v0.5.0-rc.2`** |
 | **Policy compliance** | Integration tests: no dispatch on `manual`, `human-checkpoint`, missing trigger | 0 violations in CI |
 | **Run completeness** | Post-dogfood audit of RunStore rows | 100% orchestrated stages have start/end/outcome/model fields |
 | **Agent outcome** | PE checklist at `wave-human-decision` | Wave artifacts present on branch; `launchpad status --repo gateflow` green; PE sign-off recorded |
@@ -332,7 +334,7 @@ process SSOT.
 | Manual skill | `skill` + `dispatch: manual` | Stop; observe metrics from handoff |
 | Metrics-only skill | `skill` + `dispatch: observed` `[TBD enum]` | Stop; observe metrics |
 
-**Illustrative only — SSOT in prayog-skills rc-2** (Gateflow must not hardcode):
+**Illustrative only — SSOT in prayog-skills pin `v0.5.0-rc.2`** (Gateflow must not hardcode):
 wave lane skills `pre-implement`, `loop-spec`, `verify`, `ground-spec` →
 `dispatch: orchestrated`; all other skills → `manual`.
 
@@ -409,21 +411,21 @@ the control plane is proven operational.
 | Phase | Scope | Entry criteria |
 |-------|-------|----------------|
 | **Phase A — Build (manual SDD)** | Gateflow W0/W1 on **gateflow repo only** | This PRD + impact map approved |
-| **Phase B — Dogfood automation** | Label-triggered wave runs on **gateflow repo** | W1 exit criteria met; **Joint Gate 1** passed; rc-2 pin active |
+| **Phase B — Dogfood automation** | Label-triggered wave runs on **gateflow repo** | W1 exit criteria met; pin **`v0.5.0-rc.2`** active |
 | **Phase C — Learning** | Manual vs automated metrics comparison | ≥ 1 completed Phase B run |
 
 #### Normative delivery sequence (W1 → Phase B)
 
 ```text
-Joint Gate 1 (with INIT-PRAYOG-SKILLS-002)
-  → rc-2 pin on prayog-skills (dispatch field)
+INIT-PRAYOG-SKILLS-002 delivered (pin v0.5.0-rc.2 — dispatch field)
   → complete W1 exit criteria 3–11 (incl. e2e dispatch on gateflow repo)
   → W1 exit declared
   → Phase B dogfood (label-triggered waves)
 ```
 
-W0 may proceed before Joint Gate 1 (skeleton without dispatch). W1 criteria
-3–11 that depend on `dispatch` require rc-2 pin after Joint Gate 1.
+Pin **`v0.5.0-rc.2`** is available; Gateflow W1 PolicyEngine reading `dispatch` is
+**unblocked**. W0 may still ship a skeleton without dispatch; W1 criteria 3–11
+that depend on `dispatch` use pin `v0.5.0-rc.2`.
 
 #### Engineering waves (PRD level)
 
@@ -446,7 +448,7 @@ without rewriting the orchestration core.
 |---|-----------|--------------|
 | 1 | **Deployed runtime** | Gateflow **API + async worker** run in Docker (or programme dev environment); health endpoint returns 200; webhook returns quickly while worker processes jobs |
 | 2 | **Webhook path live** | GitHub App delivers label events to Gateflow; signature validation passes |
-| 3 | **End-to-end dispatch loop** | Label trigger → handoff read → resolver → AgentRunner dispatch → stop at next contract node — proven on gateflow repo (requires rc-2 pin for `dispatch`) |
+| 3 | **End-to-end dispatch loop** | Label trigger → handoff read → resolver → AgentRunner dispatch → stop at next contract node — proven on gateflow repo (requires pin **`v0.5.0-rc.2`** for `dispatch`) |
 | 4 | **RunStore durable** | All stages and events persisted in PostgreSQL; run reconstructable from DB alone |
 | 5 | **Human-visible progress** | ForgeClient comments on PR/issue for start, stage complete, stop, and retry-budget exhaustion |
 | 6 | **Status API** | `GET /runs/{id}` (or equivalent) returns current stage, history, outcomes — no gateflow-ops dependency |
@@ -471,23 +473,24 @@ without rewriting the orchestration core.
 
 ### Dependencies
 
-#### Joint Gate 1 (blocking — with INIT-PRAYOG-SKILLS-002)
+#### INIT-PRAYOG-SKILLS-002 delivery status (pin `v0.5.0-rc.2`)
 
-Both INITs must pass a **single Joint Gate 1** before rc-2 pin, **W1 PolicyEngine
-reading `dispatch`**, or dogfood Phase B.
+**INIT-PRAYOG-SKILLS-002 is delivered** as prayog-skills pin **`v0.5.0-rc.2`**.
+That pin **unblocks** Gateflow W1 PolicyEngine reading `dispatch` and programme
+harness/meta pin consumption.
 
-| Blocked until Joint Gate 1 | May proceed before |
-|----------------------------|-------------------|
-| PolicyEngine reading `dispatch` | W0 skeleton without dispatch |
-| Meta harness pin to rc-2 | Draft PRD, validate-requirements, impact map |
-| Dogfood Phase B | Phase A manual SDD build |
+| Status | Item |
+|--------|------|
+| **Unblocked** | PolicyEngine reading `dispatch`; meta/programme pin to **`v0.5.0-rc.2`** |
+| **Still gated** | Dogfood Phase B — requires W1 exit criteria |
+| **Open (non-blocking for pin)** | Remaining product OQs (e.g. ForgeClient auth) — do not block pin consumption |
 
 #### Technical dependencies
 
 | Dependency | Assumption |
 |------------|------------|
-| prayog-skills rc-2 | `dispatch` field via INIT-PRAYOG-SKILLS-002 |
-| prayog-skills @ v0.4.3 | Missing `dispatch` → schema default `manual` |
+| prayog-skills @ **v0.5.0-rc.2** | `dispatch` field via INIT-PRAYOG-SKILLS-002 (**delivered**) |
+| Legacy prayog-skills @ v0.4.3 | Missing `dispatch` → schema default `manual` (compat only) |
 | launchpad | Harness sync before agent dispatch |
 | GitHub App | Installed on drivestream-lab programme repos |
 | Cursor SDK | Container worker or cloud VM |
@@ -498,7 +501,7 @@ reading `dispatch`**, or dogfood Phase B.
 
 | ID | Assumption | Status | Dependent FRs |
 |----|------------|--------|---------------|
-| A1 | prayog-skills rc-2 with `dispatch` merges after Joint Gate 1 | Pending | FR-5, W1 #3 |
+| A1 | prayog-skills pin **v0.5.0-rc.2** with `dispatch` available (INIT-PRAYOG-SKILLS-002 delivered) | Confirmed | FR-5, W1 #3 |
 | A2 | GitHub App installed on drivestream-lab programme repos | Confirmed | FR-1, FR-14 |
 | A3 | Cursor SDK runs in container worker (not PE laptop-only) | Pending | FR-6, W1 #1 |
 | A4 | PostgreSQL available in all Gateflow environments | Confirmed | FR-3 |
@@ -514,7 +517,7 @@ reading `dispatch`**, or dogfood Phase B.
 | Agent run cost / duration | Medium | Medium | Retry budget; metrics; model profiles in config | PE |
 | Webhook delivery gaps | Medium | High | Idempotent handlers; event dedup in RunStore | Eng |
 | Handoff parse failures | Low | High | Block run; notify PE; no silent continue | Eng |
-| rc-2 / dispatch delay | Medium | Medium | Schema default `manual`; no allowlist fallback | PM + PE |
+| Wrong / legacy pin (no `dispatch`) | Low | Medium | Target pin **`v0.5.0-rc.2`**; schema default `manual` on legacy; no allowlist fallback | PM + PE |
 | Over-automation pressure | Medium | High | Non-goals; contract invariants in PolicyEngine tests | Sponsor |
 | Cursor SDK container friction | Medium | Medium | Phase A manual SDD de-risks; pilot on gateflow repo first | PE |
 
@@ -530,17 +533,18 @@ reading `dispatch`**, or dogfood Phase B.
 | 6 | W1 deployment shape | **API + async worker**; Postgres job table; webhook ack fast |
 | 7 | Metrics retention / export (H1) | **90-day retention**; `GET /metrics/runs` JSON aggregate; SQL view for PE |
 | 8 | Model profiles (H1 dogfood) | **Single `default` profile** for all orchestrated nodes; per-node overrides after Phase C |
-| 9 | Pre–rc-2 label trigger | **Block + ForgeClient comment** when orchestration unavailable — never silent no-op |
+| 9 | Orchestration unavailable / legacy pin without `dispatch` | **Block + ForgeClient comment** — never silent no-op (Decision #9; pin target **`v0.5.0-rc.2`**) |
 | 10 | PE mid-run cancellation | **Formal cancel API deferred W2**; W1 uses failure/retry-budget stops |
 | 11 | Retry budget exhaustion | **Stop run + ForgeClient GitHub comment only** — no issue creation, no auto-route |
 | 12 | W1 dogfood / impact map scope | **gateflow repo only** through W1; gateflow-ops deferred to W2+ |
+| 13 | Skills pin for Gateflow | **INIT-PRAYOG-SKILLS-002 delivered** as **`v0.5.0-rc.2`** — Gateflow development unblocked |
 
-### Open Questions (Joint Gate 1 agenda)
+### Open Questions
 
-*Decisions 1–12 resolved — see [Decisions](#decisions-resolved) table.*
+*Decisions 1–13 resolved — see [Decisions](#decisions-resolved) table.*  
+*`dispatch: observed` remains intentional rc-2 v1 deferral (`[TBD enum]` in Workflow Navigation) — not a SKILLS delivery blocker.*
 
 1. ForgeClient auth: App token only vs PAT in dev?
-2. rc-2 pin timing vs Gateflow W0 merge?
 
 ---
 
@@ -553,7 +557,7 @@ reading `dispatch`**, or dogfood Phase B.
 | §5.4 metrics | §4 Metrics Schema; §3 Evaluation |
 | §5.6 pluggable runtime | §4 Architecture; §3 Tool Requirements |
 | §9 dogfood | §5 Phased Rollout |
-| §11 Joint Gate 1 | §5 Dependencies |
+| §11 Joint Gate 1 / skills pin | §5 Dependencies (pin `v0.5.0-rc.2` delivered) |
 | §3 positioning | Vision §12 (reference only) |
 
 ## Appendix B — Process next steps
@@ -562,7 +566,7 @@ reading `dispatch`**, or dogfood Phase B.
 |------|-------|----------|
 | 1 | PM / sponsor | Review this Draft PRD |
 | 2 | PE | `/validate-requirements` on Draft |
-| 3 | PE / sponsor | **Joint Gate 1** with INIT-PRAYOG-SKILLS-002 Draft |
+| 3 | PE | Consume pin **`v0.5.0-rc.2`**; Gateflow W1 / spec may proceed (SKILLS-002 delivered) |
 | 4 | PE | `/prd-impact-map` → **gateflow only** (W1); gateflow-ops W2+ |
-| 5 | PE | Gateflow spec PR + rc-2 (paired) |
-| 6 | PE | Dogfood Phase B |
+| 5 | PE | Gateflow spec PR + PolicyEngine on pin `v0.5.0-rc.2` |
+| 6 | PE | Dogfood Phase B (after W1 exit) |
