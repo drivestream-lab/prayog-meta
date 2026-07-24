@@ -1,17 +1,17 @@
 ---
 schema_version: 1
 initiative: INIT-GATEFLOW-003
-map_revision: 1
+map_revision: 2
 source_prd: prd/INIT-GATEFLOW-003.md
-source_prd_digest: sha256:b6febdedbb5a0d7fb3f5e90190b74457492d4da6431bed2b0fc795b626e697fc
-previous_revision: null
-previous_artifact_commit: null
-change_reason: Initial impact map after Draft PRD validation pass (report_revision 3); primary gateflow + supporting prayog-skills Scenario A pin dispatch
+source_prd_digest: sha256:6062fa11d136e9a49dd6546377ec5d907789ef388108b477b846f6299673f9ad
+previous_revision: 1
+previous_artifact_commit: 64d008904c4d6e9ebf3d06d620591f8d942d4d8e
+change_reason: Correct corrupted frontmatter source_prd_digest (must match PRD sha256); attestation fields aligned to map_revision 2
 material_change: true
-generated_at: 2026-07-24T12:48:12Z
+generated_at: 2026-07-24T12:53:58Z
 ---
 
-# Impact map — INIT-GATEFLOW-003 — revision 1
+# Impact map — INIT-GATEFLOW-003 — revision 2
 
 > This file is generated locally before PR creation and becomes the scope source
 > of truth when committed. Effective approval is derived from a tech-lead
@@ -24,11 +24,11 @@ generated_at: 2026-07-24T12:48:12Z
 |-------|-------|
 | PRD | `prd/INIT-GATEFLOW-003.md` |
 | PRD digest | `sha256:6062fa11d136e9a49dd6546377ec5d907789ef388108b477b846f6299673f9ad` |
-| Map revision | `1` |
-| Previous revision | none |
-| Previous artifact commit | none |
-| Change reason | Initial map after validation pass; primary gateflow + supporting skills pin `dispatch` |
-| Material change | yes — first map for this initiative |
+| Map revision | `2` |
+| Previous revision | `1` |
+| Previous artifact commit | `64d008904c4d6e9ebf3d06d620591f8d942d4d8e` |
+| Change reason | Fix frontmatter `source_prd_digest` to match PRD; bump for PE attestation |
+| Material change | yes — attestation digest field was wrong on rev 1 |
 
 ## 2. Affected repositories
 
@@ -89,7 +89,13 @@ INIT-GATEFLOW-001 / 002 control plane (product: finished/delivered)
 
 ## 8. Revision diff
 
-Omit — revision 1 (no prior map).
+| Repo | Prior status | Current status | Scope digest changed? | Change |
+|------|--------------|----------------|-----------------------|--------|
+| gateflow | affected | affected | no | unchanged |
+| prayog-skills | affected | affected | no | unchanged |
+| gateflow-ops | deferred | deferred | n/a | unchanged |
+| launchpad | monitor / not affected | monitor / not affected | n/a | unchanged |
+| prayog-meta | not affected | not affected | n/a | unchanged |
 
 ## 9. Downstream ripple ledger
 
@@ -139,7 +145,7 @@ INIT-GATEFLOW-003 makes the **Cursor AgentRunner live** in Gateflow: orchestrate
 
 ## Impact-map summary
 
-- Revision: **1**
+- Revision: **2**
 - PRD digest: `sha256:6062fa11d136e9a49dd6546377ec5d907789ef388108b477b846f6299673f9ad`
 - Scope digest (gateflow): `sha256:aaf398dc53a4606b34e9e24fa7513cd3a3b7e64ea677047faf5d2e90c64eba85`
 - Scope digest (prayog-skills): `sha256:16d076c640e84d8a29885c55cb5398d3ecd8d1e6860f9d0166a7c133d4fae3bb`
@@ -168,7 +174,7 @@ Tech lead must review this artifact on the meta PR and submit GitHub
 ```text
 Impact map approved
 initiative: INIT-GATEFLOW-003
-map_revision: 1
+map_revision: 2
 meta_pr_head_sha: {SHA after this artifact is committed}
 prd_digest: sha256:6062fa11d136e9a49dd6546377ec5d907789ef388108b477b846f6299673f9ad
 artifact: prd/reports/Impact-Map-INIT-GATEFLOW-003.md
@@ -205,11 +211,11 @@ handoff:
   outcome: pass
   artifact:
     path: prd/reports/Impact-Map-INIT-GATEFLOW-003.md
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:71ad4b588a2dd0a7b0d9ef3b3d75d6789a01b5aab07344ed9be7637b02c7519d
   blockers: []
   signals:
     pr_ready: true
-    map_revision: 1
+    map_revision: 2
     prd_digest: sha256:6062fa11d136e9a49dd6546377ec5d907789ef388108b477b846f6299673f9ad
     scope_digest_gateflow: sha256:aaf398dc53a4606b34e9e24fa7513cd3a3b7e64ea677047faf5d2e90c64eba85
     scope_digest_prayog_skills: sha256:16d076c640e84d8a29885c55cb5398d3ecd8d1e6860f9d0166a7c133d4fae3bb
