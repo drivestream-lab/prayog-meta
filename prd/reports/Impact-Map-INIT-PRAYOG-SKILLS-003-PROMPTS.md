@@ -1,17 +1,17 @@
 ---
 schema_version: 1
 initiative: INIT-PRAYOG-SKILLS-003-PROMPTS
-map_revision: 2
+map_revision: 3
 source_prd: prd/INIT-PRAYOG-SKILLS-003-PROMPTS.md
-source_prd_digest: sha256:78e4b372e2a9d4c3aac92f0162d5ed791963908c826c06d1db153999f75c63a3
-previous_revision: 1
-previous_artifact_commit: 6b4e5111dda24ffe54e764d0290bfb7a03bafe62
-change_reason: Fix PRD digest attestation (frontmatter/handoff had artifact digest); invalidate premature LGTM (placeholder meta_pr_head_sha + wrong digest); PRD clarifications (mental model invoke≠dispatch; normative v1 var defaults; W1 quality-variance risk); refresh Update-Summary to 13/13
+source_prd_digest: sha256:08109488057ea898981c4425c6b6999a7a86156fba2b5c4a7c57c3c58915922c
+previous_revision: 2
+previous_artifact_commit: a52079c04cd53b937595c90119597dd6ed17db11
+change_reason: Repair attestation — source_prd_digest/handoff prd_digest were overwritten by artifact digest stamping; keep single PRD digest sha256:08109488…
 material_change: true
-generated_at: 2026-07-27T13:07:16Z
+generated_at: 2026-07-27T13:10:00Z
 ---
 
-# Impact map — INIT-PRAYOG-SKILLS-003-PROMPTS — revision 2
+# Impact map — INIT-PRAYOG-SKILLS-003-PROMPTS — revision 3
 
 > This file is generated locally before PR creation and becomes the scope source
 > of truth when committed. Effective approval is derived from a tech-lead
@@ -24,11 +24,11 @@ generated_at: 2026-07-27T13:07:16Z
 |-------|-------|
 | PRD | `prd/INIT-PRAYOG-SKILLS-003-PROMPTS.md` |
 | PRD digest | `sha256:08109488057ea898981c4425c6b6999a7a86156fba2b5c4a7c57c3c58915922c` |
-| Map revision | `2` |
-| Previous revision | `1` |
-| Previous artifact commit | `6b4e5111dda24ffe54e764d0290bfb7a03bafe62` |
-| Change reason | Digest attestation fix + PRD clarifications; prior LGTM stale |
-| Material change | yes — digests, approval contract, and PRD wording changed |
+| Map revision | `3` |
+| Previous revision | `2` |
+| Previous artifact commit | `a52079c04cd53b937595c90119597dd6ed17db11` |
+| Change reason | Attestation repair — PRD digest only in source_prd_digest / prd_digest fields |
+| Material change | yes — attestation fields corrected (PRD content unchanged) |
 
 ## 2. Affected repositories
 
@@ -144,7 +144,7 @@ Adds **versioned skill prompt packages** to prayog-skills: every skill under `sk
 
 ## Impact-map summary
 
-- Revision: 2
+- Revision: 3
 - PRD digest: `sha256:08109488057ea898981c4425c6b6999a7a86156fba2b5c4a7c57c3c58915922c`
 - Scope digest (prayog-skills): `sha256:a76e172e081c363328842f51d1ed925a9e45b019a872e7465140643df2e6aa59`
 - Affected repos: drivestream-lab/prayog-skills
@@ -161,7 +161,7 @@ Adds **versioned skill prompt packages** to prayog-skills: every skill under `sk
 ## Gate 1 — engineering handoff readiness
 
 - [x] Draft PRD + validation clean pass
-- [ ] Impact-map **rev 2** approved on current PR head (rev 1 LGTM stale)
+- [ ] Impact-map **rev 3** approved on current PR head (prior LGTM / rev 2 attestation stale)
 - [ ] PE/tech lead review cites exact head SHA + PRD digest above
 - [ ] Not a Joint Gate with BOUNDINPUT (downstream INIT)
 
@@ -176,13 +176,13 @@ Tech lead must **Approve** on the **exact current PR head SHA** (copy from GitHu
 ```text
 Impact map approved
 initiative: INIT-PRAYOG-SKILLS-003-PROMPTS
-map_revision: 2
+map_revision: 3
 meta_pr_head_sha: <exact PR head SHA at approval time>
-prd_digest: sha256:78e4b372e2a9d4c3aac92f0162d5ed791963908c826c06d1db153999f75c63a3
+prd_digest: sha256:08109488057ea898981c4425c6b6999a7a86156fba2b5c4a7c57c3c58915922c
 artifact: prd/reports/Impact-Map-INIT-PRAYOG-SKILLS-003-PROMPTS.md
 ```
 
-**Stale approval:** Review by `0xbeefdead` on head `6b4e5111…` used `meta_pr_head_sha: {SHA after this artifact is committed}` and `prd_digest: sha256:78e4b372e2a9d4c3aac92f0162d5ed791963908c826c06d1db153999f75c63a3 (artifact digest). That review does **not** open Gate 1 for rev 2.
+**Stale approval:** Review by `0xbeefdead` on head `6b4e5111…` used `meta_pr_head_sha: {SHA after this artifact is committed}` and `prd_digest: sha256:33871850…` (impact-map **artifact** digest, not PRD). That review does **not** open Gate 1.
 
 The gate remains closed until the review, current PR head SHA, PRD digest, map
 revision, and artifact path all match.
@@ -215,15 +215,15 @@ handoff:
   outcome: pass
   artifact:
     path: prd/reports/Impact-Map-INIT-PRAYOG-SKILLS-003-PROMPTS.md
-    digest: sha256:78e4b372e2a9d4c3aac92f0162d5ed791963908c826c06d1db153999f75c63a3
+    digest: sha256:cb9263bb1e14767d91e05189e43d27efc3b3447a909e43a387fe5ba0b88508bd
   blockers:
     - GATE1-REAPPROVAL
   signals:
     pr_ready: true
-    map_revision: 2
+    map_revision: 3
     material_change: true
     prior_lgtm_stale: true
-    prd_digest: sha256:78e4b372e2a9d4c3aac92f0162d5ed791963908c826c06d1db153999f75c63a3
+    prd_digest: sha256:08109488057ea898981c4425c6b6999a7a86156fba2b5c4a7c57c3c58915922c
     scope_digest_prayog_skills: sha256:a76e172e081c363328842f51d1ed925a9e45b019a872e7465140643df2e6aa59
     affected_repos:
       - drivestream-lab/prayog-skills
