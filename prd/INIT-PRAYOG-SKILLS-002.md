@@ -1,15 +1,15 @@
 # INIT-PRAYOG-SKILLS-002 — Workflow dispatch policy
 
-**Status:** draft PRD · **Author:** programme PM · **Date:** 2026-07-23  
+**Status:** done (delivered) · **Author:** programme PM · **Date:** 2026-07-23 · **Completed:** 2026-07-27  
 **Outline:** [INIT-PRAYOG-SKILLS-002-outline](./INIT-PRAYOG-SKILLS-002-outline.md)  
 **Vision:** [planning/gateflow-programme-vision.md](../planning/gateflow-programme-vision.md)  
 **Paired initiative:** [INIT-GATEFLOW-001](./INIT-GATEFLOW-001.md) (PolicyEngine consumes `dispatch`)  
 **Component:** PRAYOG-SKILLS · **Type:** platform / delivery contract
 
-> **Draft PRD** for Gate 1 review. Engineering implementation routes to
-> `drivestream-lab/prayog-skills` **rc-2** branch and spec PR after Joint Gate 1.
-> This INIT defines **automation eligibility SSOT** — orchestrators read the pin;
-> they must not hardcode skill node lists.
+> **Done (delivered)** — pin **`v0.5.0-rc.2`** with `dispatch` is live. This INIT
+> remains the **automation eligibility SSOT** record: orchestrators read the pin;
+> they must not hardcode skill node lists. Historical Gate 1 / rc-2 delivery
+> detail stays in the impact map and prayog-skills release notes.
 
 ---
 

@@ -1,8 +1,8 @@
 # Gateflow programme vision
 
 **Programme:** prayog · **Org:** drivestream-lab · **Status:** draft  
-**Last updated:** 2026-07-22  
-**Related initiatives:** [INIT-GATEFLOW-001](./INIT-GATEFLOW-001.md) · [INIT-PRAYOG-SKILLS-002-outline](../prd/INIT-PRAYOG-SKILLS-002-outline.md)
+**Last updated:** 2026-07-27  
+**Related initiatives:** [INIT-GATEFLOW-001](../prd/INIT-GATEFLOW-001.md) · [INIT-GATEFLOW-003](../prd/INIT-GATEFLOW-003.md) · [INIT-GATEFLOW-004-outline](../prd/INIT-GATEFLOW-004-outline.md) · [INIT-PRAYOG-SKILLS-002](../prd/INIT-PRAYOG-SKILLS-002.md)
 
 ---
 
@@ -21,13 +21,20 @@ coding agent — that resolves pinned `workflow.yaml`, dispatches eligible
 `skill` nodes on agents we already use, stops where the contract assigns humans
 or external actions, and measures outcomes.
 
+**Autonomy destination:** agents do **most of the work between intentional
+controls**. Human checkpoints stay **on by default** until RunStore metrics
+justify lifting a stop or promoting a node to `dispatch: orchestrated` —
+throttle after evidence, not before firsthand efficacy (§9, §12).
+
 ---
 
 ## 2. One-sentence product
 
 > Gateflow watches GitHub, reads durable handoffs, resolves pinned
 > `workflow.yaml`, and dispatches coding agents for eligible `skill` nodes —
-> stopping wherever the delivery contract assigns humans or external actions.
+> stopping wherever the delivery contract assigns humans or external actions —
+> maximizing agent work between those intentional controls as metrics prove it
+> safe.
 
 ---
 
@@ -37,13 +44,15 @@ or external actions, and measures outcomes.
 |--------|------------|
 | Workflow engine for `sdd-delivery/v2` | A replacement for prayog-skills or workflow.yaml |
 | Dispatcher for Cursor / OpenCode / Claude Code (over time) | A new coding agent or IDE |
-| Run store, metrics, and ops visibility | Auto-merge or auto board updates |
+| Run store, metrics, and ops visibility (Mission Control) | Auto-merge or auto board updates **by default** |
 | Pluggable tool enabler (codegraph, scanners, …) | A Graphify fork or mandatory tool stack |
 | Forge API client (GitHub App; cloud-safe) | `gh` CLI or PE laptop for production GitHub ops |
 | Programme factory citizen (launchpad, meta, catalog) | A merge of platform repos into meta |
+| Evidence-gated autonomy (lift controls when green) | Blind copy of “N% agent PRs” without programme gates |
 
 **Principle:** Process lives in **workflow + skills**. Execution lives in
-**agents**. Orchestration and observability live in **Gateflow**.
+**agents**. Orchestration and observability live in **Gateflow**. Intentional
+human controls stay until **metrics** earn the right to widen automation.
 
 ---
 
@@ -190,7 +199,7 @@ branch on vendor beyond the adapter.
 | OpenCode | H2 | Container / cloud agent pod |
 | Claude Code | H2 | Container / CLI agent worker |
 
-Telemetry always records `runner + model_id` per orchestrated stage (§11).
+Telemetry always records `runner + model_id` per orchestrated stage (§12).
 
 ### GitHub integration — ForgeClient (cloud-safe)
 
@@ -278,7 +287,7 @@ for `gh`, IDE, or PE local machine in the execution path.
 | Worktree isolation | orchestrator-sh | WorkspacePrep |
 | Forge API auth | GitHub App installations | ForgeClient; no `gh` in cloud |
 
-Full peer comparison and moat analysis: [§12 Market landscape](./gateflow-programme-vision.md#12-market-landscape-and-differentiation).
+Full peer comparison and moat analysis: [§13 Market landscape](./gateflow-programme-vision.md#13-market-landscape-and-differentiation).
 
 We **implement** Prayog-native execution over pinned `workflow.yaml` — we do not
 fork Spec Kit or embed LangGraph as the product core.
@@ -322,29 +331,78 @@ implemented — skills and Gateflow share semantics, not duplicate logic.
 
 ---
 
-## 9. Roadmap horizons
+## 9. Programme maturity and lift-on-metrics
+
+World-class teams (golden path / paved road → harness → agentic factory) do
+**not** maximize unattended agents on day one. Knowledge bakes into the path;
+automation widens when the path is trustworthy.
+
+### Maturity stages
+
+```text
+A — Greenfield paved road     Launchpad scaffolds + harness install
+B — Harnessed manual          Skills + humans; agents as copilots
+C — Ripe for automation       Specs, tests, constitutions durable; dispatch gaps hurt
+D — Fleet Mission Control     Gateflow operates onboarded repos; lift on metrics
+```
+
+| Stage | Owner | Gateflow role |
+|-------|-------|---------------|
+| **A Greenfield** | **Launchpad** | None — do not create repos from Gateflow |
+| **B Harnessed manual** | Eng + skills pin | Optional observe; PE still drives skills |
+| **C Ripe** | Programme | Orchestrate eligible nodes; collect efficacy |
+| **D Fleet Mission Control** | gateflow + gateflow-ops | Onboard harness-enabled repos; cockpit; promote nodes when green |
+
+Brownfield **onboarding** (already harness-enabled) is a Gateflow/ops concern.
+Greenfield **creation** stays Launchpad.
+
+### Autonomy policy (locked 2026-07-27)
+
+| Stance | Rule |
+|--------|------|
+| **Destination** | Agents do **most of the work between intentional controls** |
+| **Default today** | Human checkpoints and conservative `dispatch: manual` where efficacy is unproven |
+| **Lift rule** | Widen `orchestrated` surface or reduce mid-chain PE only when **RunStore metrics** justify it |
+| **Never silent** | No quiet removal of gates; promotion is an explicit pin / programme decision |
+| **Merge** | Human-accountable merge remains default; policy-gated auto-merge is H4+ only if opted in |
+
+### Promotion criteria (programme learning — thresholds TBD in ops)
+
+A node class or lane may move toward more automation when, over an agreed window:
+
+1. **Unattended hop success** — orchestrated stages complete without mid-chain PE skill invoke  
+2. **Rework / findings rate** — below programme threshold  
+3. **Fail-fast honesty** — no silent fake success on live runners  
+4. **Gate dwell** — time on `human-checkpoint` is mostly judgment, not distrust of the prior hop  
+
+Mission Control exists to make these signals visible so PE can **decide** lifts —
+not to replace judgment with a dashboard.
+
+---
+
+## 10. Roadmap horizons
 
 Horizons are **direction**, not committed release dates.
 
-### Horizon 1 — Execution engine (MVP)
+### Horizon 1 — Execution engine (MVP) — largely achieved (001–003)
 
 - GitHub App webhooks + **ForgeClient** (REST/GraphQL outbound; **no `gh` CLI**)
-- Run store (PostgreSQL), handoff parser, workflow resolver
-- Cursor SDK **AgentRunner** adapter; **AgentRunner interface** documented for H2
-- ToolProvider slots wired; all providers `none`
-- Retry budget; run progress via **Notifier** (H1: GitHub comments through ForgeClient only)
-- gateflow-ops: read-only JSON API stub
-- Container/cloud-ready deployment path
-- Metrics v0: wave runs **plus skill stage events** (orchestrated + observed where handoffs/labels exist); **runner + model_id** on every orchestrated dispatch
-- **Dogfood:** build Gateflow via **manual SDD** (current delivery process)
+- Run store (PostgreSQL), handoff parser, workflow resolver, API wave-start
+- **Live** Cursor SDK **AgentRunner** (local worker); stubs fail-closed for other runners
+- ToolProvider slots unused (`none`); Notifier = GitHub comments
+- Metrics: stage + wave cycle-time fields; runner / model dims on orchestrated stages
+- **Implement-lane** live prove-it done; **spec-lane** prove-it = 003 W2 + dogfood PRD
+- gateflow-ops: APIs exist; **UI Mission Control = H2 / INIT-004**
 
-### Horizon 2 — Observability and multi-runner
+### Horizon 2 — Mission Control, efficacy, multi-runner
 
-- gateflow-ops UI (runs, waves, drill-down)
-- **OpenCode + Claude Code AgentRunner adapters**; model profiles per skill
-- **Optional ToolProvider** enablement (Graphify / MCP / scanners per stage)
-- **Optional Notifier** backends (Slack, Teams) — slot only; not H1
+- **gateflow-ops Mission Control** — onboard harness-enabled repos; run cockpit
+  (pin graph projection + node timeline + metrics + GitHub PR links)
+- Expand **orchestrated** surface where metrics are green (spec-lane, then others)
+- **OpenCode + Claude Code** AgentRunner adapters when Cursor efficacy is proven
+- Optional Notifier backends (Slack, Teams); optional ToolProvider enablement
 - Programme board **read** (visibility only; no auto-move)
+- Workflow **projection** in DB for UI/history (not a second process SSOT)
 
 ### Horizon 3 — Intelligence and gateway
 
@@ -352,35 +410,56 @@ Horizons are **direction**, not committed release dates.
 - Shared codegraph / MCP provider behind `ToolProvider`
 - Cost attribution, quality scorecards, manual vs automated comparison
 - Optional: Temporal-grade durability if fleet scale demands it
+- Optional lab: graph experiment runtime (e.g. LangGraph) **explicitly non-SSOT**
 
 ### Horizon 4 — Policy and fleet (explicit non-goals until proven)
 
-- Policy-gated auto-merge (only if programme explicitly opts in)
+- Policy-gated auto-merge (only if programme explicitly opts in **after** long green metrics)
 - PM-lane automation
 - Cross-initiative queue optimization
+- Graph studio that opens **prayog-skills PRs** (edit path = git, not silent DB mutation)
 
 ---
 
-## 10. Dogfood strategy
+## 11. Dogfood strategy
 
 ```text
-Phase A — Build Gateflow (manual SDD)
-  INIT-GATEFLOW-001-outline → impact map → gateflow spec PR → W0/W1 by hand
+Phase A — Build Gateflow (manual / early SDD)           [largely done — 001–003]
+  Control plane + API waves + live Cursor implement-lane
 
-Phase B — Gateflow runs Gateflow (automated SDD)
-  Label-triggered waves on gateflow repo once engine is stable
+Phase B — Gateflow runs programme delivery (automated SDD)
+  Spec-lane prove-it on a real next PRD (004 dogfood subject)
+  Pin CTR-01: spec-lane skills dispatch: orchestrated
+  Human checkpoints ON — collect firsthand efficacy metrics
 
-Phase C — Programme rollout
-  Client-style initiatives on automation with metrics baseline
+Phase C — Fleet Mission Control + lift-on-metrics
+  Onboard harness-enabled repos; operate from ops cockpit
+  Promote nodes / reduce mid-chain PE only when metrics green
+
+Phase D — Broader programme / client-style rollout
+  Automation baseline + scorecards across repos
 ```
 
 ---
 
-## 11. Success metrics
+## 12. Success metrics
 
-Metrics serve **operational control** (wave runs) and **contract profiling**
-(every `workflow.yaml` skill and gate interval) so the programme can enhance
-prayog-skills with evidence. All telemetry lands in **PostgreSQL** (RunStore).
+Metrics serve **operational control**, **contract profiling**, and **autonomy
+promotion** (lift-on-metrics). All telemetry lands in **PostgreSQL** (RunStore).
+
+### North-star (autonomy destination)
+
+| Metric | Meaning |
+|--------|---------|
+| **Unattended hop rate** | Orchestrated stages completed without mid-chain PE skill invocation |
+| **Agent-authored stage share** | Stages with live runner (e.g. `runner=cursor`) vs manual gaps |
+| **Rework / findings rate** | Follow-up findings loops or fixups after agent stages |
+| **Gate dwell time** | Time at `human-checkpoint` / `external-action` (judgment vs distrust) |
+| **Contract-only stops** | Waves that stop only at typed contract nodes — not ad hoc PE rescue |
+
+Cursor-class “~30% agent PRs” is an **aspirational industry signal**, not a
+near-term Gateflow KPI. We adopt the **direction** (agents do the work between
+controls) and require **firsthand green metrics** before lifting brakes.
 
 ### Skill and gate profiling (programme learning)
 
@@ -396,7 +475,7 @@ Record **start and end** per workflow node where observable:
 
 Aggregates per skill node (p50/p95 duration, first-pass `pass` rate, findings
 rate) compare **manual vs automated** waves and **across programmes** — inputs
-for prayog-skills tuning, not Gateflow process changes.
+for prayog-skills tuning **and** for lift decisions (§9).
 
 **Model efficacy:** same aggregates **split by `runner`, `model_profile`, and
 `model_id`** per `workflow_node` so programmes can tune cost/quality via
@@ -404,10 +483,9 @@ for prayog-skills tuning, not Gateflow process changes.
 
 ### Run metrics (Gateflow core)
 
-- **Unattended completion rate** — label → wave evidence ready (next
-  `human-checkpoint` after dispatchable `skill` nodes) without mid-chain PE
-  skill invocation
-- **Wave run duration** — trigger to handoff ready for human review
+- **Unattended completion rate** — wave path to next `human-checkpoint` without
+  mid-chain PE skill invocation
+- **Wave run duration** — trigger / API accept to stop at contract or terminal
 - **Retry count** — `findings` cycles on workflow-defined loop paths per wave
 - **Human intervention count** — should cluster at `human-checkpoint` and
   `external-action` nodes per contract
@@ -421,16 +499,23 @@ for prayog-skills tuning, not Gateflow process changes.
 ### Benchmark framing
 
 Compare against teams using Cursor-only or autonomous agents without SDD gates.
-Gateflow wins on **governed automation + visibility**, not raw “fastest PR.”
+Gateflow wins on **governed automation + visibility + evidence-gated lift**, not
+raw “fastest PR” or ungoverned agent-merge share.
 
 ---
 
-## 12. Market landscape and differentiation
+## 13. Market landscape and differentiation
 
 Research across 2025–2026 engineering-agent products shows convergent architecture:
 **process SSOT in repo artifacts → control plane outside agents → human/external
 stops → durable run state → pluggable runners**. Gateflow sits in Layer 3 of
 that stack; it is not a coding agent and not a workflow SSOT replacement.
+
+Industry maturity (golden path → harness → agentic factory; Cursor ~30–35%
+internal agent-merged PRs as a **throttle** signal) informs our **destination**.
+Enterprise governance (accountable merge, risk-tiered review) informs our
+**brakes**. Gateflow builds both: maximize agent work between intentional
+controls; lift controls only when metrics are green (§9).
 
 ```text
 Layer 4 — Programme / factory     prayog-meta · launchpad · catalog
@@ -462,12 +547,13 @@ Sources are indicative (Jul 2026); links in References below.
 |---------|----------|
 | Control plane ≠ coding agent | Core positioning (§3) |
 | Workflow/policy in versioned artifacts | Consumes prayog-skills SSOT — does not own graph |
-| Human gates sacred at platform level | `human-gates-never-auto-transition` |
+| Human gates sacred at platform level | `human-gates-never-auto-transition` until lift criteria met |
 | Durable handoffs, not chat | Handoff envelope + RunStore |
 | Deterministic orchestration routing | PolicyEngine; no LLM in resolver |
 | Pluggable agent runners | AgentRunner slot (Cursor → …) |
 | Workspace / worktree isolation | WorkspacePrep slot |
-| Programme metrics vs raw speed | Unattended completion, retry count, wave duration |
+| Programme metrics vs raw speed | Unattended hops, rework, gate dwell, wave duration |
+| Evidence before autonomy | Lift-on-metrics (§9) |
 
 ### Where Gateflow differentiates
 
@@ -483,57 +569,63 @@ Sources are indicative (Jul 2026); links in References below.
 
 3. **Governed automation hypothesis** — Optimise for unattended wave completion
    **within contract stops** and programme learning (manual vs automated baseline),
-   not ticket-to-merged-PR autonomy (Optio) or multi-day autonomous missions
-   (Factory/Devin).
+   not ticket-to-merged-PR autonomy (Optio) or ungoverned agent-merge share alone.
 
-4. **Explicit non-goals as product choice** — No auto-merge, no auto board moves,
-   no upstream gate automation in H1. Aligns with GitHub Copilot guardrails
-   (“Copilot not Autopilot”); diverges from full-autonomy orchestrators by design.
+4. **Explicit non-goals as product choice** — No auto-merge, no auto board moves
+   by default. Aligns with GitHub Copilot guardrails (“Copilot not Autopilot”);
+   diverges from full-autonomy orchestrators by design until metrics earn H4.
 
 5. **Slots without preset stack** — ToolProvider, ModelGateway, Notifier are
    extension points defaulting to `none` in MVP. Avoids mandatory codegraph or
-   LangGraph-as-core (contrast Open SWE).
+   LangGraph-as-core (contrast Open SWE). Graph DBs / experiment runtimes stay
+   **projections or labs**, not a second process SSOT.
 
 ### Landscape-informed horizon notes
 
 | Signal from market | Gateflow response |
 |--------------------|-------------------|
-| Optio / OpenSymphony reconciliation loops | H1 spec: idempotent webhooks + periodic resync |
+| Optio / OpenSymphony reconciliation loops | H1: idempotent webhooks + periodic resync |
 | CI / review feedback resume | H2: workflow-valid resume on external signals (not ad hoc chat) |
-| Ops UI expectation (Optio, OpenSymphony TUI, Factory Mission Control) | H1 JSON stub; H2 gateflow-ops UI |
-| Multi-runner day one (Optio) | H1 Cursor only if adapter interface in spec; H2 runners |
-| Auto-merge pressure (Optio, Cursor Approval Agents) | H4 opt-in only; never default for pilot |
+| Ops UI / Factory Mission Control | H2: gateflow-ops Mission Control (INIT-004) |
+| Multi-runner day one (Optio) | H1 Cursor live; H2 runners after Cursor efficacy |
+| Cursor ~30–35% agent PRs | Destination signal; Gateflow KPI = unattended hops + lift-on-metrics |
+| Auto-merge pressure (Optio, Cursor Approval Agents) | H4 opt-in only; never default until long green history |
 
 **Verdict:** The market validates Gateflow’s layer and patterns. Differentiation
-is **honoring existing Prayog workflow SSOT** plus **programme-level governed
-automation** — not competing with Spec Kit or agent IDEs on process definition.
+is **honoring existing Prayog workflow SSOT** plus **evidence-gated autonomy** —
+not competing with Spec Kit or agent IDEs on process definition, and not copying
+agent-merge share without brakes.
 
 ---
 
-## 13. Initiative sequence
+## 14. Initiative sequence
 
 | Order | Artifact | Purpose |
 |-------|----------|---------|
-| 1 | This vision doc | Programme north star (planning/) |
-| 2 | Outlines → Draft PRDs (parallel) | [INIT-GATEFLOW-001](../prd/INIT-GATEFLOW-001-outline.md) + [INIT-PRAYOG-SKILLS-002](../prd/INIT-PRAYOG-SKILLS-002-outline.md) |
-| **3** | **Skills pin delivered** | **INIT-PRAYOG-SKILLS-002 as `v0.5.0-rc.2` — Gateflow `dispatch` unblocked** |
-| 4 | Impact maps | **gateflow** (W1); gateflow-ops W2+; prayog-skills pin **`v0.5.0-rc.2`** |
-| 5 | Implementation | Gateflow spec / W0–W1 on pin `v0.5.0-rc.2` |
-| 6 | Follow-on INITs | Agent gateway, tools, ops UI (as horizons land) |
+| 1 | This vision doc | Programme north star (planning/) — maturity + lift-on-metrics |
+| 2 | Skills pin | INIT-PRAYOG-SKILLS-002 → **`v0.5.0-rc.2`** (`dispatch`) — delivered |
+| 3 | Control plane | INIT-GATEFLOW-001 — delivered |
+| 4 | API / platform readiness | INIT-GATEFLOW-002 — delivered (eng) |
+| 5 | Live Cursor + lanes | INIT-GATEFLOW-003 — implement-lane done; **W2 spec-lane** with 004 dogfood |
+| 6 | Mission Control | **INIT-GATEFLOW-004** — ops cockpit + onboard harnessed repos + efficacy visibility |
+| 7 | Follow-on | Second runner, Slack, ToolProvider, gateway — as metrics and horizons allow |
 
 ---
 
-## 14. Open decisions
+## 15. Open decisions
 
 | # | Decision | Lean |
 |---|----------|------|
 | 1 | Metrics SSOT | PostgreSQL events in Gateflow RunStore (all envs); export later |
 | 2 | LiteLLM placement | Separate gateway service when Horizon 3 starts |
-| 3 | First automated dogfood wave | After W0 engine merge, W1 via label |
+| 3 | Autonomy destination | **Resolved (2026-07-27)** — agents do most work between intentional controls; checkpoints default on; **lift-on-metrics** |
 | 4 | prayog-skills pin | **`v0.5.0-rc.2`** with `dispatch` (**INIT-PRAYOG-SKILLS-002 delivered**) |
 | 5 | ForgeClient auth in dev | App installation token only vs PAT for local pilot |
 | 6 | `dispatch: observed` enum | Deferred from rc-2 v1 — intentional; not a Gateflow delivery blocker |
 | 7 | Joint Gate 1 / pin timing | **Resolved** — pin **`v0.5.0-rc.2`** delivered; Gateflow unblocked |
+| 8 | Numeric lift thresholds | TBD after firsthand 003 W2 / 004 efficacy samples in Mission Control |
+| 9 | Greenfield vs onboard | **Resolved** — Launchpad creates; Gateflow onboards harness-enabled repos |
+| 10 | First Mission Control INIT | INIT-GATEFLOW-004 outline next (after this vision bump) |
 
 ---
 
@@ -560,3 +652,5 @@ automation** — not competing with Spec Kit or agent IDEs on process definition
 - [Cursor Cloud Agents](https://cursor.com/docs/cloud-agent) — background agents + Automations API
 - [Keviq Core](https://github.com/Keviqai/keviq-core) — agent control-plane infrastructure (approval gates, lineage)
 - Industry framing: [How AI Agents Are Reshaping Software Delivery in 2026](https://hackernoon.com/how-ai-agents-are-reshaping-software-delivery-in-2026) (HackerNoon)
+- Autonomy signal: Cursor cloud agents ~30–35% internal agent-merged PRs (2026) — destination throttle; Gateflow lifts on metrics (§9, §12)
+- Platform maturity: golden path / paved road (Spotify, Netflix, Google) — greenfield factory vs brownfield onboard
