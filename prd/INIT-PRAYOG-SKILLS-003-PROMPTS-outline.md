@@ -56,8 +56,11 @@ Mental model:
 ```text
 /<skill> + versioned prompt + bound inputs
   → render → outcome{prompt_id, prompt_revision}
+  → hand off rendered message (invoke skill)
   → orchestrator persists (out of this INIT)
 ```
+
+“Hand off / invoke” ≠ workflow `dispatch` (INIT-002 eligibility).
 
 **Consume model:** packages always present for target dirs; Gateflow (or any
 orchestrator) loads the package when it automates that skill under then-current
@@ -123,8 +126,16 @@ workflow policy. Humans not required to use the package.
 
 ### Shared variables (v1)
 
-`ticket`, `initiative`, `handoff_path`, `workspace`, `skill_id` — shared meanings
-locked; each schema sets `required` (recommended defaults are guidance only).
+| Name | v1 default `required` |
+|------|------------------------|
+| `ticket` | true |
+| `initiative` | false |
+| `handoff_path` | true |
+| `workspace` | true |
+| `skill_id` | true |
+
+Shared meanings locked; **v1 schemas MUST use these defaults** (deviation =
+Decision + MAJOR).
 
 ### Template
 

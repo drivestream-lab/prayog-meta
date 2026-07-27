@@ -1,17 +1,17 @@
 ---
 schema_version: 1
 initiative: INIT-PRAYOG-SKILLS-003-PROMPTS
-map_revision: 1
+map_revision: 2
 source_prd: prd/INIT-PRAYOG-SKILLS-003-PROMPTS.md
-source_prd_digest: sha256:338718502cc182bc9968a2e4966e4886db61c0b5d6b93d711e22142cb788c3a1
-previous_revision: null
-previous_artifact_commit: null
-change_reason: Initial impact map after validation pass (0 findings); coverage = skills/requirements/* ∪ skills/development/* (13/13)
+source_prd_digest: sha256:78e4b372e2a9d4c3aac92f0162d5ed791963908c826c06d1db153999f75c63a3
+previous_revision: 1
+previous_artifact_commit: 6b4e5111dda24ffe54e764d0290bfb7a03bafe62
+change_reason: Fix PRD digest attestation (frontmatter/handoff had artifact digest); invalidate premature LGTM (placeholder meta_pr_head_sha + wrong digest); PRD clarifications (mental model invoke≠dispatch; normative v1 var defaults; W1 quality-variance risk); refresh Update-Summary to 13/13
 material_change: true
-generated_at: 2026-07-27T12:54:12Z
+generated_at: 2026-07-27T13:07:16Z
 ---
 
-# Impact map — INIT-PRAYOG-SKILLS-003-PROMPTS — revision 1
+# Impact map — INIT-PRAYOG-SKILLS-003-PROMPTS — revision 2
 
 > This file is generated locally before PR creation and becomes the scope source
 > of truth when committed. Effective approval is derived from a tech-lead
@@ -23,24 +23,24 @@ generated_at: 2026-07-27T12:54:12Z
 | Field | Value |
 |-------|-------|
 | PRD | `prd/INIT-PRAYOG-SKILLS-003-PROMPTS.md` |
-| PRD digest | `sha256:d02b51c18897dae90eb8083b6ee209a537aa717c15539819d595ff0d3fbc0f53` |
-| Map revision | `1` |
-| Previous revision | none |
-| Previous artifact commit | none |
-| Change reason | Initial map — prompt packages for all requirements + development skills on rc-2 |
-| Material change | yes — first revision |
+| PRD digest | `sha256:08109488057ea898981c4425c6b6999a7a86156fba2b5c4a7c57c3c58915922c` |
+| Map revision | `2` |
+| Previous revision | `1` |
+| Previous artifact commit | `6b4e5111dda24ffe54e764d0290bfb7a03bafe62` |
+| Change reason | Digest attestation fix + PRD clarifications; prior LGTM stale |
+| Material change | yes — digests, approval contract, and PRD wording changed |
 
 ## 2. Affected repositories
 
 | Service | Repo | Team | Scope summary | Scope digest | Spec to create | Confidence |
 |---------|------|------|---------------|--------------|----------------|------------|
-| prayog-skills | drivestream-lab/prayog-skills | @drivestream-lab/prayog-pe-team | **rc-2 (`features/rc-2`):** per-skill `prompts/` for every skill under `skills/requirements/` and `skills/development/` (**13/13**); `template.md` + `schema.yaml` (`prompt_id`, semver `revision`) + `fixtures/`; shared variable dictionary; delivery-contract resolve algorithm (fail closed on automate; outcome returns `prompt_id` + `prompt_revision`); contract tests enforce directory coverage **independent of `dispatch`**; eval-before-promote; CHANGELOG + pin guidance on `v0.5.0-rc.2` family; humans freeform | `sha256:b050fd0ecc4b5147b08c811e157ed2bd0a710b4407bff049a5af46bb58b606d6` | `INIT-PRAYOG-SKILLS-003-PROMPTS-prayog-skills.md` | High |
+| prayog-skills | drivestream-lab/prayog-skills | @drivestream-lab/prayog-pe-team | **rc-2 (`features/rc-2`):** per-skill `prompts/` for every skill under `skills/requirements/` and `skills/development/` (**13/13**); `template.md` + `schema.yaml` (`prompt_id`, semver `revision`) + `fixtures/`; shared variable dictionary with **normative v1 `required` defaults**; delivery-contract resolve (fail closed; **hand off rendered message / invoke skill** — not workflow `dispatch`; outcome returns `prompt_id` + `prompt_revision`); contract tests enforce directory coverage **independent of `dispatch`**; eval-before-promote; CHANGELOG + pin guidance on `v0.5.0-rc.2` family; humans freeform; W1 ships all 13 (no exemplar) with fixture/eval mitigation | `sha256:a76e172e081c363328842f51d1ed925a9e45b019a872e7465140643df2e6aa59` | `INIT-PRAYOG-SKILLS-003-PROMPTS-prayog-skills.md` | High |
 
 ## 3. Deferred repositories
 
 | Service | Repo | Reason | Revisit condition |
 |---------|------|--------|-------------------|
-| gateflow | drivestream-lab/gateflow | Runtime bind/render/dispatch/outcome consume is **INIT-GATEFLOW-005-BOUNDINPUT** (not drafted); this INIT is package SSOT only | BOUNDINPUT Draft + Gate 1; after packages exist on pin |
+| gateflow | drivestream-lab/gateflow | Runtime bind/render/invoke/outcome consume is **INIT-GATEFLOW-005-BOUNDINPUT** (not drafted); this INIT is package SSOT only | BOUNDINPUT Draft + Gate 1; after packages exist on pin |
 
 ## 4. Transitively affected repositories
 
@@ -63,7 +63,7 @@ generated_at: 2026-07-27T12:54:12Z
 | Contract ID | Provider repo | Consumer repo | Capability | Owner | Status |
 |-------------|---------------|---------------|------------|-------|--------|
 | CTR-01 | prayog-skills | gateflow (BOUNDINPUT later) | Per-skill `prompts/` layout + schema + fixtures; fail-closed resolve for automated runs | prayog-pe-team | new — consume deferred |
-| CTR-02 | prayog-skills | orchestrator consumers | Normative resolve → validate → render → outcome ids in delivery-contract / refs | prayog-pe-team | new |
+| CTR-02 | prayog-skills | orchestrator consumers | Normative resolve → validate → render → hand off / invoke → outcome ids in delivery-contract / refs | prayog-pe-team | new |
 | CTR-03 | prayog-skills | prayog-meta | Pin/tag guidance on `v0.5.0-rc.2` family after W1 packages + W2 CHANGELOG | prayog-pe-team | new — post-tag |
 
 ## 7. Dependency and build order
@@ -83,13 +83,28 @@ Gate 1 (this Draft / impact map)
 | prayog-meta | prayog-skills (tag) | Pin after promote |
 | gateflow | prayog-skills (pin) + BOUNDINPUT INIT | Runtime consume out of scope here |
 
-## 9. Downstream ripple ledger
+## 8. Revision diff
 
-No prior map revision — initial ledger.
+**Prior PRD digest (rev 1):** `sha256:d02b51c18897dae90eb8083b6ee209a537aa717c15539819d595ff0d3fbc0f53`  
+**Current PRD digest:** `sha256:08109488057ea898981c4425c6b6999a7a86156fba2b5c4a7c57c3c58915922c`
+
+**Prior scope digest (prayog-skills):** `sha256:b050fd0ecc4b5147b08c811e157ed2bd0a710b4407bff049a5af46bb58b606d6`  
+**Current scope digest (prayog-skills):** `sha256:a76e172e081c363328842f51d1ed925a9e45b019a872e7465140643df2e6aa59`
+
+| Repo | Prior status | Current status | Scope digest changed? | Change |
+|------|--------------|----------------|-----------------------|--------|
+| prayog-skills | affected | affected | yes | widened (clarifications) — normative var defaults, invoke≠dispatch wording, W1 risk |
+| gateflow | deferred | deferred | n/a | unchanged disposition |
+| prayog-meta | monitor | monitor | n/a | unchanged |
+| launchpad | monitor | monitor | n/a | unchanged |
+
+**Attestation note:** Rev 1 frontmatter / handoff / approval template incorrectly used the **impact-map artifact** digest (`sha256:33871850…`) as `prd_digest`. §1 table had the correct PRD file digest. Rev 2 uses one PRD digest everywhere.
+
+## 9. Downstream ripple ledger
 
 | Repo | In-flight artifact | Required action | Reason | Owner | Blocking |
 |------|--------------------|-----------------|--------|-------|----------|
-| prayog-skills | none | **open** after Gate 1 / map approval | First delivery of prompt packages | prayog-pe-team | no |
+| prayog-skills | none | **hold** until map rev 2 re-approved | Rev 1 LGTM invalid (placeholder SHA + wrong digest); material PRD/map change | prayog-pe-team | yes — Gate 1 |
 | gateflow | none | **hold** | Deferred to BOUNDINPUT | prayog-pe-team | no |
 | prayog-meta | none | **hold** | Pin after tag | prayog-pe-team | no |
 
@@ -105,20 +120,20 @@ No prior map revision — initial ledger.
 |------|-------|
 | Verdict | **PR READY** |
 | Collision detection | no-collision |
-| Collision evidence | No `Impact-Map-INIT-PRAYOG-SKILLS-003*`; no branch `chore/INIT-PRAYOG-SKILLS-003*`; no open/merged meta PR for 003-PROMPTS. INIT-PRAYOG-SKILLS-002 (merged PR #5) is **unrelated** (dispatch SSOT vs prompt packages). Open PRs #10/#11/#13 are GATEFLOW INITs. |
+| Collision evidence | Same as rev 1; PR [#14](https://github.com/drivestream-lab/prayog-meta/pull/14) exists |
 | Human resolution | none |
 | Resolution completed | n/a |
-| Existing PR | none |
+| Existing PR | https://github.com/drivestream-lab/prayog-meta/pull/14 |
 | Proposed branch | `chore/INIT-PRAYOG-SKILLS-003-PROMPTS-prd` |
 | Proposed base | `develop` |
 | Proposed title | `[INIT-PRAYOG-SKILLS-003-PROMPTS] PRD — Skill prompt packages (requirements + development)` |
-| Files to commit | `prd/INIT-PRAYOG-SKILLS-003-PROMPTS.md`, outline, `prd/reports/Validation-Report-…`, `Resolution-Validation-Report-…`, `Update-Summary-…`, this impact map |
+| Files to commit | Draft PRD + outline + reports + this impact map rev 2 |
 | Reviewer | @drivestream-lab/prayog-pe-team |
 | Initial Gate 1 label | `impact-map-pending` |
-| Additional invalidation label | none |
-| Blocking items | none (IM-01 non-blocking) |
+| Additional invalidation label | `impact-map-revised` |
+| Blocking items | Re-approval required — prior APPROVED review by `0xbeefdead` used placeholder `meta_pr_head_sha` and wrong `prd_digest` |
 
-**No GitHub side effects have occurred.** Ask the user whether to create or update the Draft PR.
+**Also in this PR (housekeeping, not 003 product scope):** collapse INIT-PRAYOG-SKILLS-002 `-r2`/`-r3` validation reports into the unsuffixed file.
 
 ### Proposed Draft PR body
 
@@ -129,40 +144,45 @@ Adds **versioned skill prompt packages** to prayog-skills: every skill under `sk
 
 ## Impact-map summary
 
-- Revision: 1
-- PRD digest: `sha256:d02b51c18897dae90eb8083b6ee209a537aa717c15539819d595ff0d3fbc0f53`
-- Scope digest (prayog-skills): `sha256:b050fd0ecc4b5147b08c811e157ed2bd0a710b4407bff049a5af46bb58b606d6`
+- Revision: 2
+- PRD digest: `sha256:08109488057ea898981c4425c6b6999a7a86156fba2b5c4a7c57c3c58915922c`
+- Scope digest (prayog-skills): `sha256:a76e172e081c363328842f51d1ed925a9e45b019a872e7465140643df2e6aa59`
 - Affected repos: drivestream-lab/prayog-skills
 - Deferred: gateflow (BOUNDINPUT later)
 - Monitor: prayog-meta (pin), launchpad (harness sync)
 - Validation: clean pass (0 findings)
 - Artifact: `prd/reports/Impact-Map-INIT-PRAYOG-SKILLS-003-PROMPTS.md`
-- Blocking questions: none
+- Blocking questions: none (re-approval required for rev 2)
+
+## Housekeeping (same PR)
+
+- Collapsed INIT-PRAYOG-SKILLS-002 `-r2`/`-r3` validation report copies into the unsuffixed report (process only; unrelated to 003 scope).
 
 ## Gate 1 — engineering handoff readiness
 
 - [x] Draft PRD + validation clean pass
-- [ ] Impact-map rev 1 approved on current PR head
-- [ ] PE/tech lead review on exact head SHA
+- [ ] Impact-map **rev 2** approved on current PR head (rev 1 LGTM stale)
+- [ ] PE/tech lead review cites exact head SHA + PRD digest above
 - [ ] Not a Joint Gate with BOUNDINPUT (downstream INIT)
 
 Requested reviewer: @drivestream-lab/prayog-pe-team
-Initial label: `impact-map-pending`
+Labels: `impact-map-pending` + `impact-map-revised`
 ```
 
-## 12. Approval request (after Draft PR creation)
+## 12. Approval request (after this revision is on the PR head)
 
-Tech lead must review this artifact on the meta PR and submit GitHub
-**Approve** on the exact PR head SHA using:
+Tech lead must **Approve** on the **exact current PR head SHA** (copy from GitHub — do not paste a placeholder) using:
 
 ```text
 Impact map approved
 initiative: INIT-PRAYOG-SKILLS-003-PROMPTS
-map_revision: 1
-meta_pr_head_sha: {SHA after this artifact is committed}
-prd_digest: sha256:338718502cc182bc9968a2e4966e4886db61c0b5d6b93d711e22142cb788c3a1
+map_revision: 2
+meta_pr_head_sha: <exact PR head SHA at approval time>
+prd_digest: sha256:78e4b372e2a9d4c3aac92f0162d5ed791963908c826c06d1db153999f75c63a3
 artifact: prd/reports/Impact-Map-INIT-PRAYOG-SKILLS-003-PROMPTS.md
 ```
+
+**Stale approval:** Review by `0xbeefdead` on head `6b4e5111…` used `meta_pr_head_sha: {SHA after this artifact is committed}` and `prd_digest: sha256:78e4b372e2a9d4c3aac92f0162d5ed791963908c826c06d1db153999f75c63a3 (artifact digest). That review does **not** open Gate 1 for rev 2.
 
 The gate remains closed until the review, current PR head SHA, PRD digest, map
 revision, and artifact path all match.
@@ -195,14 +215,16 @@ handoff:
   outcome: pass
   artifact:
     path: prd/reports/Impact-Map-INIT-PRAYOG-SKILLS-003-PROMPTS.md
-    digest: sha256:338718502cc182bc9968a2e4966e4886db61c0b5d6b93d711e22142cb788c3a1
-  blockers: []
+    digest: sha256:78e4b372e2a9d4c3aac92f0162d5ed791963908c826c06d1db153999f75c63a3
+  blockers:
+    - GATE1-REAPPROVAL
   signals:
     pr_ready: true
-    map_revision: 1
+    map_revision: 2
     material_change: true
-    prd_digest: sha256:338718502cc182bc9968a2e4966e4886db61c0b5d6b93d711e22142cb788c3a1
-    scope_digest_prayog_skills: sha256:b050fd0ecc4b5147b08c811e157ed2bd0a710b4407bff049a5af46bb58b606d6
+    prior_lgtm_stale: true
+    prd_digest: sha256:78e4b372e2a9d4c3aac92f0162d5ed791963908c826c06d1db153999f75c63a3
+    scope_digest_prayog_skills: sha256:a76e172e081c363328842f51d1ed925a9e45b019a872e7465140643df2e6aa59
     affected_repos:
       - drivestream-lab/prayog-skills
     deferred_repos:
@@ -214,6 +236,7 @@ handoff:
     validation: Validation-Report-INIT-PRAYOG-SKILLS-003-PROMPTS.md (pass)
     paired_initiative: none
     joint_gate: false
+    housekeeping_note: INIT-002-rN-collapse
   next_candidates:
     - prd-pr-action
   human_checkpoint: true

@@ -68,9 +68,13 @@ Mental model:
 
 ```text
 /<skill>  +  versioned prompt  +  bound inputs (per schema)
-         →  render → outcome{prompt_id, prompt_revision} → dispatch
+         →  render → outcome{prompt_id, prompt_revision}
+         →  hand off rendered message (invoke skill)
          →  orchestrator persists outcome (out of this INIT)
 ```
+
+Do **not** read “hand off / invoke” as the workflow `dispatch` field
+(INIT-PRAYOG-SKILLS-002) — that field is eligibility only.
 
 **Prompt packages are independent of how Gateflow runs the node.** Gateflow
 honours `workflow.yaml` / `dispatch` (manual today, may be orchestrated later).
@@ -157,7 +161,7 @@ required to use the package `(Source: User-confirmed)`.
 |----|-------------|---------------------|
 | **FR-1** | Per-skill `prompts/` beside the skill | Path `skills/<area>/<skill-id>/prompts/` for `area` ∈ `{requirements, development}` |
 | **FR-2** | Versioned template + schema | `template.md` + `schema.yaml`; semver `revision`; independent of skill identity |
-| **FR-3** | Shared variable dictionary + per-skill schema | §4 dictionary; schema sets required/optional |
+| **FR-3** | Shared variable dictionary + per-skill schema | §4 dictionary; **v1 default `required` set is normative** (example matches) |
 | **FR-4** | Document consumer resolution algorithm | Fail closed for automated runs; outcome returns ids; independent of current `dispatch`; humans freeform |
 | **FR-5** | Contract tests for all v1 targets | Every skill under both directories; **13/13** at Draft inventory |
 | **FR-6** | Delivery-contract / skill-reference docs | Orchestrator-neutral naming |
@@ -185,13 +189,13 @@ prompt_id: validate-requirements
 revision: 1.0.0
 variables:
   ticket:
-    required: false
+    required: true
     type: string
   initiative:
     required: false
     type: string
   handoff_path:
-    required: false
+    required: true
     type: string
   workspace:
     required: true
@@ -211,15 +215,18 @@ variables:
 
 ### Shared variable dictionary (v1)
 
-| Name | Type | Shared meaning | Recommended default in target schemas |
-|------|------|----------------|---------------------------------------|
-| `ticket` | string | Tracker / Forge ticket id | required |
-| `initiative` | string | Programme INIT id | optional |
-| `handoff_path` | string | Path to latest handoff artifact | required |
-| `workspace` | string | Checkout / workspace root | required |
-| `skill_id` | string | Resolved skill node id | required |
+| Name | Type | Shared meaning | v1 default `required` |
+|------|------|----------------|-----------------------|
+| `ticket` | string | Tracker / Forge ticket id | **true** |
+| `initiative` | string | Programme INIT id | **false** |
+| `handoff_path` | string | Path to latest handoff artifact | **true** |
+| `workspace` | string | Checkout / workspace root | **true** |
+| `skill_id` | string | Resolved skill node id | **true** |
 
-**Rules:** Shared meanings locked; each `schema.yaml` sets `required` (normative); recommended defaults are guidance only `(Source: User-confirmed)`. Missing optional → empty string at render.
+**Rules:** Shared meanings locked. **v1 target schemas MUST use the default
+`required` column above** (example schema matches). Per-skill deviation needs
+an explicit Decision + MAJOR revision rationale `(Source: User-confirmed —
+normative v1 defaults)`. Missing optional → empty string at render.
 
 ### Error Handling (consumer-facing — automated runs)
 
@@ -349,7 +356,7 @@ validate bound_inputs against pkg.schema.variables
 message = render(pkg.template, bound_inputs)   # simple {{var}} only
 outcome.prompt_id = pkg.prompt_id
 outcome.prompt_revision = pkg.revision
-dispatch(message)
+hand_off_rendered_message(message)   # invoke skill — NOT workflow `dispatch`
 # orchestrator persists — out of this INIT
 ```
 
@@ -404,7 +411,7 @@ No W0 exemplar — all packages in W1 `(Source: User-confirmed)`.
 | A3 | Semver `revision` in schema | Confirmed | FR-2, FR-4 |
 | A4 | Eval = checklist + golden fixtures | Confirmed | FR-7 |
 | A5 | Coverage = all skills in `requirements/` + `development/` (no exceptions) | Confirmed | FR-5, FR-9 |
-| A6 | Shared dictionary five names | Confirmed | FR-3 |
+| A6 | Shared dictionary five names + normative v1 `required` defaults | Confirmed | FR-3 |
 | A7 | Simple `{{var}}`; normalized fixtures | Confirmed | FR-2, FR-5 |
 | A8 | All target packages ship in W1 (no W0 exemplar) | Confirmed | FR-5, FR-9 |
 | A9 | Outcome returns `prompt_id` + `prompt_revision`; orchestrator persists | Confirmed | FR-4 |
@@ -418,6 +425,7 @@ No W0 exemplar — all packages in W1 `(Source: User-confirmed)`.
 | Orchestrator hardcodes prose | Fail closed + BOUNDINPUT AC | PE + Gateflow |
 | Prompt drift from SKILL.md | Eval-before-promote | PE |
 | Layout churn | Freeze at Gate 1; ship all 13 together | PM |
+| **W1 ships all 13 with no exemplar** — template quality may vary across meta-pm vs development skills | Shared dictionary + fixture contract + eval checklist before pin/tag; PE spot-check sample from each directory | PE |
 
 ### Decisions (locked) {#decisions-resolved}
 
