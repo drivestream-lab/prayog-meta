@@ -25,10 +25,9 @@
 | Initiative ID | INIT-GATEFLOW-004 |
 | Programme | prayog |
 | Primary repo | drivestream-lab/gateflow-ops |
-| Supporting repos | drivestream-lab/gateflow (API gaps only — e.g. wave summaries, repo onboarding records), prayog-skills (pin `dispatch` for 003 W2 spec-lane prove-it), prayog-meta (this PRD + impact map) |
-| Out of this INIT | **Launchpad** greenfield / new-repo scaffolding |
-| Depends on | INIT-GATEFLOW-001–002 **finished / delivered**; INIT-GATEFLOW-003 **control plane + live Cursor available** (run/metrics/wave-start APIs; RunStore cycle-time fields FR-30/REQ-30); **003 W2 engg spec-lane prove-it may still be open** and pairs with this PRD as dogfood |
-| Skills pin | Supporting change so engg **spec-lane** skills may be auto-dispatched for 003 W2 dogfood — **no version-bump exit gate** |
+| Supporting repos | drivestream-lab/gateflow (API gaps only — e.g. wave summaries, repo onboarding records); prayog-meta (this PRD + impact map) |
+| Out of this INIT | **Launchpad** greenfield / new-repo scaffolding; **prayog-skills** pin / `dispatch` for engg spec-lane (owned by **INIT-GATEFLOW-003 W2**, not 004) |
+| Depends on | INIT-GATEFLOW-001–002 **finished / delivered**; INIT-GATEFLOW-003 **control plane + live Cursor available** (run/metrics/wave-start APIs; RunStore cycle-time fields FR-30/REQ-30); **003 W2 engg spec-lane prove-it may still be open** and may use this PRD as dogfood subject |
 | Product ids | Canonical `REQ-n`; legacy `FR-n` ≡ `REQ-n` for this programme’s GATEFLOW PRDs (no `CAP-*` in this INIT) |
 | Target users | Engineering (operate waves), tech lead (trust & lift decisions), programme sponsor (agent efficacy between human stops) |
 | Identity (v0) | **Thin ops-user identity** — signed-in operators only; **no roles / RBAC** in this INIT |
@@ -261,10 +260,9 @@ real agent work and Mission Control observability.
 
 **Acceptance criteria:**
 
-- [ ] Supporting **prayog-skills** pin change allows engg **spec-lane** skills
-  (`spec-draft`, `initiative-feasibility`, `spec-technical-review`,
-  `spec-implementation-plan`) to be `dispatch: orchestrated` for prove-it —
-  003 W2 companion `(Source: User-confirmed)`
+- [ ] Programme may use **this PRD** as the live dogfood subject for 003 W2
+  engg **spec-lane** prove-it — pin / `dispatch` for those skills remains
+  **INIT-GATEFLOW-003 W2** delivery, **out of 004** `(Source: User-confirmed)`
 - [ ] Human checkpoints during dogfood remain **on** — expected stops, not failures
 - [ ] Cockpit shows dogfood wave progress with full log pane + efficacy signals
 - [ ] Prove-it success is **003 W2 exit evidence**; Mission Control delivery is
@@ -298,7 +296,7 @@ failed the scorecard `(Source: User-confirmed)`.
 | **FR-37** / **REQ-37** | Efficacy visibility + collect numbers | Display unattended orchestrated progress vs human-wait time; retries/findings where recorded; **collect/retain** usage and efficacy numbers for later target-setting; **no** auto-lift or threshold configuration in v0 `(Source: Outline §11 #13)` |
 | **FR-38** / **REQ-38** | Process display-only | Project pinned workflow for map/timeline; **zero** in-console authoring of delivery rules |
 | **FR-39** / **REQ-39** | Consume Gateflow control plane | Use existing run/metrics/wave APIs; extend gateflow **only** where console needs missing programme capabilities (onboarding records, clearer wave summaries) — not a second orchestrator |
-| **FR-40** / **REQ-40** | Dogfood / 003 W2 engg spec-lane companion | Programme can run this PRD through engg **spec-lane** prove-it with orchestrated skills `spec-draft`, `initiative-feasibility`, `spec-technical-review`, `spec-implementation-plan`; supporting skills-pin delivery in scope; checkpoints remain on `(Source: User-confirmed)` |
+| **FR-40** / **REQ-40** | Dogfood / 003 W2 engg spec-lane companion | Programme may use this PRD as live subject for engg **spec-lane** prove-it; checkpoints remain on; **prayog-skills** pin / `dispatch` for `spec-draft`, `initiative-feasibility`, `spec-technical-review`, `spec-implementation-plan` is **out of 004** (owned by INIT-GATEFLOW-003 W2) `(Source: User-confirmed)` |
 
 **Inherited (unless noted):** INIT-GATEFLOW-001–003 requirements remain in force for
 the control plane Mission Control consumes (003 W2 prove-it may still be open).
@@ -337,6 +335,7 @@ product ids are **`REQ-n`**; legacy `FR-n` ≡ `REQ-n`.
 | Numeric lift playbooks / auto-promotion | Visibility only in v0 `(Source: Vision §9)` |
 | Partial / warning-state fleet membership | Pass/fail only; fail blocks with reasons `(Source: Outline §11 #12)` |
 | Timed cockpit drill as exit KPI | Collect numbers first; set targets after samples `(Source: Outline §11 #13)` |
+| **prayog-skills** pin / `dispatch` for engg spec-lane | Owned by **INIT-GATEFLOW-003 W2**; 004 only reads the pin for process map `(Source: User-confirmed)` |
 | Rebuilding Gateflow control plane | Finished in 001–003 |
 
 ### Product Principles
@@ -474,7 +473,7 @@ Exact retention schema and query APIs are **engineering spec**; product rule is
 |------|------------------------|
 | **gateflow-ops** | Mission Control UI + BFF; fleet onboarding; cockpit; thin ops-user auth |
 | **gateflow** | **Supporting only** — APIs/records if console cannot be met by existing run/metrics contracts |
-| **prayog-skills** | **Supporting** — pin `dispatch` for 003 W2 spec-lane dogfood |
+| **prayog-skills** | **Not affected** — pin / `dispatch` for engg spec-lane stays on **INIT-GATEFLOW-003 W2**; 004 reads pin for process map only |
 | **launchpad** | **No product delivery** |
 | **prayog-meta** | This PRD, impact map, dogfood programme artifacts |
 
@@ -500,7 +499,7 @@ Exact retention schema and query APIs are **engineering spec**; product rule is
 | **Scorecard false positives** | Unready repo enters fleet | Fail-closed; pass/fail only; operator-readable failures |
 | **Process map drift from pin** | Misleading workflow display | Read pin version used at wave start; refresh on run open |
 | **Thin auth too thin for prod** | Shared-console abuse | Network boundary + programme token behind BFF; document v0 limits |
-| **003 W2 / 004 coupling** | Dogfood blocked on pin or UI | Parallel programme tracks; skills-pin supporting delivery explicit in scope |
+| **003 W2 / 004 coupling** | Dogfood blocked if 003 pin work slips | Parallel tracks; skills pin owned by **003**; 004 exit does not require pin change |
 | **Scope creep into Launchpad** | Timeline slip | Non-goals enforced in impact map |
 | **Premature SLAs** | Fake precision without samples | No timed drill / lift thresholds as exit; collect numbers first |
 
@@ -512,7 +511,7 @@ Exact retention schema and query APIs are **engineering spec**; product rule is
 | A2 | INIT-GATEFLOW-003 control plane + live Cursor + run/metrics/wave-start APIs are available; **003 W2 prove-it may still be open** | Confirmed `(Source: User-confirmed)` | REQ-35, REQ-36, REQ-37, REQ-39, REQ-40 |
 | A3 | RunStore stage + wave cycle-time fields (003 REQ-30) are available for cockpit timeline and efficacy numbers | Confirmed `(Source: User-confirmed)` | REQ-36, REQ-37 |
 | A4 | Gateflow can reach onboarded repos via existing ForgeClient for scorecard GitHub access and Open PR | Confirmed `(Source: User-confirmed)` | REQ-33, REQ-36 |
-| A5 | Supporting prayog-skills pin `dispatch` for engg **spec-lane** dogfood is an in-scope **004 Dependency** (supporting delivery) | Confirmed `(Source: User-confirmed)` | REQ-40 |
+| A5 | Engg **spec-lane** pin / `dispatch` for dogfood is owned by **INIT-GATEFLOW-003 W2** — **out of 004** delivery; 004 may still be used as dogfood subject | Confirmed `(Source: User-confirmed)` | REQ-40 |
 
 ### Dependencies
 
@@ -521,7 +520,7 @@ Exact retention schema and query APIs are **engineering spec**; product rule is
 | gateflow run / metrics / wave-start APIs (001–003) | Consume for fleet operate + cockpit |
 | RunStore cycle-time fields (003 REQ-30) | Timeline + efficacy numbers |
 | ForgeClient / GitHub reachability | Scorecard category 4 + Open PR |
-| prayog-skills pin `dispatch` for engg spec-lane | Supporting dogfood (REQ-40) |
+| prayog-skills pin (read for process map) | Display-only projection (REQ-36, REQ-38); pin/`dispatch` edits are **003 W2**, not 004 |
 | prayog-meta service catalog / programme config signals | Scorecard category 3 (always required) |
 
 ### Decisions (resolved) {#decisions-resolved}

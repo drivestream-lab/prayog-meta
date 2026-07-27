@@ -1,17 +1,17 @@
 ---
 schema_version: 1
 initiative: INIT-GATEFLOW-004
-map_revision: 1
+map_revision: 2
 source_prd: prd/INIT-GATEFLOW-004.md
-source_prd_digest: sha256:90fff56a5c2699390177d573e31df1d34f8980aa6553d4cce17128877af2882f
-previous_revision: null
-previous_artifact_commit: null
-change_reason: initial map — Mission Control v0 (gateflow-ops primary; gateflow + prayog-skills supporting)
+source_prd_digest: sha256:4be733db2a69739a2fded2165e68697ca7396525e161e0bd4c53c19242e722ee
+previous_revision: 1
+previous_artifact_commit: a5c59f8346846fb66a04a88621fb16baddf26916
+change_reason: Move prayog-skills from affected → not affected; engg spec-lane pin/dispatch owned by INIT-GATEFLOW-003 W2
 material_change: true
-generated_at: 2026-07-27T10:00:00Z
+generated_at: 2026-07-27T10:25:00Z
 ---
 
-# Impact map — INIT-GATEFLOW-004 — revision 1
+# Impact map — INIT-GATEFLOW-004 — revision 2
 
 > This file is generated locally before PR creation and becomes the scope source
 > of truth when committed. Effective approval is derived from a tech-lead
@@ -23,20 +23,19 @@ generated_at: 2026-07-27T10:00:00Z
 | Field | Value |
 |-------|-------|
 | PRD | `prd/INIT-GATEFLOW-004.md` |
-| PRD digest | `sha256:90fff56a5c2699390177d573e31df1d34f8980aa6553d4cce17128877af2882f` |
-| Map revision | `1` |
-| Previous revision | none |
-| Previous artifact commit | none |
-| Change reason | Initial map for Gateflow Mission Control (v0) |
-| Material change | yes — first revision |
+| PRD digest | `sha256:4be733db2a69739a2fded2165e68697ca7396525e161e0bd4c53c19242e722ee` |
+| Map revision | `2` |
+| Previous revision | `1` |
+| Previous artifact commit | `a5c59f8346846fb66a04a88621fb16baddf26916` |
+| Change reason | `prayog-skills` out of 004 delivery — pin/`dispatch` for engg spec-lane stays on INIT-GATEFLOW-003 W2 |
+| Material change | yes — affected set narrowed; REQ-40 no longer implies skills delivery |
 
 ## 2. Affected repositories
 
 | Service | Repo | Team | Scope summary | Scope digest | Spec to create | Confidence |
 |---------|------|------|---------------|--------------|----------------|------------|
-| gateflow-ops | drivestream-lab/gateflow-ops | @drivestream-lab/prayog-pe-team | Mission Control v0: thin ops-user identity+sign-in (REQ-32); strict scorecard onboarding (REQ-33); fleet home (REQ-34); start/inspect waves last 30 days (REQ-35); run cockpit map+timeline+full log pane+GitHub jump (REQ-36); efficacy visibility+collect numbers (REQ-37); process display-only (REQ-38); BFF consumer of gateflow | `sha256:682d055f5a0ee565202376bbcfb8c6e43d88464181df78ab1d1f6abbd6c26e87` | `INIT-GATEFLOW-004-gateflow-ops.md` | High |
-| gateflow | drivestream-lab/gateflow | @drivestream-lab/prayog-pe-team | Supporting only: extend run/metrics/wave APIs where Mission Control needs missing programme capabilities — fleet onboarding records, clearer wave summaries (REQ-39); not a second orchestrator | `sha256:1264d9ab2feb688091974445d7a9f7326f5de1311a658aa5a46bf4717d23c769` | `INIT-GATEFLOW-004-gateflow.md` (thin / API delta) | High |
-| prayog-skills | drivestream-lab/prayog-skills | @drivestream-lab/prayog-pe-team | Supporting: pin `dispatch: orchestrated` for engg **spec-lane** skills (`spec-draft`, `initiative-feasibility`, `spec-technical-review`, `spec-implementation-plan`) for 003 W2 dogfood with this PRD (REQ-40); no version-bump exit gate | `sha256:20e2e8c26fdeff1bc21331fcef95df244cd5ddbabed7d005216c8c80bf54ea92` | `INIT-GATEFLOW-004-prayog-skills.md` (pin/content; may be thin) | High |
+| gateflow-ops | drivestream-lab/gateflow-ops | @drivestream-lab/prayog-pe-team | Mission Control v0: thin ops-user identity+sign-in (REQ-32); strict scorecard onboarding (REQ-33); fleet home (REQ-34); start/inspect waves last 30 days (REQ-35); run cockpit map+timeline+full log pane+GitHub jump (REQ-36); efficacy visibility+collect numbers (REQ-37); process display-only (REQ-38); BFF consumer of gateflow; **reads** pin for process map only | `sha256:081ffe18350b475e0d3e9d8b3b4129e08f01f1f3ff11f0ca56bd0ff11653c220` | `INIT-GATEFLOW-004-gateflow-ops.md` | High |
+| gateflow | drivestream-lab/gateflow | @drivestream-lab/prayog-pe-team | Supporting only: extend run/metrics/wave APIs where Mission Control needs missing programme capabilities — fleet onboarding records, clearer wave summaries (REQ-39); not a second orchestrator | `sha256:a3fd7feeabf1333d010d38639e4c33657a365b7940862444f12da6b26a56f987` | `INIT-GATEFLOW-004-gateflow.md` (thin / API delta) | High |
 
 ## 3. Deferred repositories
 
@@ -50,11 +49,13 @@ generated_at: 2026-07-27T10:00:00Z
 |---------|------|------------|------------------|-------------|
 | launchpad | drivestream-lab/launchpad | — | Greenfield factory unchanged; no Mission Control scaffolding | monitor — not affected (product) |
 | gateflow-ops | drivestream-lab/gateflow-ops | gateflow (`links.upstream`) | Consumes run/metrics/wave APIs + optional REQ-39 extensions | affected (primary) |
+| prayog-skills | drivestream-lab/prayog-skills | — | Ops may read pin for process map; pin/`dispatch` edits are 003 W2 | monitor — not affected (004 delivery) |
 
 ## 5. Not affected
 
 | Service | Repo | Reason |
 |---------|------|--------|
+| prayog-skills | drivestream-lab/prayog-skills | Pin / `dispatch` for engg **spec-lane** stays on **INIT-GATEFLOW-003 W2**, not 004; 004 only **reads** the pin for process map (REQ-36, REQ-38) |
 | prayog-meta | drivestream-lab/prayog-meta | Hosts PRD, outline, validation/resolution reports, this impact map; not an eng delivery target for Mission Control runtime |
 | launchpad | drivestream-lab/launchpad | No greenfield / harness-install product work in 004 (Non-Goals; Launchpad ownership unchanged) |
 
@@ -64,32 +65,38 @@ generated_at: 2026-07-27T10:00:00Z
 |-------------|---------------|---------------|------------|-------|--------|
 | CTR-01 | gateflow | gateflow-ops | Existing run / metrics / wave-start / board APIs for operate + cockpit (REQ-35–37, REQ-39 consume) | prayog-pe-team | unchanged — primary consume |
 | CTR-02 | gateflow | gateflow-ops | Fleet onboarding records + clearer wave summaries if existing APIs insufficient (REQ-39) | prayog-pe-team | new — supporting delta |
-| CTR-03 | prayog-skills | gateflow-ops | Pinned workflow projection for process map (REQ-36, REQ-38) | prayog-pe-team | unchanged — read pin |
-| CTR-04 | prayog-skills | gateflow / programme | Engg spec-lane skills `dispatch: orchestrated` for 003 W2 dogfood (REQ-40) | prayog-pe-team | changed — pin content (paired with 003 W2) |
-| CTR-05 | gateflow | GitHub (ForgeClient) | Scorecard GitHub access + Open PR links (REQ-33, REQ-36); reused | prayog-pe-team | unchanged |
+| CTR-03 | prayog-skills | gateflow-ops | Pinned workflow projection for process map (REQ-36, REQ-38) — **read only**; no 004 pin edit | prayog-pe-team | unchanged — read pin |
+| CTR-04 | gateflow | GitHub (ForgeClient) | Scorecard GitHub access + Open PR links (REQ-33, REQ-36); reused | prayog-pe-team | unchanged |
+
+*Former CTR-04 (engg spec-lane pin `dispatch` change) removed from 004 — owned by INIT-GATEFLOW-003 W2.*
 
 ## 7. Dependency and build order
 
 ```text
 INIT-GATEFLOW-001–002 finished; INIT-GATEFLOW-003 control plane + live Cursor available
-  (003 W2 engg spec-lane prove-it may still be open — pairs with this PRD)
+  (003 W2 engg spec-lane pin + prove-it may still be open — may dogfood this PRD; not 004 delivery)
 
   → gateflow supporting API delta (REQ-39) — only where ops cannot meet cockpit/onboarding from existing APIs
   → gateflow-ops Mission Control W0–W3 (REQ-32–38) — primary product
-  → prayog-skills engg spec-lane pin (REQ-40) — supporting; before / with dogfood prove-it (parallel to ops W3)
 ```
 
 | Repo | Depends on | Reason |
 |------|------------|--------|
 | gateflow-ops | gateflow | Catalog upstream; BFF consumes APIs (CTR-01/02) |
-| gateflow-ops | prayog-skills | Process map projection from pin (CTR-03) |
-| gateflow | prayog-skills | Orchestration honors pin; dogfood uses engg spec-lane orchestrated nodes |
-| prayog-skills | none (SSOT) | Supporting pin `dispatch` content edit |
+| gateflow-ops | prayog-skills (read) | Process map projection from pin (CTR-03) — no pin edit in 004 |
+| gateflow | prayog-skills (runtime) | Orchestration honors existing pin; pin content changes are 003 |
 | launchpad | — | Not in delivery chain |
+| prayog-skills | — | Not in 004 delivery chain |
 
 ## 8. Revision diff
 
-*Omitted — map revision 1.*
+| Repo | Prior status (rev 1) | Current status (rev 2) | Scope digest changed? | Change |
+|------|----------------------|------------------------|-----------------------|--------|
+| gateflow-ops | affected | affected | yes | narrowed — pin read only; no skills delivery coupling |
+| gateflow | affected | affected | yes | narrowed — no 004 ownership of engg spec-lane pin |
+| prayog-skills | affected | **not affected** | n/a | **removed** — pin/`dispatch` stays on INIT-GATEFLOW-003 W2 |
+| launchpad | monitor / not affected | monitor / not affected | n/a | unchanged |
+| prayog-meta | not affected | not affected | n/a | unchanged |
 
 ## 9. Downstream ripple ledger
 
@@ -97,7 +104,7 @@ INIT-GATEFLOW-001–002 finished; INIT-GATEFLOW-003 control plane + live Cursor 
 |------|--------------------|-----------------|--------|-------|----------|
 | gateflow-ops | none (spec not yet opened) | **open** after map approval | First Mission Control product delivery | prayog-pe-team | no |
 | gateflow | none for 004 API delta | **open** after map approval (thin supporting) | REQ-39 only if gaps proven | prayog-pe-team | no |
-| prayog-skills | pin live; engg spec-lane may still need `orchestrated` for dogfood | **open** (supporting pin) after map approval | REQ-40 / 003 W2 companion | prayog-pe-team | no |
+| prayog-skills | pin live; engg spec-lane may still need `orchestrated` for 003 W2 | **hold** / **close** for 004 — do not open 004 skills spec | Removed from 004 affected set | prayog-pe-team | no |
 | launchpad | none | continue | Monitor only | prayog-pe-team | no |
 
 ## 10. Open questions
@@ -115,39 +122,38 @@ INIT-GATEFLOW-001–002 finished; INIT-GATEFLOW-003 control plane + live Cursor 
 | Item | Value |
 |------|-------|
 | Verdict | **PR READY** |
-| Collision detection | **no-collision** (workspace note below) |
-| Collision evidence | No `Impact-Map-INIT-GATEFLOW-004`; no open/closed PR titled INIT-GATEFLOW-004; open PR [#11](https://github.com/drivestream-lab/prayog-meta/pull/11) is INIT-GATEFLOW-003 (**unrelated**); open PR [#10](https://github.com/drivestream-lab/prayog-meta/pull/10) is INIT-GATEFLOW-002 (**unrelated**). Local checkout is currently `chore/INIT-GATEFLOW-003-prd` with 004 WIP files — **do not** push 004 onto PR #11 |
+| Collision detection | **no-collision** |
+| Collision evidence | Prior Draft PR [#12](https://github.com/drivestream-lab/prayog-meta/pull/12) **closed** (same initiative; reopen or new Draft after this revision). No competing open 004 PR. |
 | Human resolution | none |
 | Resolution completed | n/a |
-| Existing PR | none for 004 |
+| Existing PR | [#12](https://github.com/drivestream-lab/prayog-meta/pull/12) closed — recreate Draft when authorized |
 | Proposed branch | `chore/INIT-GATEFLOW-004-prd` |
 | Proposed base | `develop` |
 | Proposed title | `[INIT-GATEFLOW-004] PRD — Gateflow Mission Control` |
-| Files to commit | `prd/INIT-GATEFLOW-004.md`, `prd/INIT-GATEFLOW-004-outline.md`, `prd/reports/Impact-Map-INIT-GATEFLOW-004.md`, `prd/reports/Validation-Report-INIT-GATEFLOW-004.md`, `prd/reports/Resolution-INIT-GATEFLOW-004.md`; optionally `planning/gateflow-programme-vision.md` if included in this initiative’s vision bump; **exclude** `prd/INIT-GATEFLOW-003.md` from 004 PR until IM-04 resolved |
+| Files to commit | `prd/INIT-GATEFLOW-004.md`, `prd/INIT-GATEFLOW-004-outline.md`, `prd/reports/Impact-Map-INIT-GATEFLOW-004.md` (+ prior vision / 001 / 002 status files if not yet on head) |
 | Reviewer | @drivestream-lab/prayog-pe-team |
-| Initial Gate 1 label | `impact-map-pending` |
-| Additional invalidation label | none |
+| Initial Gate 1 label | `impact-map-pending` (plus `impact-map-revised` if reopening after prior review) |
+| Additional invalidation label | none until prior approval existed |
 | Blocking items | none (IM-01–05 → PE/PM; non-blocking) |
 
-**No GitHub side effects have occurred.** Ask the user whether to create or update the Draft PR. Continue only after explicit authorization.
+**No GitHub side effects have occurred for this revision.** Ask the user whether to commit and recreate the Draft PR.
 
 ### Proposed Draft PR body
 
 ```markdown
 ## Product change
 
-INIT-GATEFLOW-004 delivers **Gateflow Mission Control (v0)** in **gateflow-ops**: thin ops-user identity, strict scorecard onboarding of harnessed repos, fleet home, start/inspect waves from the UI, high-bar run cockpit (process map + timeline + full log pane + GitHub jump), and efficacy visibility while collecting numbers for later lift decisions. **Primary: gateflow-ops.** **Supporting: gateflow** (API gaps only, REQ-39) and **prayog-skills** (engg spec-lane pin for 003 W2 dogfood, REQ-40). Launchpad greenfield stays out of scope. Checkpoints stay on; no auto-merge.
+INIT-GATEFLOW-004 delivers **Gateflow Mission Control (v0)** in **gateflow-ops**: thin ops-user identity, strict scorecard onboarding of harnessed repos, fleet home, start/inspect waves from the UI, high-bar run cockpit (process map + timeline + full log pane + GitHub jump), and efficacy visibility while collecting numbers for later lift decisions. **Primary: gateflow-ops.** **Supporting: gateflow** (API gaps only, REQ-39). **prayog-skills** is **not affected** — engg spec-lane pin/`dispatch` stays on INIT-GATEFLOW-003 W2; 004 only reads the pin for process map. Launchpad greenfield stays out of scope. Checkpoints stay on; no auto-merge.
 
 ## Impact-map summary
 
-- Revision: **1**
-- PRD digest: `sha256:90fff56a5c2699390177d573e31df1d34f8980aa6553d4cce17128877af2882f`
-- Scope digest (gateflow-ops): `sha256:682d055f5a0ee565202376bbcfb8c6e43d88464181df78ab1d1f6abbd6c26e87`
-- Scope digest (gateflow): `sha256:1264d9ab2feb688091974445d7a9f7326f5de1311a658aa5a46bf4717d23c769`
-- Scope digest (prayog-skills): `sha256:20e2e8c26fdeff1bc21331fcef95df244cd5ddbabed7d005216c8c80bf54ea92`
-- Affected repos: drivestream-lab/gateflow-ops, drivestream-lab/gateflow, drivestream-lab/prayog-skills
+- Revision: **2**
+- PRD digest: `sha256:4be733db2a69739a2fded2165e68697ca7396525e161e0bd4c53c19242e722ee`
+- Scope digest (gateflow-ops): `sha256:081ffe18350b475e0d3e9d8b3b4129e08f01f1f3ff11f0ca56bd0ff11653c220`
+- Scope digest (gateflow): `sha256:a3fd7feeabf1333d010d38639e4c33657a365b7940862444f12da6b26a56f987`
+- Affected repos: drivestream-lab/gateflow-ops, drivestream-lab/gateflow
 - Deferred repos: none
-- Not affected: launchpad (product), prayog-meta (host)
+- Not affected: prayog-skills (003 W2 owns pin), launchpad (product), prayog-meta (host)
 - Blocking questions: none (IM-01–05 non-blocking)
 - Artifact: `prd/reports/Impact-Map-INIT-GATEFLOW-004.md`
 
@@ -170,9 +176,9 @@ Tech lead must review this artifact on the meta PR and submit GitHub
 ```text
 Impact map approved
 initiative: INIT-GATEFLOW-004
-map_revision: 1
+map_revision: 2
 meta_pr_head_sha: {SHA after this artifact is committed}
-prd_digest: sha256:90fff56a5c2699390177d573e31df1d34f8980aa6553d4cce17128877af2882f
+prd_digest: sha256:4be733db2a69739a2fded2165e68697ca7396525e161e0bd4c53c19242e722ee
 artifact: prd/reports/Impact-Map-INIT-GATEFLOW-004.md
 ```
 
@@ -207,20 +213,19 @@ handoff:
   outcome: pass
   artifact:
     path: prd/reports/Impact-Map-INIT-GATEFLOW-004.md
-    digest: sha256:956b09facd54f78b8904a6a7c1faf35b0d522077ad7d140237f372e24c174bed
+    digest: sha256:9b8590c0006987fc3e8dffa94c176ca366ecaa564654eab0da7c17f1318ac629
   blockers: []
   signals:
-    map_revision: 1
-    previous_revision: null
-    prd_digest: sha256:90fff56a5c2699390177d573e31df1d34f8980aa6553d4cce17128877af2882f
+    map_revision: 2
+    previous_revision: 1
+    prd_digest: sha256:4be733db2a69739a2fded2165e68697ca7396525e161e0bd4c53c19242e722ee
     affected_repos:
       - drivestream-lab/gateflow-ops
       - drivestream-lab/gateflow
-      - drivestream-lab/prayog-skills
     deferred_repos: []
     collision_detection: no-collision
     pr_ready: true
-    existing_pr: none
+    existing_pr: "12-closed"
     proposed_branch: chore/INIT-GATEFLOW-004-prd
     proposed_base: develop
   next_candidates:

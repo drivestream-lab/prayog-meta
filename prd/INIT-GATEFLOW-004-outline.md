@@ -25,8 +25,8 @@
 | Artifact | `prd/INIT-GATEFLOW-004-outline.md` |
 | Programme | prayog |
 | Primary delivery | **gateflow-ops** (Mission Control experience) |
-| Supporting | **gateflow** only where the console needs missing programme capabilities (e.g. clearer wave summaries, repo onboarding records); **prayog-skills** pin change so spec-lane skills can be auto-run for 003 W2 prove-it |
-| Out of this INIT | **Launchpad** greenfield / new-repo scaffolding |
+| Supporting | **gateflow** only where the console needs missing programme capabilities (e.g. clearer wave summaries, repo onboarding records) |
+| Out of this INIT | **Launchpad** greenfield / new-repo scaffolding; **prayog-skills** pin / `dispatch` for engg spec-lane (owned by **INIT-GATEFLOW-003 W2**) |
 | Depends on | 001–003 control plane + live Cursor; APIs for runs / metrics / wave start already exist |
 | Target users | Engineering (operate waves), tech lead (trust & lift decisions), programme sponsor (are agents doing useful work between human stops?) |
 | Identity (v0) | **Thin ops-user identity** — signed-in operators only; **no roles / RBAC** in this INIT |
@@ -205,8 +205,8 @@ firsthand samples).
 - Exact skills: `spec-draft`, `initiative-feasibility`, `spec-technical-review`,
   `spec-implementation-plan`  
 - Human checkpoints during that journey remain **expected**  
-- Supporting skills-pin change so those engg spec-lane skills may be auto-dispatched
-  is **in programme scope** for the prove-it, not a Launchpad feature  
+- Pin / `dispatch` so those engg spec-lane skills may be auto-dispatched stays on
+  **INIT-GATEFLOW-003 W2** — **out of 004** delivery (004 only displays the pin)  
 
 ---
 
@@ -216,6 +216,7 @@ firsthand samples).
 |----------|-----|
 | Greenfield repo creation / scaffolding | Launchpad owns the paved-road factory |
 | Replacing or editing the delivery process inside the console | Process SSOT stays in pinned skills; console is a window, not a second rulebook |
+| **prayog-skills** pin / `dispatch` for engg spec-lane | Owned by **INIT-GATEFLOW-003 W2**; not a 004 deliverable |
 | Auto-removing human checkpoints or auto-merge | Lift-on-metrics later; merge stays human-owned |
 | Live second coding agent (OpenCode / Claude) | Later INIT after Cursor efficacy is clear |
 | Slack / Teams as primary ops surface | Optional later; Mission Control is the home |
@@ -305,8 +306,8 @@ firsthand samples).
 |------|-------|----------|
 | 1 | PM / sponsor | Outline locked (§11 decisions 1–13) |
 | 2 | PM | Draft PRD from this outline (**done** — [INIT-GATEFLOW-004](./INIT-GATEFLOW-004.md)) |
-| 3 | Programme | 003 W2 companion: allow spec-lane auto-run for dogfood prove-it |
-| 4 | Engineering | Validate PRD → impact map (**gateflow-ops** primary) |
+| 3 | Programme (003) | 003 W2: engg spec-lane pin / auto-run for dogfood prove-it (**out of 004**) |
+| 4 | Engineering | Validate PRD → impact map (**gateflow-ops** primary; **gateflow** supporting; **prayog-skills** not affected) |
 | 5 | Engineering | Spec + delivery waves for Mission Control v0 |
 
 ---
