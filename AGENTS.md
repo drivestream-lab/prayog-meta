@@ -1,7 +1,5 @@
 # Agent guide (drivestream-lab meta)
 
-PM workspace for **drivestream-lab** (`prayog-meta`).
-
 <!-- launchpad:harness-start -->
 ## Harness (managed by launchpad — do not edit)
 
@@ -24,7 +22,12 @@ Re-sync after clone: `launchpad apply-harness --meta --apply`
 When asked “what next?”, read the latest persistent handoff and the pinned
 workflow, then explain the current stage, blockers, and next candidate. Do not
 perform file or GitHub mutations unless the user explicitly authorizes them.
+
+Development content skills only change the local workspace and record Forge
+readiness. Branch/commit/push/PR/issue/label/merge happen only via forge skills.
 <!-- launchpad:harness-end -->
+
+PM workspace for **drivestream-lab** (`prayog-meta`).
 
 ## Repository truth
 
