@@ -22,7 +22,6 @@ profiles:
     harness_pin_template: harness-pin.meta.yaml
 
   python-backend:
-    prayog_profile: python-backend
     constitution:
       repo: python-services-rules
       ref: v0.5.10
@@ -36,7 +35,6 @@ profiles:
     harness_pin_template: harness-pin.python-backend.yaml
 
   nextjs-frontend:
-    prayog_profile: frontend
     constitution:
       repo: nextjs-bff-rules
       ref: v0.1.6
