@@ -201,7 +201,7 @@ handoff:
       - drivestream-lab/gateflow
       - drivestream-lab/prayog-meta
     collision_detection: no-collision
-    validation: Validation-Report-INIT-PRAYOG-SKILLS-002-r3.md (pass)
+    validation: Validation-Report-INIT-PRAYOG-SKILLS-002.md (pass)
     paired_initiative: INIT-GATEFLOW-001
     joint_gate_1_blocker: IM-01
   next_candidates:
