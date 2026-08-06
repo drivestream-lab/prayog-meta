@@ -14,6 +14,10 @@ agent_skills:
     - review-findings
     - update-documents
     - prd-impact-map
+    - purge-initiative-artifacts-meta
+    - commit-workspace
+    - open-draft-pr
+    - create-board-tickets
     - prd
 
 community_skills:
