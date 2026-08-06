@@ -1,15 +1,16 @@
 # INIT-GATEFLOW-001 — Gateflow delivery orchestrator
 
-**Status:** draft PRD · **Author:** programme PM · **Date:** 2026-07-22  
+**Status:** done (delivered) · **Author:** programme PM · **Date:** 2026-07-22 · **Completed:** 2026-07-27  
 **Outline:** [INIT-GATEFLOW-001-outline](./INIT-GATEFLOW-001-outline.md)  
 **Vision:** [planning/gateflow-programme-vision.md](../planning/gateflow-programme-vision.md)  
 **Paired initiative:** [INIT-PRAYOG-SKILLS-002](./INIT-PRAYOG-SKILLS-002.md) (`dispatch` on pin **`v0.5.0-rc.2`** — delivered)  
 **Component:** GATEFLOW · **Type:** platform / delivery control plane
 
-> **Draft PRD** — INIT-PRAYOG-SKILLS-002 delivered (`v0.5.0-rc.2`); Gateflow W1
-> PolicyEngine work **unblocked**. Competitive landscape and full differentiation:
-> [vision §12](../planning/gateflow-programme-vision.md#12-market-landscape-and-differentiation).
-> Engineering implementation detail routes to impact map and gateflow spec PR.
+> **Done (delivered)** — control-plane foundation complete. INIT-PRAYOG-SKILLS-002
+> delivered (`v0.5.0-rc.2`); Gateflow W1 PolicyEngine unblocked and delivered.
+> Competitive landscape and full differentiation:
+> [vision §13](../planning/gateflow-programme-vision.md#13-market-landscape-and-differentiation).
+> Historical engineering detail remains in the impact map and gateflow spec PRs.
 
 ---
 

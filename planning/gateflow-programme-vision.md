@@ -3,6 +3,7 @@
 **Programme:** prayog · **Org:** drivestream-lab · **Status:** draft  
 **Last updated:** 2026-08-01  
 **Related initiatives:** [INIT-GATEFLOW-001](../prd/INIT-GATEFLOW-001.md) ·
+[INIT-GATEFLOW-004](../prd/INIT-GATEFLOW-004.md) ·
 [INIT-PRAYOG-SKILLS-002](../prd/INIT-PRAYOG-SKILLS-002.md) · gateflow repo specs
 `docs/specification/product/INIT-GATEFLOW-00{1–8}-*.md`
 
