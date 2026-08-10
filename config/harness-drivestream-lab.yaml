@@ -24,7 +24,7 @@ profiles:
   python-backend:
     constitution:
       repo: python-services-rules
-      ref: v0.5.10
+      ref: v0.5.11
     skills:
       - repo: prayog-skills
         ref: v0.5.0-rc.2
