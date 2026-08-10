@@ -2,6 +2,8 @@
 
 **Programme:** prayog · **Org:** drivestream-lab · **Status:** draft  
 **Last updated:** 2026-08-01  
+**System product (parent):** [prayog-system-product-brief.md](./prayog-system-product-brief.md)
+— Prayog factory identity across repos; this file is the **Gateflow runtime** deep-dive only.  
 **Related initiatives:** [INIT-GATEFLOW-001](../prd/INIT-GATEFLOW-001.md) ·
 [INIT-GATEFLOW-004](../prd/INIT-GATEFLOW-004.md) ·
 [INIT-PRAYOG-SKILLS-002](../prd/INIT-PRAYOG-SKILLS-002.md) · gateflow repo specs
