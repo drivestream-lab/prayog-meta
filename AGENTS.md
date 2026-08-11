@@ -6,7 +6,7 @@
 Installed under **`.harness/skills/<skill>/`** (hub) mirrored to **`.agents/skills/`** and **`.claude/skills/`**:
 
 - Community: `/prd` @ awesome-copilot
-- Prayog PM bundle @ **v0.5.0-rc.2**: `/validate-requirements`, `/review-findings`, `/update-documents`, `/prd-impact-map`, `/purge-initiative-artifacts-meta`, `/commit-workspace`, `/open-draft-pr`, `/create-board-tickets`, `/prd`
+- Prayog PM bundle @ **v0.5.0**: `/validate-requirements`, `/review-findings`, `/update-documents`, `/prd-impact-map`, `/purge-initiative-artifacts-meta`, `/commit-workspace`, `/open-draft-pr`, `/create-board-tickets`, `/prd`
 
 Pin record: [`.harness-pin.yaml`](.harness-pin.yaml) (`profile: meta-pm`).
 
