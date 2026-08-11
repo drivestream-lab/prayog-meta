@@ -14,7 +14,7 @@ meta:
 
 repos:
   # foundation: python-fastapi-foundation@v0.3.2
-  # constitution: python-services-rules@v0.5.10
+  # constitution: python-services-rules@v0.5.12
   # skills: prayog-skills@v0.4.3
   gateflow:
     enabled: true
