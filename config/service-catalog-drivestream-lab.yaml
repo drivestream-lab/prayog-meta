@@ -38,8 +38,8 @@ services:
     links:
       repo: https://github.com/drivestream-lab/gateflow
       docs: https://github.com/drivestream-lab/prayog-meta
-      foundation: https://github.com/drivestream-lab/python-fastapi-foundation/tree/v0.3.2
-      constitution: https://github.com/drivestream-lab/python-services-rules/tree/v0.5.10
+      foundation: https://github.com/drivestream-lab/python-fastapi-foundation/tree/v0.3.5
+      constitution: https://github.com/drivestream-lab/python-services-rules/tree/v0.5.12
       skills: https://github.com/drivestream-lab/prayog-skills/tree/v0.4.3
 
   gateflow-ops:
