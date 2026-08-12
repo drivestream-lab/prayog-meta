@@ -191,7 +191,7 @@ Give every tenant a guided path to its repos, sourced entirely from the programm
 | Changing how a wave actually runs once it starts | This initiative is about getting set up; wave-start mechanics are untouched |
 | A separate, narrower credential just for reading the programme's shared records | Same credential as everything else |
 | Relying on anything stored on an individual operator's own machine | The setup tool is always pointed at Gateflow's own synced copy of the programme's records |
-| Reconciling this initiative's readiness check with INIT-GATEFLOW-004's onboarding scorecard | Not resolved here — CAP-05/CAP-06 are the natural successor to INIT-GATEFLOW-012's now-superseded harness check, which INIT-GATEFLOW-012's own PRD flagged as a possible backer for that scorecard; the coordination point is still open, now pointing at this initiative instead of 012 |
+| Reconciling this initiative's readiness check with INIT-GATEFLOW-016's onboarding scorecard | **Resolved by INIT-GATEFLOW-016 (OQ-2):** this initiative's existing catalogue (CAP-02), selection (CAP-03), and readiness (CAP-05/CAP-06) endpoints are composed client-side in gateflow-ops into a single pass/fail onboarding verdict — no new composite endpoint requested of this initiative; coordination point closed |
 
 ### Assumptions
 

@@ -5,7 +5,7 @@
 **System product (parent):** [prayog-system-product-brief.md](./prayog-system-product-brief.md)
 — Prayog factory identity across repos; this file is the **Gateflow runtime** deep-dive only.  
 **Related initiatives:** [INIT-GATEFLOW-001](../prd/INIT-GATEFLOW-001.md) ·
-[INIT-GATEFLOW-004](../prd/INIT-GATEFLOW-004.md) ·
+[INIT-GATEFLOW-016](../prd/INIT-GATEFLOW-016-outline.md) ·
 [INIT-PRAYOG-SKILLS-002](../prd/INIT-PRAYOG-SKILLS-002.md) · gateflow repo specs
 `docs/specification/product/INIT-GATEFLOW-00{1–8}-*.md`
 

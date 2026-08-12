@@ -5,7 +5,7 @@
 **Vision:** [planning/gateflow-programme-vision.md](../planning/gateflow-programme-vision.md)  
 **Component:** GATEFLOW · **Type:** trust / access to the control plane  
 **Predecessor:** INIT-GATEFLOW-013 (programme-first onboarding and real readiness) — **complete**; this initiative sits on top of the product surface that 012 and 013 already shipped.  
-**Related, not blocking:** INIT-GATEFLOW-004 (operations dashboard) — will eventually call the same APIs; this initiative does not build screens.
+**Related, not blocking:** INIT-GATEFLOW-016 (operations dashboard, formerly INIT-GATEFLOW-004 — retired) — will eventually call the same APIs; this initiative does not build screens.
 
 > **Draft PRD** — Locked decisions D1–D19 (outline) carried forward unchanged.
 > Discovery locks from this Draft: OQ-1 (seed + login JWT minting), OQ-2
@@ -212,7 +212,7 @@ Make **Gateflow-issued user JWTs** the only product-edge credential (`platform_a
 
 | Non-goal | Why |
 |----------|-----|
-| Ops dashboard / login screens | Later (INIT-GATEFLOW-004 / follow-ons); login is API-only this INIT |
+| Ops dashboard / login screens | Later (INIT-GATEFLOW-016 / follow-ons); login is API-only this INIT |
 | Full IdP / SSO product line | Seed + Gateflow-issued JWTs only |
 | Multiple programme **role types** | Only `tenant_admin` (multiple users of that role allowed) |
 | `platform_admin` running twin or repo onboard | Explicit split (D11) |

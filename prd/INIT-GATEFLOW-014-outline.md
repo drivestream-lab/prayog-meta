@@ -5,7 +5,7 @@
 **Vision:** [planning/gateflow-programme-vision.md](../planning/gateflow-programme-vision.md)
 **Component:** GATEFLOW · **Type:** trust / access to the control plane
 **Predecessor:** INIT-GATEFLOW-013 (programme-first onboarding and real readiness) — **complete**; this initiative sits on top of the product surface that 012 and 013 already shipped.
-**Related, not blocking:** INIT-GATEFLOW-004 (operations dashboard) — will eventually call the same APIs; this initiative does not build screens.
+**Related, not blocking:** INIT-GATEFLOW-016 (operations dashboard, formerly INIT-GATEFLOW-004 — retired) — will eventually call the same APIs; this initiative does not build screens.
 
 > **Outline** — problem framing and scope lock. Detailed requirements live in the
 > Draft PRD. Locked decisions include discovery after outline (D10–D19).
