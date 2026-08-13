@@ -10,7 +10,7 @@ profiles:
   meta-pm:
     skills:
       - repo: prayog-skills
-        ref: v0.5.0
+        ref: v0.5.1
     community_skills:
       - source: github/awesome-copilot
         ref: main
@@ -27,7 +27,7 @@ profiles:
       ref: v0.5.12
     skills:
       - repo: prayog-skills
-        ref: v0.5.0
+        ref: v0.5.1
     skill_runtimes:
       - .agents/skills
       - .claude/skills
@@ -40,7 +40,7 @@ profiles:
       ref: v0.1.6
     skills:
       - repo: prayog-skills
-        ref: v0.5.0
+        ref: v0.5.1
     skill_runtimes:
       - .agents/skills
       - .claude/skills

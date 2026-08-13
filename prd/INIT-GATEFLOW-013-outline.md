@@ -4,7 +4,7 @@
 **Vision:** [planning/gateflow-programme-vision.md](../planning/gateflow-programme-vision.md)
 **Component:** GATEFLOW · **Type:** onboarding experience
 **Predecessor:** INIT-GATEFLOW-012 (tenant registration and the clone/branch/run lifecycle) — **already delivered in full**, and this initiative builds directly on top of it.
-**Related, not blocking:** INIT-GATEFLOW-004 (the future operations dashboard) — will eventually display what this initiative builds; Launchpad (the programme's own setup/readiness tool) — this initiative only asks it questions, never lets it make changes
+**Related, not blocking:** INIT-GATEFLOW-016 (the operations dashboard, formerly INIT-GATEFLOW-004 — retired) — will eventually display what this initiative builds; Launchpad (the programme's own setup/readiness tool) — this initiative only asks it questions, never lets it make changes
 
 > **Outline only.** Written in plain product language on purpose — this is the
 > problem framing and scope lock, not the engineering contract. The Draft PRD
@@ -185,7 +185,7 @@ Give tenants a guided way to discover and choose their repos from the programme'
 | **prayog-meta** | We only read its shared repo list and settings — nothing about how that's maintained changes because of this initiative |
 | **launchpad** | We only ever ask its existing readiness tool questions — nothing about the tool itself changes, and we never ask it to fix or install anything |
 | **The future operations dashboard** | Not touched this initiative; it's a later initiative's job to build screens on top of what we deliver here |
-| **INIT-GATEFLOW-004** | Not touched; how its planned readiness display relates to this initiative's readiness check is a coordination point for later, already flagged in INIT-GATEFLOW-012's own notes |
+| **INIT-GATEFLOW-016** (formerly INIT-GATEFLOW-004, retired) | Not touched by this initiative; the coordination point flagged in INIT-GATEFLOW-012's own notes is now resolved — INIT-GATEFLOW-016 composes this initiative's existing catalogue/selection/readiness endpoints client-side, no new endpoint requested of 013 |
 | **The team behind INIT-GATEFLOW-012** | A direct heads-up on two things: this initiative takes over responsibility for their readiness check (a real, currently-used capability), and it also retires their original way of adding a repo to a tenant (typing it in directly) in favor of the programme-connection flow. Their existing documents aren't changed; how existing tenants' already-added repos are treated (`OQ-6`) is locked as "left as-is," not decided unilaterally to mean something more disruptive. |
 
 ---

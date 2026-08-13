@@ -1,17 +1,17 @@
 ---
 schema_version: 1
 initiative: INIT-GATEFLOW-013
-map_revision: 1
+map_revision: 2
 source_prd: prd/INIT-GATEFLOW-013.md
 source_prd_digest: sha256:c3653bdc5ab7f7aa679962d034a74efe3ea11040ab9db5c79b1e207a3540dbb1
-previous_revision: null
+previous_revision: 1
 previous_artifact_commit: null
-change_reason: Initial impact map — Programme-first onboarding, choosing which repos matter, and real readiness checks
-material_change: true
-generated_at: 2026-08-08T15:50:00Z
+change_reason: IM-09 resolved — coordination point with retired INIT-GATEFLOW-004 closed via INIT-GATEFLOW-016's OQ-2 resolution
+material_change: false
+generated_at: 2026-08-12T16:02:00+05:30
 ---
 
-# Impact map — INIT-GATEFLOW-013 — revision 1
+# Impact map — INIT-GATEFLOW-013 — revision 2
 
 > This file is generated locally before PR creation and becomes the scope source
 > of truth when committed. Effective approval is derived from a tech-lead
@@ -100,7 +100,13 @@ INIT-GATEFLOW-012 (Tenant registry + workspace lifecycle — fully shipped, all 
 
 ## 8. Revision diff
 
-_Omit for revision 1._
+**Since revision 1:** No change to affected/transitively-affected/not-affected
+repo sets. `IM-09` (coordination point with the onboarding-scorecard
+initiative) is resolved — that initiative (formerly `INIT-GATEFLOW-004`,
+retired 2026-08-12) is now `INIT-GATEFLOW-016`, which resolved the
+coordination via client-side composition of this initiative's existing
+endpoints; no new endpoint requested of `INIT-GATEFLOW-013`. Not a material
+change (`material_change: false`).
 
 ## 9. Downstream ripple ledger
 
@@ -124,7 +130,7 @@ _Omit for revision 1._
 | IM-06 | PM/PE | What currently depends on hand-typed tenant setup (scripts, runbooks, habits) that would break once it's retired (**OQ-8**) | PM | **yes** | Before implementation locks the exact cutover | No default — must be sized, not discovered after the fact | open |
 | IM-07 | PE | Whether a repo that predates this initiative can ever get a fresh real check without first connecting its tenant to the programme (**OQ-9**) | PE | no | Before implementation | Genuinely undecided per the PRD itself — flagged for explicit resolution, not a default | open |
 | IM-08 | PM/PE | Direct communication to the team behind INIT-GATEFLOW-012 that this initiative takes over ownership of their harness-readiness gate (a live, currently-gating capability) and retires their hand-typed repo-add path | PM | no | Before the gateflow spec PR opens | Proceed — the PRD already frames this as a considered handover (D9), not scope creep, but it deserves direct notice since INIT-GATEFLOW-012 is closed and has no open PR to comment on | open |
-| IM-09 | PE | Unresolved coordination point with `INIT-GATEFLOW-004`'s onboarding scorecard — carried from both INIT-GATEFLOW-012's and this PRD's own Non-Goals | PE | no | Whichever of 004/013 lands second | Ship independently for now; reconcile later if both exist live | open |
+| IM-09 | PE | Coordination point with the onboarding-scorecard initiative (formerly `INIT-GATEFLOW-004`, retired; now `INIT-GATEFLOW-016`) — carried from both INIT-GATEFLOW-012's and this PRD's own Non-Goals | PE | no | n/a — resolved | Resolved: INIT-GATEFLOW-016 (OQ-2) composes this initiative's existing endpoints client-side; no new endpoint requested of 013 | resolved |
 
 ## 11. PR readiness handoff
 
@@ -191,7 +197,7 @@ Tech lead must review this artifact on the meta PR and submit GitHub
 ```text
 Impact map approved
 initiative: INIT-GATEFLOW-013
-map_revision: 1
+map_revision: 2
 meta_pr_head_sha: {SHA after this artifact is committed}
 prd_digest: sha256:c3653bdc5ab7f7aa679962d034a74efe3ea11040ab9db5c79b1e207a3540dbb1
 artifact: prd/reports/Impact-Map-INIT-GATEFLOW-013.md
@@ -225,7 +231,7 @@ handoff:
     - IM-02
     - IM-06
   signals:
-    map_revision: 1
+    map_revision: 2
     source_prd_digest: sha256:c3653bdc5ab7f7aa679962d034a74efe3ea11040ab9db5c79b1e207a3540dbb1
     pr_ready: true
     collision_detection: no-collision

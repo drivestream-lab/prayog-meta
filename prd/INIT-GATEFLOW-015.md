@@ -5,7 +5,7 @@
 **Vision:** [planning/gateflow-programme-vision.md](../planning/gateflow-programme-vision.md) §10 Success metrics  
 **Component:** GATEFLOW · **Type:** product metrics / programme learning surface  
 **Predecessor:** INIT-GATEFLOW-001/FR-10 (delivered `GET /api/v1/metrics/runs` v0 — stage duration p50/p95 by `workflow_node`, 90-day retention); the current implementation additionally breaks this down by `runner`/`model_id` — this initiative **extends** that surface with outcome-aware rates; it does not replace it.  
-**Related, not blocking:** INIT-GATEFLOW-004 (operations dashboard) — CAP-03 fulfills 004's `REQ-37`/`A2` aggregate dependency, marked `[TBD in spec]` there (this INIT's "gate dwell time" = 004's "human-wait time"); will eventually render these APIs; this initiative does not build screens.
+**Related, not blocking:** INIT-GATEFLOW-016 (operations dashboard, formerly INIT-GATEFLOW-004 — retired) — CAP-03 fulfills the ops initiative's gate-dwell-time / human-wait-time aggregate dependency; will eventually render these APIs; this initiative does not build screens.
 
 ---
 
@@ -296,7 +296,7 @@ Not a new model product. Quality bar is derivation-rule correctness against fixt
 ### Phased rollout
 
 - **MVP (this INIT, W0–W3):** outcome persistence fixed; three new tenant-scoped, live-aggregated metrics APIs; `/metrics/runs` unchanged.
-- **Later, explicit follow-ups:** gateflow-ops screens rendering these APIs (INIT-GATEFLOW-004 track); a meta-bridge initiative for intent→merge lead time; precomputed rollups if/when live aggregation stops scaling; cost/token metrics if a runner exposes usage data.
+- **Later, explicit follow-ups:** gateflow-ops screens rendering these APIs (INIT-GATEFLOW-016 track); a meta-bridge initiative for intent→merge lead time; precomputed rollups if/when live aggregation stops scaling; cost/token metrics if a runner exposes usage data.
 
 ---
 

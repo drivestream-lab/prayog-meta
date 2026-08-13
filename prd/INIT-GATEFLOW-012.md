@@ -400,7 +400,7 @@ reopening this boundary is a considered, staged decision.
 | A separate git-workspace credential distinct from the tenant PAT | **G2** — single PAT serves both `ForgeClient` and local git this INIT |
 | Repurposing the dormant JWT `AuthMiddleware`/`tenant_id` scaffolding | **G3** — unrelated to this INIT's Tenant model; left exactly as-is (still gates nothing, still in `public_paths`) |
 | Breaking the existing caller-supplied `workspace_path` path for unregistered repos | CAP-02 is additive: explicit `workspace_path` still works unchanged (US-4) |
-| Overlap with `INIT-GATEFLOW-004`'s onboarding "scorecard" categories ("Harness posture," "GitHub/Forge access") | Not resolved this INIT — CAP-04 (harness-readiness) and US-3 (eager PAT verify) may eventually back those scorecard categories, or remain independent; flagged for cross-initiative coordination, not decided here |
+| Overlap with `INIT-GATEFLOW-016`'s onboarding "scorecard" categories ("Harness posture," "GitHub/Forge access") (formerly `INIT-GATEFLOW-004`, retired) | Not resolved this INIT — CAP-04 (harness-readiness) and US-3 (eager PAT verify) may eventually back those scorecard categories, or remain independent; flagged for cross-initiative coordination, not decided here |
 
 ### Assumptions
 
@@ -655,7 +655,7 @@ early enough to unblock them.
 | Deployment topology assumption (persistent disk, A2/OQ-5) unconfirmed | Outline's own lean is toward persistent; not a blocker per outline, but flagged for infra confirmation before W1 delivery freeze |
 | Broadening `NO_CONCURRENT_RUN` to repo scope could surface latent double-starts in existing tenant usage that today's narrower key silently allowed | Unit test against real historical run patterns before flipping the query; verify script asserts the new rejection shape explicitly |
 | Scope creep into `gateflow-ops` UI or GitHub App installation mode | Explicit non-goals (§2); separate, later initiatives |
-| Overlap with `INIT-GATEFLOW-004`'s onboarding scorecard categories going unreconciled | Flagged as a Non-Goal (§2) for cross-initiative coordination, not silently ignored |
+| Overlap with `INIT-GATEFLOW-016`'s onboarding scorecard categories going unreconciled (formerly `INIT-GATEFLOW-004`, retired) | Flagged as a Non-Goal (§2) for cross-initiative coordination, not silently ignored |
 
 ### Phased rollout
 
@@ -666,7 +666,8 @@ early enough to unblock them.
   credential (resolves the G2 risk); `gateflow-ops` onboarding UI consuming
   CAP-01's API; branch-purge activation decision (a separate, later
   decision per D5); GitHub App installation mode per tenant (D8 follow-
-  on); reconciling CAP-04/US-3 with INIT-GATEFLOW-004's scorecard.
+  on); reconciling CAP-04/US-3 with INIT-GATEFLOW-016's scorecard (formerly
+  INIT-GATEFLOW-004, retired).
 
 ---
 
@@ -748,6 +749,6 @@ gateflow OpenAPI pass, same deferral as INIT-GATEFLOW-010/011).
 - Vision: [planning/gateflow-programme-vision.md](../planning/gateflow-programme-vision.md)
 - Predecessor: [INIT-GATEFLOW-010](./INIT-GATEFLOW-010.md) (eng-lane pin tip executor parity — this INIT extends that executor's workspace assumptions)
 - Related, independent: [INIT-GATEFLOW-011](./INIT-GATEFLOW-011.md) (Day-1 visibility — no dependency either direction)
-- Related, unreconciled overlap (§2 Non-Goals, §5 risks): [INIT-GATEFLOW-004](./INIT-GATEFLOW-004.md) (Mission Control onboarding scorecard)
+- Related, unreconciled overlap (§2 Non-Goals, §5 risks): [INIT-GATEFLOW-016](./INIT-GATEFLOW-016.md) (Mission Control onboarding scorecard; formerly INIT-GATEFLOW-004, retired 2026-08-12)
 - Validation / resolution history: [Validation-Report-INIT-GATEFLOW-012](./reports/Validation-Report-INIT-GATEFLOW-012.md), [Resolution-INIT-GATEFLOW-012](./reports/Resolution-INIT-GATEFLOW-012.md)
 - Code evidence (verified this session against local `drivestream-lab/gateflow` checkout): `src/models/wave_start_models.py`, `src/business_services/wave_start_service.py`, `src/business_services/run_orchestrator.py`, `src/infra_services/forge_client.py`, `src/models/pr_branch_naming.py`, `src/infra_services/launchpad_client.py`, `src/database/postgres/repository/run_store_repository.py`, `src/business_services/trigger_router.py`, `src/models/board_models.py`, `src/configs/github_settings.py`, `src/configs/programme_auth_settings.py`, `src/api/v1/programme_token.py`, `src/common/auth/middleware.py`, `src/models/auth_models.py`
